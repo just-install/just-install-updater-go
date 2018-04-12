@@ -91,7 +91,7 @@ func main() {
 		}
 		fmt.Printf("\n")
 	}
-	fmt.Printf("Summary: %d updated, %d unchanged, %d norule, %d skipped, %d errored\n", len(updated), len(unchanged), len(norule), len(skipped), len(errored))
+	fmt.Printf("Summary: %d updated, %d unchanged, %d norule (%.0f%%), %d skipped, %d errored\n", len(updated), len(unchanged), len(norule), float32(len(norule))/float32(len(u.Registry.Packages))*100.0, len(skipped), len(errored))
 
 	if *dryRun {
 		fmt.Printf("\nDRY RUN. NO CHANGES WERE MADE.\n")
