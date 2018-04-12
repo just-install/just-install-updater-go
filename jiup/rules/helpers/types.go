@@ -2,6 +2,9 @@ package helpers
 
 import "errors"
 
+// Verbose controls verbosity.
+var Verbose = false
+
 // ErrExtractorNotImplemented should be returned if an extractor is not implemented
 var ErrExtractorNotImplemented = errors.New("extractor not implemented yet")
 
