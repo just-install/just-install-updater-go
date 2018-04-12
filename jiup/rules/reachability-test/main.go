@@ -117,6 +117,7 @@ func testAll(nodownload bool) ([]string, map[string]error) {
 			}
 		}
 
+		working = append(working, p)
 		fmt.Printf("\r ✓  %s: %s", p, version)
 	}
 	fmt.Printf("\n")

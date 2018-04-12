@@ -1,21 +1,26 @@
 package rules
 
-import . "github.com/just-install/just-install-updater-go/jiup/rules/helpers"
+import (
+	"errors"
+	"fmt"
+	"strings"
 
-var rules = map[string]struct {
+	. "github.com/just-install/just-install-updater-go/jiup/rules/helpers"
+)
+
+type rule struct {
 	V VersionExtractorFunc
 	D DownloadExtractorFunc
-}{}
+}
+
+var rules = map[string]rule{}
 
 // AddRule registers a rule.
 func AddRule(pkg string, versionExtractor VersionExtractorFunc, downloadExtractor DownloadExtractorFunc) {
 	if _, ok := rules[pkg]; ok {
 		panic("rule for " + pkg + " already registered")
 	}
-	rules[pkg] = struct {
-		V VersionExtractorFunc
-		D DownloadExtractorFunc
-	}{versionExtractor, downloadExtractor}
+	rules[pkg] = rule{wrapV(versionExtractor), wrapD(downloadExtractor)}
 }
 
 // GetRule gets a rule if it exists.
@@ -27,9 +32,43 @@ func GetRule(pkg string) (VersionExtractorFunc, DownloadExtractorFunc, bool) {
 }
 
 // GetRules gets all rules.
-func GetRules() map[string]struct {
-	V VersionExtractorFunc
-	D DownloadExtractorFunc
-} {
+func GetRules() map[string]rule {
 	return rules
+}
+
+func wrapV(f VersionExtractorFunc) VersionExtractorFunc {
+	return func() (version string, err error) {
+		version, err = f()
+		if err != nil {
+			return "", err
+		}
+		if strings.TrimSpace(version) == "" {
+			return "", errors.New("version is empty")
+		}
+		return version, nil
+	}
+}
+
+func wrapD(f DownloadExtractorFunc) DownloadExtractorFunc {
+	return func(version string) (x86 string, x86_64 *string, err error) {
+		x86, x86_64, err = f(version)
+		if err != nil {
+			return "", nil, err
+		}
+		if strings.TrimSpace(x86) == "" {
+			return "", nil, errors.New("x86 link is empty")
+		}
+		if !strings.HasPrefix(x86, "http") {
+			return "", nil, fmt.Errorf("x86 link (%s) does not start with http", x86)
+		}
+		if x86_64 != nil {
+			if strings.TrimSpace(*x86_64) == "" {
+				return "", nil, errors.New("x86_64 link is empty")
+			}
+			if !strings.HasPrefix(*x86_64, "http") {
+				return "", nil, fmt.Errorf("x86_64 link (%s) does not start with http", *x86_64)
+			}
+		}
+		return x86, x86_64, nil
+	}
 }

@@ -29,7 +29,7 @@ func GitHubReleaseVersionExtractor(username, repo string, tagRe *regexp.Regexp) 
 
 		m := tagRe.FindStringSubmatch(tag)
 		if len(m) != 2 || m[1] == "" {
-			return "", errors.New("could not find 2nd match group for version")
+			return "", errors.New("could not find 2nd match group for tag regexp")
 		}
 
 		return m[1], nil

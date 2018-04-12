@@ -61,7 +61,8 @@ func TestResolveURL(t *testing.T) {
 		{"https://www.github.com/test", "../sdf", "https://www.github.com/sdf", false},
 		{"https://www.github.com/test", "../../sdf", "https://www.github.com/sdf", false},
 		{"https://www.github.com/test", "/sdf", "https://www.github.com/sdf", false},
-		{"https://www.github.com/test", "//www.google.ca", "https://www.google.ca", false},
+		{"https://www.github.com/test", "//www.google.ca/test", "https://www.google.ca/test", false},
+		{"http://www.github.com/test", "//www.google.ca/test", "http://www.google.ca/test", false},
 		{"https://www.github.com/test", "http://www.google.ca", "http://www.google.ca", false},
 	} {
 		res, err := ResolveURL(c.Base, c.Rel)

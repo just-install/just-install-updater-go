@@ -14,7 +14,7 @@ func init() {
 	)
 	AddRule(
 		"tortoisegit",
-		RegexpVersionExtractor("https://tortoisegit.org/download/", regexp.MustCompile("stable version is: ([0-9.]+)")),
-		HTMLDownloadExtractor("https://tortoisegit.org/download/", "a[href$='32bit.msi']", "a[href$='64bit.msi']", "href", "href", nil, nil),
+		RegexpVersionExtractor("https://tortoisegit.org/download/", regexp.MustCompile("TortoiseGit-([0-9.]+)")),
+		HTMLDownloadExtractor("https://tortoisegit.org/download/", true, "a[href$='32bit.msi']", "a[href$='64bit.msi']", "href", "href", nil, nil),
 	)
 }
