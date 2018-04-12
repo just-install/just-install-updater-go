@@ -15,7 +15,7 @@ func GitHubReleaseVersionExtractor(username, repo string, tagRe *regexp.Regexp) 
 
 // GitHubReleaseDownloadExtractor returns a version extractor for a GitHub release. x64Re can be nil.
 func GitHubReleaseDownloadExtractor(username, repo string, x86FileRe, x64FileRe *regexp.Regexp) rules.DownloadExtractorFunc {
-	return func() (string, *string, error) {
+	return func(_ string) (string, *string, error) {
 		return "", nil, rules.ErrRuleNotImplemented
 	}
 }

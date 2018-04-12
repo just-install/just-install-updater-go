@@ -15,7 +15,7 @@ func RegexpVersionExtractor(url string, versionRe *regexp.Regexp) rules.VersionE
 
 // RegexpDownloadExtractor returns a version extractor for a regex on a url.
 func RegexpDownloadExtractor(url string, x86FileRe, x64FileRe *regexp.Regexp) rules.DownloadExtractorFunc {
-	return func() (string, *string, error) {
+	return func(_ string) (string, *string, error) {
 		return "", nil, rules.ErrRuleNotImplemented
 	}
 }
