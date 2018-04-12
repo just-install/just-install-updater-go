@@ -96,6 +96,8 @@ func main() {
 	if *dryRun {
 		fmt.Printf("\nDRY RUN. NO CHANGES WERE MADE.\n")
 	}
+
+	os.Exit(0)
 }
 
 func helpExit() {

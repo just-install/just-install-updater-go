@@ -25,6 +25,10 @@ func main() {
 
 	fmt.Printf("\nSummary: %d working, %d broken\n", len(working), len(broken))
 
+	if len(broken) > 0 {
+		os.Exit(1)
+	}
+
 	os.Exit(0)
 }
 
@@ -37,6 +41,7 @@ func helpExit() {
 func testAll(nodownload bool) ([]string, map[string]error) {
 	working := []string{}
 	broken := map[string]error{}
+	// TODO: multithreaded for loop
 	for p, r := range rules.GetRules() {
 		fmt.Printf("\n    %s: testing", p)
 
@@ -121,6 +126,7 @@ func testAll(nodownload bool) ([]string, map[string]error) {
 		fmt.Printf("\r ✓  %s: %s", p, version)
 	}
 	fmt.Printf("\n")
+
 	return working, broken
 }
 
