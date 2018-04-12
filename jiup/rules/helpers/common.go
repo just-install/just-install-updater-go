@@ -66,12 +66,12 @@ func GetDoc(c *http.Client, url string, headers map[string]string, acceptableSta
 func ResolveURL(base, rel string) (string, error) {
 	urlP, err := url.Parse(rel)
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 
 	baseP, err := url.Parse(base)
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 
 	resolved := baseP.ResolveReference(urlP)

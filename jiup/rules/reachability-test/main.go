@@ -80,7 +80,7 @@ func testAll(nodownload bool) ([]string, map[string]error) {
 				fmt.Printf("\r ✗  %s: %v", p, broken[p])
 				continue
 			}
-			if mime == "text/html" {
+			if strings.HasPrefix(mime, "text/html") {
 				broken[p] = errors.New("x86 download mime text/html")
 				fmt.Printf("\r ✗  %s: %v", p, broken[p])
 				continue
@@ -109,7 +109,7 @@ func testAll(nodownload bool) ([]string, map[string]error) {
 					fmt.Printf("\r ✗  %s: %v", p, broken[p])
 					continue
 				}
-				if mime == "text/html" {
+				if strings.HasPrefix(mime, "text/html") {
 					broken[p] = errors.New("x86_64 download mime text/html")
 					fmt.Printf("\r ✗  %s: %v", p, broken[p])
 					continue
@@ -130,7 +130,7 @@ func testDL(url string) (code int, mime string, err error) {
 	}
 
 	code = resp.StatusCode
-	mime = resp.Header.Get("Mime-Type")
+	mime = resp.Header.Get("Content-Type")
 
 	resp.Body.Close()
 
