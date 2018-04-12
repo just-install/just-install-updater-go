@@ -4,22 +4,17 @@ go:
   - "1.10.x"
 
 install:
-  - echo "===== Clone registry ====="
-  - git clone https://github.com/just-install/registry
+  - echo "===== Clone registry =====" ; git clone https://github.com/just-install/registry
 
 script:
-  - echo "==== Unit tests ====="
-  - go test -v ./...
-  - echo "===== Reachability test ====="
-  - go run jiup/rules/reachability-test/main.go
+  - echo "==== Unit tests =====" ; go test -v ./...
+  - echo "===== Reachability test =====" ; go run jiup/rules/reachability-test/main.go
 
 # deploy:
 #   - provider: script
 #     script:
-#       - echo "===== Update registry ====="
-#       - go run main.go registry/just-install.json
-#       - echo "==== Push registry to GitHub ====="
-#       - cd registry
+#       - echo "===== Update registry =====" ; go run main.go registry/just-install.json
+#       - echo "==== Push registry to GitHub =====" ; cd registry
 #       - 'git status --porcelain || echo "===== No changes to push ====="'
 #       - 'git status --porcelain && {git add -A ; git commit -m "automatic update" ; git push}'
 #     on:
