@@ -1,5 +1,10 @@
 package rules
 
+import "errors"
+
+// ErrRuleNotImplemented should be returned if a rule is not implemented
+var ErrRuleNotImplemented = errors.New("rule not implemented yet")
+
 // VersionExtractorFunc represents a function which extracts the version.
 type VersionExtractorFunc func() (version string, err error)
 
