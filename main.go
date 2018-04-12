@@ -13,6 +13,7 @@ import (
 func main() {
 	verbose := pflag.BoolP("verbose", "v", false, "Show more output")
 	dryRun := pflag.BoolP("dry-run", "d", false, "Do not actually write the changes")
+	force := pflag.BoolP("force", "f", false, "Update all entries including ones with a matching version")
 	// testLinks := pflag.BoolP("test-links", "t", false, "Test download links for updated entries")
 	quiet := pflag.BoolP("quiet", "q", false, "Do not output progress info")
 	help := pflag.Bool("help", false, "Show this help text")
@@ -43,7 +44,7 @@ func main() {
 		}
 	}
 
-	updated, unchanged, norule, skipped, errored := u.Update(!*quiet, *verbose)
+	updated, unchanged, norule, skipped, errored := u.Update(!*quiet, *verbose, *force)
 
 	if !*dryRun {
 		bufn, err := u.Registry.GetJSON()

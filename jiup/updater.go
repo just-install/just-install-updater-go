@@ -39,7 +39,7 @@ func NewForPackages(registry *registry.Registry, packages []string) (*Updater, e
 }
 
 // Update updates the registry.
-func (u *Updater) Update(progress, verbose bool) (updated map[string]string, unchanged []string, norule []string, skipped []string, errored map[string]error) {
+func (u *Updater) Update(progress, verbose, force bool) (updated map[string]string, unchanged []string, norule []string, skipped []string, errored map[string]error) {
 	updated = map[string]string{}
 	unchanged = []string{}
 	norule = []string{}
@@ -71,7 +71,7 @@ func (u *Updater) Update(progress, verbose bool) (updated map[string]string, unc
 			continue
 		}
 
-		if u.Registry.Packages[pkgName].Version != "latest" && u.Registry.Packages[pkgName].Version == version {
+		if !force && u.Registry.Packages[pkgName].Version != "latest" && u.Registry.Packages[pkgName].Version == version {
 			unchanged = append(unchanged, pkgName)
 			continue
 		}
