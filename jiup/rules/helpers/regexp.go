@@ -2,20 +2,18 @@ package helpers
 
 import (
 	"regexp"
-
-	"github.com/just-install/just-install-updater-go/jiup/rules"
 )
 
 // RegexpVersionExtractor returns a version extractor for a regex on a url.
-func RegexpVersionExtractor(url string, versionRe *regexp.Regexp) rules.VersionExtractorFunc {
+func RegexpVersionExtractor(url string, versionRe *regexp.Regexp) VersionExtractorFunc {
 	return func() (string, error) {
-		return "", rules.ErrRuleNotImplemented
+		return "", ErrExtractorNotImplemented
 	}
 }
 
 // RegexpDownloadExtractor returns a version extractor for a regex on a url.
-func RegexpDownloadExtractor(url string, x86FileRe, x64FileRe *regexp.Regexp) rules.DownloadExtractorFunc {
+func RegexpDownloadExtractor(url string, x86FileRe, x64FileRe *regexp.Regexp) func(_ string) (string, *string, error) {
 	return func(_ string) (string, *string, error) {
-		return "", nil, rules.ErrRuleNotImplemented
+		return "", nil, ErrExtractorNotImplemented
 	}
 }

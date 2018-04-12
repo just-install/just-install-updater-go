@@ -2,6 +2,7 @@ package jiup
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/just-install/just-install-updater-go/jiup/rules"
 
@@ -45,7 +46,14 @@ func (u *Updater) Update(progress, verbose bool) (updated map[string]string, unc
 	skipped = []string{}
 	errored = map[string]error{}
 	// TODO: multithreaded for loop.
+	// TODO: print stuff for verbose
+	i := 0
 	for pkgName := range u.Registry.Packages {
+		i++
+		if progress {
+			fmt.Printf("[%d/%d] Checking %s\n", i, len(u.Registry.Packages), pkgName)
+		}
+
 		if len(u.packages) > 0 && !includes(u.packages, pkgName) {
 			skipped = append(skipped, pkgName)
 			continue

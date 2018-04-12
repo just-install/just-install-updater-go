@@ -61,32 +61,36 @@ func main() {
 
 	// test dl links for updated if flag set
 
-	fmt.Printf("\nSummary: %d updated, %d unchanged, %d norule, %d skipped, %d errored\n\n", len(updated), len(unchanged), len(norule), len(skipped), len(errored))
+	fmt.Printf("\n===== RESULTS =====\n")
 	if len(norule) > 0 {
 		fmt.Printf("No rule:\n")
 		for _, pkgName := range norule {
 			fmt.Printf("  %s\n", pkgName)
 		}
+		fmt.Printf("\n")
 	}
 	if len(unchanged) > 0 {
 		fmt.Printf("Unchanged:\n")
 		for _, pkgName := range unchanged {
 			fmt.Printf("  %s\n", pkgName)
 		}
+		fmt.Printf("\n")
 	}
 	if len(updated) > 0 {
 		fmt.Printf("Updated:\n")
 		for pkgName, version := range updated {
 			fmt.Printf("  %s to %s\n", pkgName, version)
 		}
+		fmt.Printf("\n")
 	}
 	if len(errored) > 0 {
 		fmt.Printf("Errors:\n")
 		for pkgName, err := range errored {
 			fmt.Fprintf(os.Stderr, "  %s: %v\n", pkgName, err)
 		}
+		fmt.Printf("\n")
 	}
-	fmt.Printf("\nSummary: %d updated, %d unchanged, %d norule, %d skipped, %d errored\n", len(updated), len(unchanged), len(norule), len(skipped), len(errored))
+	fmt.Printf("Summary: %d updated, %d unchanged, %d norule, %d skipped, %d errored\n", len(updated), len(unchanged), len(norule), len(skipped), len(errored))
 
 	if *dryRun {
 		fmt.Printf("\nDRY RUN. NO CHANGES WERE MADE.\n")
