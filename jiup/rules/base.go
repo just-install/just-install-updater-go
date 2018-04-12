@@ -8,19 +8,20 @@ import (
 	. "github.com/just-install/just-install-updater-go/jiup/rules/helpers"
 )
 
-type rule struct {
+// Rule represents a rule for an application.
+type Rule struct {
 	V VersionExtractorFunc
 	D DownloadExtractorFunc
 }
 
-var rules = map[string]rule{}
+var rules = map[string]Rule{}
 
 // AddRule registers a rule.
 func AddRule(pkg string, versionExtractor VersionExtractorFunc, downloadExtractor DownloadExtractorFunc) {
 	if _, ok := rules[pkg]; ok {
 		panic("rule for " + pkg + " already registered")
 	}
-	rules[pkg] = rule{wrapV(versionExtractor), wrapD(downloadExtractor)}
+	rules[pkg] = Rule{wrapV(versionExtractor), wrapD(downloadExtractor)}
 }
 
 // GetRule gets a rule if it exists.
@@ -32,7 +33,7 @@ func GetRule(pkg string) (VersionExtractorFunc, DownloadExtractorFunc, bool) {
 }
 
 // GetRules gets all rules.
-func GetRules() map[string]rule {
+func GetRules() map[string]Rule {
 	return rules
 }
 
