@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
@@ -59,4 +60,21 @@ func GetDoc(c *http.Client, url string, headers map[string]string, acceptableSta
 		return nil, fmt.Errorf("unexpected response status: %d", s)
 	}
 	return goquery.NewDocumentFromReader(bytes.NewReader(buf))
+}
+
+// ResolveURL resolves a relative url.
+func ResolveURL(base, rel string) (string, error) {
+	urlP, err := url.Parse(rel)
+	if err != nil {
+		return "", nil
+	}
+
+	baseP, err := url.Parse(base)
+	if err != nil {
+		return "", nil
+	}
+
+	resolved := baseP.ResolveReference(urlP)
+
+	return resolved.String(), nil
 }
