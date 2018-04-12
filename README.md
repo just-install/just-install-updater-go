@@ -18,13 +18,15 @@ Usage: just-install-updater [options] registry [packages...]
 
 Arguments:
   registry is the path to just-install.json
-  packages are the packages to update (default is all)````
+  packages are the packages to update (default is all)
+````
 
 Usage of reachability test:
 ````
-Usage: go run jiup/rules/reachability-test/main.go [options] registry [packages...]
+Usage: go run jiup/rules/reachability-test/main.go [options]
 
   --help
         Show this help text
   -d, --no-download
-        Do not test downloadability````
+        Do not test downloadability
+````
