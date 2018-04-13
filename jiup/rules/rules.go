@@ -20,6 +20,64 @@ func init() {
 		},
 	)
 	AddRule(
+		"anaconda",
+		RegexpVersionExtractor(
+			"https://www.anaconda.com/download/",
+			Re("Anaconda3-([0-9.]+)-"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.anaconda.com/download/",
+			true,
+			"a[href*='Windows-x86.exe']",
+			"a[href*='Windows-x86_64.exe']",
+			"href",
+			"href",
+			Re("(.+Anaconda3-[0-9.]+-Windows-x86.exe)"),
+			Re("(.+Anaconda3-[0-9.]+-Windows-x86_64.exe)"),
+		),
+	)
+	AddRule(
+		"android-studio-ide",
+		RegexpVersionExtractor(
+			"https://developer.android.com/studio/index.html",
+			Re("Version: ([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://developer.android.com/studio/index.html",
+			false,
+			"a#win-bundle",
+			"",
+			"href",
+			"",
+			Re("(.+android-studio-ide-[0-9.]+-windows.exe)"),
+			nil,
+		),
+	)
+	AddRule(
+		"arduino",
+		RegexpVersionExtractor(
+			"https://www.arduino.cc/en/Main/Software",
+			Re("arduino-([0-9.]+)-"),
+		),
+		func(version string) (string, *string, error) {
+			return "https://downloads.arduino.cc/arduino-" + version + "-windows.exe", nil, nil
+		},
+	)
+	AddRule(
+		"audacity",
+		RegexpVersionExtractor(
+			"http://www.oldfoss.com/Audacity.html",
+			Re("audacity-win-([0-9.]+).exe"),
+		),
+		func(version string) (string, *string, error) {
+			return RegexpDownloadExtractor(
+				"http://www.oldfoss.com/Audacity.html",
+				Re("\"(http.+audacity-win-"+version+".exe)\""),
+				nil,
+			)(version)
+		},
+	)
+	AddRule(
 		"bcuninstaller",
 		GitHubReleaseVersionExtractor(
 			"Klocman",
