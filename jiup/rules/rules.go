@@ -130,6 +130,60 @@ func init() {
 		),
 	)
 	AddRule(
+		"ccleaner",
+		func() (string, error) {
+			version, err := RegexpVersionExtractor(
+				"https://www.ccleaner.com/ccleaner/download/standard",
+				Re("ccsetup([0-9]+)"),
+			)()
+			if err != nil {
+				return "", err
+			}
+			return string(version[0]) + "." + string(version[1:]), nil
+		},
+		HTMLDownloadExtractor(
+			"https://www.ccleaner.com/ccleaner/download/standard",
+			false,
+			"a:contains('start the download')",
+			"",
+			"href",
+			"",
+			Re("(.+.exe)"),
+			nil,
+		),
+	)
+	AddRule(
+		"cdburnerxp",
+		RegexpVersionExtractor(
+			"https://download.cdburnerxp.se/msi/",
+			Re("_([0-9.]+).msi"),
+		),
+		HTMLDownloadExtractor(
+			"https://download.cdburnerxp.se/msi/",
+			true,
+			"a[href^='cdbxp_setup_'][href$='msi']:not([href~='x64'])",
+			"a[href^='cdbxp_setup_x64'][href$='msi']",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"classic-shell",
+		UnderscoreToDot(RegexpVersionExtractor(
+			"http://www.oldfoss.com/Classic-Shell.html",
+			Re("ClassicShellSetup_([0-9_]+)"),
+		)),
+		func(version string) (string, *string, error) {
+			return RegexpDownloadExtractor(
+				"http://www.oldfoss.com/Classic-Shell.html",
+				Re("\"(http.+ClassicShellSetup_"+strings.Replace(version, ".", "_", -1)+".exe)\""),
+				nil,
+			)(version)
+		},
+	)
+	AddRule(
 		"clementine-player",
 		GitHubReleaseVersionExtractor(
 			"clementine-player",
@@ -140,6 +194,40 @@ func init() {
 			"clementine-player",
 			"Clementine",
 			Re("ClementineSetup-.*.exe"),
+			nil,
+		),
+	)
+	AddRule(
+		"cmake",
+		RegexpVersionExtractor(
+			"https://cmake.org/download/",
+			Re("Latest Release \\(([0-9.]+)\\)"),
+		),
+		HTMLDownloadExtractor(
+			"https://cmake.org/download/",
+			true,
+			"a[href$='-win32-x86.msi']",
+			"a[href$='-win64-x64.msi']",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"colemak",
+		RegexpVersionExtractor(
+			"https://colemak.com/Windows",
+			Re("Colemak-([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://colemak.com/Windows",
+			false,
+			"a:contains('Download now')",
+			"",
+			"href",
+			"",
+			nil,
 			nil,
 		),
 	)
@@ -156,6 +244,90 @@ func init() {
 			Re("ConEmuSetup.*.exe"),
 			nil,
 		),
+	)
+	AddRule(
+		"cpu-z",
+		RegexpVersionExtractor(
+			"https://www.cpuid.com/softwares/cpu-z.html",
+			Re("Version ([0-9.]+) for [Ww]indows"),
+		),
+		func(version string) (string, *string, error) {
+			return "http://download.cpuid.com/cpu-z/cpu-z_" + version + "-en.exe", nil, nil
+		},
+	)
+	AddRule(
+		"crashplan",
+		RegexpVersionExtractor(
+			"https://www.crashplan.com/shared/js/cp.download.js",
+			Re("CPC_CLIENT_VERSION ?= ?'([0-9.]+)'"),
+		),
+		func(version string) (string, *string, error) {
+			x64 := "https://download.code42.com/installs/win/install/CrashPlan/jre/CrashPlan_" + version + "_Win64.msi"
+			return "https://download.code42.com/installs/win/install/CrashPlan/jre/CrashPlan_" + version + "_Win.msi", &x64, nil
+		},
+	)
+	AddRule(
+		"cryptomator",
+		HTMLVersionExtractor(
+			"https://cryptomator.org/downloads",
+			"meta[itemprop='softwareVersion']",
+			"content",
+			nil,
+		),
+		HTMLDownloadExtractor(
+			"https://cryptomator.org/downloads",
+			true,
+			"#winDownload a[href$='.exe']:contains('32 Bit')",
+			"#winDownload a[href$='.exe']:contains('64 Bit')",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"crystaldisk-info",
+		UnderscoreToDot(HTMLVersionExtractor(
+			"https://osdn.net/projects/crystaldiskinfo/releases/",
+			"a.pref-download-btn.pref-download-btn-win32[href]",
+			"href",
+			Re("CrystalDiskInfo([0-9_]+).zip"),
+		)),
+		func(version string) (string, *string, error) {
+			vu := strings.Replace(version, ".", "_", -1)
+			dlp, err := HTMLVersionExtractor(
+				"https://osdn.net/projects/crystaldiskinfo/releases/",
+				"a.pref-download-btn.pref-download-btn-win32[href]",
+				"href",
+				Re("downloads/([0-9]+/CrystalDiskInfo"+vu+").zip"),
+			)()
+			if err != nil {
+				return "", nil, err
+			}
+			return "http://osdn.dl.osdn.jp/crystaldiskinfo/" + dlp + ".exe", nil, nil
+		},
+	)
+	AddRule(
+		"crystaldisk-mark",
+		UnderscoreToDot(HTMLVersionExtractor(
+			"https://osdn.net/projects/crystaldiskmark/releases/",
+			"a.pref-download-btn.pref-download-btn-win32[href]",
+			"href",
+			Re("CrystalDiskMark([0-9_]+).zip"),
+		)),
+		func(version string) (string, *string, error) {
+			vu := strings.Replace(version, ".", "_", -1)
+			dlp, err := HTMLVersionExtractor(
+				"https://osdn.net/projects/crystaldiskmark/releases/",
+				"a.pref-download-btn.pref-download-btn-win32[href]",
+				"href",
+				Re("downloads/([0-9]+/CrystalDiskMark"+vu+").zip"),
+			)()
+			if err != nil {
+				return "", nil, err
+			}
+			return "http://osdn.dl.osdn.jp/crystaldiskmark/" + dlp + ".exe", nil, nil
+		},
 	)
 	AddRule(
 		"dbeaver",
