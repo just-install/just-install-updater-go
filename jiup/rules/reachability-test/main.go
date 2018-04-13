@@ -98,7 +98,7 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 				fmt.Printf("\r ✗  %s: %v", p, broken[p])
 				continue
 			}
-			if strings.HasPrefix(mime, "text/html") {
+			if strings.HasPrefix(mime, "text/html") && !strings.Contains(x86dl, "sourceforge") {
 				broken[p] = errors.New("x86 download mime text/html")
 				fmt.Printf("\r ✗  %s: %v", p, broken[p])
 				continue
@@ -127,7 +127,7 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 					fmt.Printf("\r ✗  %s: %v", p, broken[p])
 					continue
 				}
-				if strings.HasPrefix(mime, "text/html") {
+				if strings.HasPrefix(mime, "text/html") && !strings.Contains(*x64dl, "sourceforge") {
 					broken[p] = errors.New("x86_64 download mime text/html")
 					fmt.Printf("\r ✗  %s: %v", p, broken[p])
 					continue
