@@ -43,6 +43,11 @@ func init() {
 		GitHubReleaseDownloadExtractor("Maximus5", "ConEmu", regexp.MustCompile("ConEmuSetup.*.exe"), nil),
 	)
 	AddRule(
+		"dbeaver",
+		GitHubReleaseVersionExtractor("dbeaver", "dbeaver", regexp.MustCompile("(.+)")),
+		GitHubReleaseDownloadExtractor("dbeaver", "dbeaver", regexp.MustCompile("dbeaver-ce-.+-x86-setup.exe"), regexp.MustCompile("dbeaver-ce-.+-x86_64-setup.exe")),
+	)
+	AddRule(
 		"syncthing",
 		GitHubReleaseVersionExtractor("syncthing", "syncthing", regexp.MustCompile("v(.+)")),
 		GitHubReleaseDownloadExtractor("syncthing", "syncthing", regexp.MustCompile(".*windows-386.*.zip"), regexp.MustCompile(".*windows-amd64.*.zip")),
