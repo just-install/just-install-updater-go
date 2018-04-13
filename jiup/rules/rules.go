@@ -202,6 +202,34 @@ func init() {
 		),
 	)
 	AddRule(
+		"hashcheck",
+		GitHubReleaseVersionExtractor(
+			"gurnec",
+			"HashCheck",
+			Re("v(.+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"gurnec",
+			"HashCheck",
+			Re("HashCheckSetup-.+.exe"),
+			nil,
+		),
+	)
+	AddRule(
+		"hugo",
+		GitHubReleaseVersionExtractor(
+			"gohugoio",
+			"hugo",
+			Re("v(.+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"gohugoio",
+			"hugo",
+			Re("hugo_.+_Windows-32bit.zip"),
+			Re("hugo_.+_Windows-64bit.zip"),
+		),
+	)
+	AddRule(
 		"syncthing",
 		GitHubReleaseVersionExtractor(
 			"syncthing",
