@@ -18,11 +18,11 @@ func main() {
 	help := pflag.Bool("help", false, "Show this help text")
 	pflag.Parse()
 
-	if *help || pflag.NArg() != 0 {
+	if *help {
 		helpExit()
 	}
 
-	working, broken := testAll(*nodownload, *downloadLinks)
+	working, broken := testAll(*nodownload, *downloadLinks, pflag.Args())
 
 	fmt.Printf("\nSummary: %d working, %d broken\n", len(working), len(broken))
 
@@ -34,16 +34,28 @@ func main() {
 }
 
 func helpExit() {
-	fmt.Fprintf(os.Stderr, "Usage: reachability-test [options]\n\n")
+	fmt.Fprintf(os.Stderr, "Usage: reachability-test [options] [packages...]\n\n")
 	pflag.PrintDefaults()
 	os.Exit(1)
 }
 
-func testAll(nodownload, downloadLinks bool) ([]string, map[string]error) {
+func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[string]error) {
 	working := []string{}
 	broken := map[string]error{}
 	// TODO: multithreaded for loop
 	for p, r := range rules.GetRules() {
+		if len(packages) != 0 {
+			c := true
+			for _, pp := range packages {
+				if pp == p {
+					c = false
+				}
+			}
+			if c {
+				continue
+			}
+		}
+
 		fmt.Printf("\n    %s: testing", p)
 
 		version, err := r.V()
