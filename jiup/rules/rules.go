@@ -543,4 +543,18 @@ func init() {
 			nil,
 		),
 	)
+	AddRule(
+		"youtube-dl",
+		GitHubReleaseVersionExtractor(
+			"rg3",
+			"youtube-dl",
+			Re("([0-9.]+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"rg3",
+			"youtube-dl",
+			Re("youtube-dl.exe"),
+			nil,
+		),
+	)
 }
