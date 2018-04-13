@@ -448,12 +448,29 @@ func init() {
 		HTMLDownloadExtractor(
 			"https://tortoisegit.org/download/",
 			true,
-			"a[hRef$='32bit.msi']",
-			"a[hRef$='64bit.msi']",
+			"a[href$='32bit.msi']",
+			"a[href$='64bit.msi']",
 			"href",
 			"href",
 			nil,
 			nil,
+		),
+	)
+	AddRule(
+		"tortoisesvn",
+		RegexpVersionExtractor(
+			"https://tortoisesvn.net/downloads.html",
+			Re("The current version is ([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://tortoisesvn.net/downloads.html",
+			true,
+			"a[href*='win32-svn']",
+			"a[href*='x64-svn']",
+			"href",
+			"href",
+			Re("(.+TortoiseSVN-[0-9.]+-win32-svn-[0-9.]+.msi)"),
+			Re("(.+TortoiseSVN-[0-9.]+-x64-svn-[0-9.]+.msi)"),
 		),
 	)
 }
