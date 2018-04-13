@@ -342,6 +342,34 @@ func init() {
 		),
 	)
 	AddRule(
+		"processhacker",
+		GitHubReleaseVersionExtractor(
+			"processhacker",
+			"processhacker",
+			Re("v(.+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"processhacker",
+			"processhacker",
+			Re("processhacker-.+-setup.exe"),
+			nil,
+		),
+	)
+	AddRule(
+		"python2-win32",
+		GitHubReleaseVersionExtractor(
+			"mhammond",
+			"pywin32",
+			Re("b(.+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"mhammond",
+			"pywin32",
+			Re("pywin32-.+.win32-py2.7.exe"),
+			Re("pywin32-.+.win-amd64-py2.7.exe"),
+		),
+	)
+	AddRule(
 		"syncthing",
 		GitHubReleaseVersionExtractor(
 			"syncthing",
