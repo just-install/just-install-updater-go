@@ -14,6 +14,7 @@ import (
 func main() {
 	//verbose := pflag.BoolP("verbose", "v", false, "Show more output")
 	nodownload := pflag.BoolP("no-download", "d", false, "Do not test downloadability")
+	downloadLinks := pflag.BoolP("download-links", "l", false, "Show download links")
 	help := pflag.Bool("help", false, "Show this help text")
 	pflag.Parse()
 
@@ -21,7 +22,7 @@ func main() {
 		helpExit()
 	}
 
-	working, broken := testAll(*nodownload)
+	working, broken := testAll(*nodownload, *downloadLinks)
 
 	fmt.Printf("\nSummary: %d working, %d broken\n", len(working), len(broken))
 
@@ -38,7 +39,7 @@ func helpExit() {
 	os.Exit(1)
 }
 
-func testAll(nodownload bool) ([]string, map[string]error) {
+func testAll(nodownload, downloadLinks bool) ([]string, map[string]error) {
 	working := []string{}
 	broken := map[string]error{}
 	// TODO: multithreaded for loop
@@ -123,7 +124,15 @@ func testAll(nodownload bool) ([]string, map[string]error) {
 		}
 
 		working = append(working, p)
-		fmt.Printf("\r ✓  %s: %s           ", p, version)
+		if downloadLinks {
+			if x64dl == nil {
+				fmt.Printf("\r ✓  %s: %s x86(%s)", p, version, x86dl)
+			} else {
+				fmt.Printf("\r ✓  %s: %s x86(%s) x64(%s)", p, version, x86dl, *x64dl)
+			}
+		} else {
+			fmt.Printf("\r ✓  %s: %s           ", p, version)
+		}
 	}
 	fmt.Printf("\n")
 

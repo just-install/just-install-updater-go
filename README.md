@@ -29,4 +29,6 @@ Usage: go run jiup/rules/reachability-test/main.go [options]
         Show this help text
   -d, --no-download
         Do not test downloadability
+  -l, --download-links
+        Show download links
 ````
