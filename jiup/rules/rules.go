@@ -473,4 +473,18 @@ func init() {
 			Re("(.+TortoiseSVN-[0-9.]+-x64-svn-[0-9.]+.msi)"),
 		),
 	)
+	AddRule(
+		"upx",
+		GitHubReleaseVersionExtractor(
+			"upx",
+			"upx",
+			Re("v(.+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"upx",
+			"upx",
+			Re("upx[0-9]+w.zip"),
+			nil,
+		),
+	)
 }
