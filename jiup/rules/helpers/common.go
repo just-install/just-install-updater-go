@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"regexp"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
@@ -77,4 +78,9 @@ func ResolveURL(base, rel string) (string, error) {
 	resolved := baseP.ResolveReference(urlP)
 
 	return resolved.String(), nil
+}
+
+// Re is an alias for regexp.MustCompile.
+func Re(str string) *regexp.Regexp {
+	return regexp.MustCompile(str)
 }
