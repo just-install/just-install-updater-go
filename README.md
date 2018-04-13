@@ -1,5 +1,5 @@
 # just-install-updater-go
-POC of just-install-updater written in Go.
+Rewrite of just-install-updater in Go.
 
 Unit tests: `go test -v ./...`
 
