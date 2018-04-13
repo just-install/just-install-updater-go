@@ -132,6 +132,76 @@ func init() {
 		),
 	)
 	AddRule(
+		"git",
+		GitHubReleaseVersionExtractor(
+			"git-for-windows",
+			"git",
+			Re("v([0-9.]+)\\.windows.+"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"git-for-windows",
+			"git",
+			Re("Git-.+-32-bit.exe"),
+			Re("Git-.+-64-bit.exe"),
+		),
+	)
+	AddRule(
+		"gitextensions",
+		GitHubReleaseVersionExtractor(
+			"gitextensions",
+			"gitextensions",
+			Re("v(.+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"gitextensions",
+			"gitextensions",
+			Re("GitExtensions-.*-Setup.msi"),
+			nil,
+		),
+	)
+	AddRule(
+		"git-lfs",
+		GitHubReleaseVersionExtractor(
+			"git-lfs",
+			"git-lfs",
+			Re("v(.+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"git-lfs",
+			"git-lfs",
+			Re("git-lfs-windows-.+.exe"),
+			nil,
+		),
+	)
+	AddRule(
+		"gow",
+		GitHubReleaseVersionExtractor(
+			"bmatzelle",
+			"gow",
+			Re("v(.+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"bmatzelle",
+			"gow",
+			Re("Gow-.+.exe"),
+			nil,
+		),
+	)
+	AddRule(
+		"greenshot",
+		GitHubReleaseVersionExtractor(
+			"greenshot",
+			"greenshot",
+			Re("Greenshot-RELEASE-([0-9.]+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"greenshot",
+			"greenshot",
+			Re("Greenshot-INSTALLER-.+-RELEASE.exe"),
+			nil,
+		),
+	)
+	AddRule(
 		"syncthing",
 		GitHubReleaseVersionExtractor(
 			"syncthing",
