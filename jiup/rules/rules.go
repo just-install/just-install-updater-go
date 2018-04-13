@@ -18,9 +18,24 @@ func init() {
 		},
 	)
 	AddRule(
+		"bcuninstaller",
+		GitHubReleaseVersionExtractor("Klocman", "Bulk-Crap-Uninstaller", regexp.MustCompile("v(.+)")),
+		GitHubReleaseDownloadExtractor("Klocman", "Bulk-Crap-Uninstaller", regexp.MustCompile(".*setup.exe"), nil),
+	)
+	AddRule(
+		"bitpay",
+		GitHubReleaseVersionExtractor("bitpay", "copay", regexp.MustCompile("v(.+)")),
+		GitHubReleaseDownloadExtractor("bitpay", "copay", regexp.MustCompile("BitPay.exe"), nil),
+	)
+	AddRule(
+		"brackets",
+		GitHubReleaseVersionExtractor("adobe", "brackets", regexp.MustCompile("release-(.+)")),
+		GitHubReleaseDownloadExtractor("adobe", "brackets", regexp.MustCompile("Brackets.Release.*.msi"), nil),
+	)
+	AddRule(
 		"syncthing",
 		GitHubReleaseVersionExtractor("syncthing", "syncthing", regexp.MustCompile("v(.+)")),
-		GitHubReleaseDownloadExtractor("syncthing", "syncthing", regexp.MustCompile(".*windows-386.*"), regexp.MustCompile(".*windows-amd64.*")),
+		GitHubReleaseDownloadExtractor("syncthing", "syncthing", regexp.MustCompile(".*windows-386.*.zip"), regexp.MustCompile(".*windows-amd64.*.zip")),
 	)
 	AddRule(
 		"tortoisegit",
