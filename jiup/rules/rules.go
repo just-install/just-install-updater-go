@@ -104,6 +104,34 @@ func init() {
 		),
 	)
 	AddRule(
+		"eig",
+		GitHubReleaseVersionExtractor(
+			"EvilInsultGenerator",
+			"c-sharp-desktop",
+			Re("v(.+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"EvilInsultGenerator",
+			"c-sharp-desktop",
+			Re("EvilInsultGenerator_Setup.exe"),
+			nil,
+		),
+	)
+	AddRule(
+		"etcher",
+		GitHubReleaseVersionExtractor(
+			"resin-io",
+			"etcher",
+			Re("v(.+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"resin-io",
+			"etcher",
+			Re("Etcher-Setup-.+-x86.exe"),
+			Re("Etcher-Setup-.+-x64.exe"),
+		),
+	)
+	AddRule(
 		"syncthing",
 		GitHubReleaseVersionExtractor(
 			"syncthing",
