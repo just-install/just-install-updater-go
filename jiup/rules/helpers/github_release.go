@@ -61,7 +61,8 @@ func GitHubReleaseDownloadExtractor(username, repo string, x86FileRe, x64FileRe 
 			if err != nil {
 				return false
 			}
-			fname := strings.TrimSpace(s.Find(".pl-1").Text())
+			spl := strings.Split(href, "/")
+			fname := spl[len(spl)-1]
 			if fname == "" {
 				err = errors.New("could not extract filename from release asset")
 				return false
