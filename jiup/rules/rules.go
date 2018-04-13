@@ -370,6 +370,20 @@ func init() {
 		),
 	)
 	AddRule(
+		"ruby",
+		GitHubReleaseVersionExtractor(
+			"oneclick",
+			"rubyinstaller2",
+			Re("rubyinstaller-([0-9.]+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"oneclick",
+			"rubyinstaller2",
+			Re("rubyinstaller-[0-9.]+-.+-x86.exe"),
+			Re("rubyinstaller-[0-9.]+-.+-x64.exe"),
+		),
+	)
+	AddRule(
 		"syncthing",
 		GitHubReleaseVersionExtractor(
 			"syncthing",
