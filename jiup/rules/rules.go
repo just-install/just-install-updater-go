@@ -384,6 +384,48 @@ func init() {
 		),
 	)
 	AddRule(
+		"sharex",
+		GitHubReleaseVersionExtractor(
+			"ShareX",
+			"ShareX",
+			Re("v(.+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"ShareX",
+			"ShareX",
+			Re("ShareX-.+-setup.exe"),
+			nil,
+		),
+	)
+	AddRule(
+		"simplenote",
+		GitHubReleaseVersionExtractor(
+			"Automattic",
+			"simplenote-electron",
+			Re("v(.+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"Automattic",
+			"simplenote-electron",
+			Re("Simplenote-windows-.+.exe"),
+			nil,
+		),
+	)
+	AddRule(
+		"sharpkeys",
+		GitHubReleaseVersionExtractor(
+			"randyrants",
+			"sharpkeys",
+			Re("v(.+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"randyrants",
+			"sharpkeys",
+			Re("sharpkeys.+.msi"),
+			nil,
+		),
+	)
+	AddRule(
 		"syncthing",
 		GitHubReleaseVersionExtractor(
 			"syncthing",
