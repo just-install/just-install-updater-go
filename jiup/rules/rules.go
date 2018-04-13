@@ -272,6 +272,20 @@ func init() {
 		),
 	)
 	AddRule(
+		"mumble",
+		GitHubReleaseVersionExtractor(
+			"mumble-voip",
+			"mumble",
+			Re("([0-9.]+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"mumble-voip",
+			"mumble",
+			Re("mumble-.+.msi"),
+			nil,
+		),
+	)
+	AddRule(
 		"syncthing",
 		GitHubReleaseVersionExtractor(
 			"syncthing",
