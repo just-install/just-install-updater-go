@@ -230,6 +230,20 @@ func init() {
 		),
 	)
 	AddRule(
+		"imageglass",
+		GitHubReleaseVersionExtractor(
+			"d2phap",
+			"ImageGlass",
+			Re("([0-9.]+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"d2phap",
+			"ImageGlass",
+			Re("ImageGlass_.+.exe"),
+			nil,
+		),
+	)
+	AddRule(
 		"syncthing",
 		GitHubReleaseVersionExtractor(
 			"syncthing",
