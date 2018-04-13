@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strings"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
@@ -83,4 +84,15 @@ func ResolveURL(base, rel string) (string, error) {
 // Re is an alias for regexp.MustCompile.
 func Re(str string) *regexp.Regexp {
 	return regexp.MustCompile(str)
+}
+
+// UnderscoreToDot wraps a version extractor and replaces underscores with dots.
+func UnderscoreToDot(f VersionExtractorFunc) VersionExtractorFunc {
+	return func() (string, error) {
+		version, err := f()
+		if err != nil {
+			return "", err
+		}
+		return strings.Replace(version, "_", ".", -1), nil
+	}
 }
