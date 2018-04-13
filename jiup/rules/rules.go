@@ -244,6 +244,34 @@ func init() {
 		),
 	)
 	AddRule(
+		"keepassxc",
+		GitHubReleaseVersionExtractor(
+			"keepassxreboot",
+			"keepassxc",
+			Re("([0-9.]+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"keepassxreboot",
+			"keepassxc",
+			Re("KeePassXC-.+-Win32.exe"),
+			Re("KeePassXC-.+-Win64.exe"),
+		),
+	)
+	AddRule(
+		"keeweb",
+		GitHubReleaseVersionExtractor(
+			"keeweb",
+			"keeweb",
+			Re("v(.+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"keeweb",
+			"keeweb",
+			Re("KeeWeb-.+.win.ia32.exe"),
+			Re("KeeWeb-.+.win.x64.exe"),
+		),
+	)
+	AddRule(
 		"syncthing",
 		GitHubReleaseVersionExtractor(
 			"syncthing",
