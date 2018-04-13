@@ -33,6 +33,16 @@ func init() {
 		GitHubReleaseDownloadExtractor("adobe", "brackets", regexp.MustCompile("Brackets.Release.*.msi"), nil),
 	)
 	AddRule(
+		"clementine-player",
+		GitHubReleaseVersionExtractor("clementine-player", "Clementine", regexp.MustCompile("(.+)")),
+		GitHubReleaseDownloadExtractor("clementine-player", "Clementine", regexp.MustCompile("ClementineSetup-.*.exe"), nil),
+	)
+	AddRule(
+		"conemu",
+		GitHubReleaseVersionExtractor("Maximus5", "ConEmu", regexp.MustCompile("v(.+)")),
+		GitHubReleaseDownloadExtractor("Maximus5", "ConEmu", regexp.MustCompile("ConEmuSetup.*.exe"), nil),
+	)
+	AddRule(
 		"syncthing",
 		GitHubReleaseVersionExtractor("syncthing", "syncthing", regexp.MustCompile("v(.+)")),
 		GitHubReleaseDownloadExtractor("syncthing", "syncthing", regexp.MustCompile(".*windows-386.*.zip"), regexp.MustCompile(".*windows-amd64.*.zip")),
