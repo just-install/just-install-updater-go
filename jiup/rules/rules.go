@@ -78,6 +78,16 @@ func init() {
 		},
 	)
 	AddRule(
+		"bleachbit",
+		RegexpVersionExtractor(
+			"https://www.bleachbit.org/download/windows",
+			Re("BleachBit-([0-9.]+)-setup.exe"),
+		),
+		func(version string) (string, *string, error) {
+			return "https://download.bleachbit.org/BleachBit-" + version + "-setup.exe", nil, nil
+		},
+	)
+	AddRule(
 		"bcuninstaller",
 		GitHubReleaseVersionExtractor(
 			"Klocman",
