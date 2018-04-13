@@ -286,6 +286,62 @@ func init() {
 		),
 	)
 	AddRule(
+		"naps2",
+		GitHubReleaseVersionExtractor(
+			"cyanfish",
+			"naps2",
+			Re("v(.+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"cyanfish",
+			"naps2",
+			Re("naps2-.+-setup.msi"),
+			nil,
+		),
+	)
+	AddRule(
+		"notepad2-mod",
+		GitHubReleaseVersionExtractor(
+			"XhmikosR",
+			"notepad2-mod",
+			Re("([0-9.]+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"XhmikosR",
+			"notepad2-mod",
+			Re("Notepad2-mod..+.exe"),
+			nil,
+		),
+	)
+	AddRule(
+		"npackd",
+		GitHubReleaseVersionExtractor(
+			"tim-lebedkov",
+			"npackd-cpp",
+			Re("version_([0-9.]+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"tim-lebedkov",
+			"npackd-cpp",
+			Re("Npackd32-.+.msi"),
+			Re("Npackd64-.+.msi"),
+		),
+	)
+	AddRule(
+		"npackdcl",
+		GitHubReleaseVersionExtractor(
+			"tim-lebedkov",
+			"npackd-cpp",
+			Re("version_([0-9.]+)"),
+		),
+		GitHubReleaseDownloadExtractor(
+			"tim-lebedkov",
+			"npackd-cpp",
+			Re("NpackdCL-.+.msi"),
+			nil,
+		),
+	)
+	AddRule(
 		"syncthing",
 		GitHubReleaseVersionExtractor(
 			"syncthing",
