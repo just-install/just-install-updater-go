@@ -67,6 +67,14 @@ func GitHubReleaseDownloadExtractor(username, repo string, x86FileRe, x64FileRe 
 				err = errors.New("could not extract filename from release asset")
 				return false
 			}
+			if strings.HasSuffix(fname, ".sig") {
+				// Skip signature files
+				return true
+			}
+			if strings.HasSuffix(fname, ".sha1") || strings.HasSuffix(fname, ".sha256") || strings.HasSuffix(fname, ".md5") {
+				// Skip sha files
+				return true
+			}
 			files = append(files, []string{href, fname})
 			return true
 		})
