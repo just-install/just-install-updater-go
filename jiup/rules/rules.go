@@ -937,7 +937,7 @@ func init() {
 				"a.mirror_link[href*='/frs/redir'][href*='win32-svn']",
 				"",
 				"href",
-				"href",
+				"",
 				nil,
 				nil,
 			)(version)
