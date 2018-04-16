@@ -14,11 +14,10 @@ func init() {
 			"https://7-zip.org/download.html",
 			Re("Download 7-Zip ([0-9][0-9].[0-9][0-9])"),
 		),
-		func(version string) (string, *string, error) {
-			x86dl := "https://www.7-zip.org/a/7z" + strings.Replace(version, ".", "", -1) + ".msi"
-			x64dl := "https://www.7-zip.org/a/7z" + strings.Replace(version, ".", "", -1) + "-x64.msi"
-			return x86dl, &x64dl, nil
-		},
+		TemplateDownloadExtractor(
+			"https://www.7-zip.org/a/7z{{.VersionN}}.msi",
+			"https://www.7-zip.org/a/7z{{.VersionN}}-x64.msi",
+		),
 	)
 	AddRule(
 		"anaconda",
@@ -60,9 +59,10 @@ func init() {
 			"https://www.arduino.cc/en/Main/Software",
 			Re("arduino-([0-9.]+)-"),
 		),
-		func(version string) (string, *string, error) {
-			return "https://downloads.arduino.cc/arduino-" + version + "-windows.exe", nil, nil
-		},
+		TemplateDownloadExtractor(
+			"https://downloads.arduino.cc/arduino-{{.Version}}-windows.exe",
+			"",
+		),
 	)
 	AddRule(
 		"audacity",
@@ -84,9 +84,10 @@ func init() {
 			"https://www.bleachbit.org/download/windows",
 			Re("BleachBit-([0-9.]+)-setup.exe"),
 		),
-		func(version string) (string, *string, error) {
-			return "https://download.bleachbit.org/BleachBit-" + version + "-setup.exe", nil, nil
-		},
+		TemplateDownloadExtractor(
+			"https://download.bleachbit.org/BleachBit-{{.Version}}-setup.exe",
+			"",
+		),
 	)
 	AddRule(
 		"bcuninstaller",
@@ -145,11 +146,11 @@ func init() {
 		HTMLDownloadExtractor(
 			"https://www.ccleaner.com/ccleaner/download/standard",
 			false,
-			"a:contains('start the download')",
+			"a[href$='.exe']:contains('start the download')",
 			"",
 			"href",
 			"",
-			Re("(.+.exe)"),
+			nil,
 			nil,
 		),
 	)
@@ -252,9 +253,10 @@ func init() {
 			"https://www.cpuid.com/softwares/cpu-z.html",
 			Re("Version ([0-9.]+) for [Ww]indows"),
 		),
-		func(version string) (string, *string, error) {
-			return "http://download.cpuid.com/cpu-z/cpu-z_" + version + "-en.exe", nil, nil
-		},
+		TemplateDownloadExtractor(
+			"http://download.cpuid.com/cpu-z/cpu-z_{{.Version}}-en.exe",
+			"",
+		),
 	)
 	AddRule(
 		"crashplan",
@@ -262,10 +264,10 @@ func init() {
 			"https://www.crashplan.com/shared/js/cp.download.js",
 			Re("CPC_CLIENT_VERSION ?= ?'([0-9.]+)'"),
 		),
-		func(version string) (string, *string, error) {
-			x64 := "https://download.code42.com/installs/win/install/CrashPlan/jre/CrashPlan_" + version + "_Win64.msi"
-			return "https://download.code42.com/installs/win/install/CrashPlan/jre/CrashPlan_" + version + "_Win.msi", &x64, nil
-		},
+		TemplateDownloadExtractor(
+			"https://download.code42.com/installs/win/install/CrashPlan/jre/CrashPlan_{{.Version}}_Win.msi",
+			"https://download.code42.com/installs/win/install/CrashPlan/jre/CrashPlan_{{.Version}}_Win64.msi",
+		),
 	)
 	AddRule(
 		"cryptomator",
@@ -342,6 +344,96 @@ func init() {
 			"dbeaver",
 			Re("dbeaver-ce-.+-x86-setup.exe"),
 			Re("dbeaver-ce-.+-x86_64-setup.exe"),
+		),
+	)
+	AddRule(
+		"defraggler",
+		func() (string, error) {
+			version, err := RegexpVersionExtractor(
+				"https://www.ccleaner.com/defraggler/download/standard",
+				Re("dfsetup([0-9]+)"),
+			)()
+			if err != nil {
+				return "", err
+			}
+			return string(version[0]) + "." + string(version[1:]), nil
+		},
+		HTMLDownloadExtractor(
+			"https://www.ccleaner.com/defraggler/download/standard",
+			false,
+			"a[href$='.exe']:contains('start the download')",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"deluge",
+		RegexpVersionExtractor(
+			"https://dev.deluge-torrent.org/wiki/Download",
+			Re("Latest Release: <strong>([0-9.]+)"),
+		),
+		TemplateDownloadExtractor(
+			"http://download.deluge-torrent.org/windows/deluge-{{.Version}}-win32-py2.7.exe",
+			"",
+		),
+	)
+	AddRule(
+		"dependency-walker",
+		RegexpVersionExtractor(
+			"http://www.dependencywalker.com",
+			Re("Dependency Walker ([0-9.]+)"),
+		),
+		TemplateDownloadExtractor(
+			"http://www.dependencywalker.com/depends{{.VersionN}}_x86.zip",
+			"http://www.dependencywalker.com/depends{{.VersionN}}_x64.zip",
+		),
+	)
+	AddRule(
+		"deskpins",
+		RegexpVersionExtractor(
+			"https://efotinis.neocities.org/deskpins/",
+			Re("v([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://efotinis.neocities.org/deskpins/",
+			false,
+			"a[href*='DeskPins-'][href$='-setup.exe']",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"ditto",
+		RegexpVersionExtractor(
+			"http://ditto-cp.sourceforge.net/index.php",
+			Re("versionDots ?= ?\"([0-9.]+)\""),
+		),
+		TemplateDownloadExtractor(
+			"https://sourceforge.net/projects/ditto-cp/files/Ditto/{{.Version}}/DittoSetup_{{.VersionU}}.exe/download",
+			"https://sourceforge.net/projects/ditto-cp/files/Ditto/{{.Version}}/DittoSetup_64bit_{{.VersionU}}.exe/download",
+		),
+	)
+	AddRule(
+		"doublecmd",
+		RegexpVersionExtractor(
+			"https://sourceforge.net/p/doublecmd/wiki/Download/",
+			Re("doublecmd-([0-9.]+)\\."),
+		),
+		HTMLDownloadExtractor(
+			"https://sourceforge.net/p/doublecmd/wiki/Download/",
+			true,
+			"a[href$='i386-win32.msi/download']",
+			"a[href$='x86_64-win64.msi/download']",
+			"href",
+			"href",
+			nil,
+			nil,
 		),
 	)
 	AddRule(
