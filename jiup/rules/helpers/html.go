@@ -44,6 +44,9 @@ func HTMLVersionExtractor(url string, versionSelector, versionAttr string, versi
 
 // HTMLDownloadExtractor returns a download extractor for a css selector, an attribute (or innerText for the text), and an optional regexp on the url (and resolves the url).
 func HTMLDownloadExtractor(url string, hasx86_64 bool, x86Selector, x86_64Selector, x86Attr, x86_64Attr string, x86FileRe, x64FileRe *regexp.Regexp) DownloadExtractorFunc {
+	if !hasx86_64 && x86_64Selector != "" {
+		panic("x86_64 selector defined while hasx86_64 is false")
+	}
 	return func(_ string) (string, *string, error) {
 		doc, err := GetDoc(nil, url, map[string]string{}, []int{200})
 		if err != nil {
