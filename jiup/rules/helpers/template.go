@@ -9,6 +9,7 @@ func TemplateDownloadExtractor(x86Tmpl, x64Tmpl string) DownloadExtractorFunc {
 			o := i
 			o = strings.Replace(o, "{{.Version}}", version, -1)
 			o = strings.Replace(o, "{{.VersionU}}", strings.Replace(version, ".", "_", -1), -1)
+			o = strings.Replace(o, "{{.Version0}}", strings.Split(version, ".")[0], -1)
 			o = strings.Replace(o, "{{.VersionN}}", strings.Replace(version, ".", "", -1), -1)
 			return o
 		}

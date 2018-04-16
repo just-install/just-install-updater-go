@@ -582,6 +582,68 @@ func init() {
 		),
 	)
 	AddRule(
+		"filezilla-server",
+		UnderscoreToDot(HTMLVersionExtractor(
+			"https://download.filezilla-project.org/server/?C=M;O=D",
+			"a[href*='FileZilla_Server-'][href$='.exe']",
+			"href",
+			Re("FileZilla_Server-([0-9_]+)"),
+		)),
+		HTMLDownloadExtractor(
+			"https://download.filezilla-project.org/server/?C=M;O=D",
+			false,
+			"a[href*='FileZilla_Server-'][href$='.exe']",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"flash-player",
+		HTMLVersionExtractor(
+			"http://get.adobe.com/flashplayer/about/",
+			"td:contains('Opera, Chromium-based browsers - PPAPI')+td",
+			"innerText",
+			Re("([0-9.]+)"),
+		),
+		TemplateDownloadExtractor(
+			"https://fpdownload.macromedia.com/get/flashplayer/pdc/{{.Version}}/install_flash_player_{{.Version0}}_plugin.msi",
+			"",
+		),
+	)
+	AddRule(
+		"flash-player-ie",
+		HTMLVersionExtractor(
+			"http://get.adobe.com/flashplayer/about/",
+			"td:contains('Internet Explorer - ActiveX')+td",
+			"innerText",
+			Re("([0-9.]+)"),
+		),
+		TemplateDownloadExtractor(
+			"https://fpdownload.macromedia.com/get/flashplayer/pdc/{{.Version}}/install_flash_player_{{.Version0}}_active_x.msi",
+			"",
+		),
+	)
+	AddRule(
+		"freefilesync",
+		RegexpVersionExtractor(
+			"https://www.freefilesync.org/download.php",
+			Re("Download FreeFileSync ([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.freefilesync.org/download.php",
+			false,
+			"a.direct-download-link[href$='.exe']:contains('Windows Setup')",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
 		"git",
 		GitHubReleaseVersionExtractor(
 			"git-for-windows",
