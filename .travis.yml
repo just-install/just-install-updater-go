@@ -14,14 +14,6 @@ deploy:
   - provider: script
     skip_cleanup: true
     script:
-      - git config --global credential.helper store
-      - echo "https://$GITHUB_TOKEN:x-oauth-basic@github.com" > ~/.git-credentials
-      - git config --global user.name "just-install-bot"
-      - git config --global user.email "just-install-bot@outlook.com"
-      - go run main.go registry/just-install.json
-      - git status -C registry || true
-      - git add -A -C registry || true
-      - git commit -m "jiup-go automatic commit" -C registry || true
-      - git push -C registry
+      - bash deploy.sh
     on:
       branch: master
