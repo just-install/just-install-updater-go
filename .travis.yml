@@ -10,12 +10,18 @@ script:
   - echo "==== Unit tests =====" ; go test -v ./...
   - echo "===== Reachability test =====" ; go run jiup/rules/reachability-test/main.go
 
-# deploy:
-#   - provider: script
-#     script:
-#       - echo "===== Update registry =====" ; go run main.go registry/just-install.json
-#       - echo "==== Push registry to GitHub =====" ; cd registry
-#       - 'git status --porcelain || echo "===== No changes to push ====="'
-#       - 'git status --porcelain && {git add -A ; git commit -m "automatic update" ; git push}'
-#     on:
-#       branch: master
+deploy:
+  - provider: script
+    script:
+      - echo "machine github.com" > ~/.netrc
+      - echo "login github.com" >> ~/.netrc
+      - echo "password $GITHUB_TOKEN" >> ~/.netrc
+      - git config --global user.name "just-install-bot"
+      - git config --global user.email "just-install-bot@outlook.com"
+      - go run main.go registry/just-install.json
+      - cd registry
+      - git add -A || true
+      - git commit -m "jiup-go automatic commit" || true
+      - git push
+    on:
+      branch: master
