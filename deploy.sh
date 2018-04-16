@@ -5,10 +5,7 @@ err() {
     exit 1
 }
 
-echo "Cloning registry"
-rm -rf registry
-git clone https://$GITHUB_TOKEN:x-oauth-basic@github.com/just-install/registry >/dev/null 2>/dev/null || err "Could not clone repo"
-cd registry
+cd registry || err "Cannot find registry"
 
 echo "Configuring git user and email"
 git config user.name "just-install-bot"
@@ -24,7 +21,8 @@ git add -A
 git commit -S -m "jiup-go automatic commit"
 
 echo "Pushing changes"
-git push >/dev/null 2>/dev/null || err "Could not push changes"
+[[ -z $GITHUB_TOKEN ]] && die "No github token"
+git push "https://$GITHUB_TOKEN@github.com/just-install/registry.git" master >/dev/null 2>/dev/null || err "Could not push changes"
 
 echo "Cleaning up"
 cd ..
