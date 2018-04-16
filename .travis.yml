@@ -11,8 +11,8 @@ script:
   - echo "===== Reachability test =====" ; go run jiup/rules/reachability-test/main.go
 
 deploy:
-  skip_cleanup: true
-  provider: script
+  - provider: script
+    skip_cleanup: true
     script:
       - echo "machine github.com" > ~/.netrc
       - echo "login github.com" >> ~/.netrc
