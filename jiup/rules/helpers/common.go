@@ -96,3 +96,19 @@ func UnderscoreToDot(f VersionExtractorFunc) VersionExtractorFunc {
 		return strings.Replace(version, "_", ".", -1), nil
 	}
 }
+
+// AppendToURL wraps a download extractor and appends a string to each URL.
+func AppendToURL(str string, f DownloadExtractorFunc) DownloadExtractorFunc {
+	return func(version string) (string, *string, error) {
+		x86, x64, err := f(version)
+		if err != nil {
+			return "", nil, err
+		}
+		if x64 != nil {
+			t := *x64 + str
+			x64 = &t
+		}
+		x86 = x86 + str
+		return x86, x64, nil
+	}
+}

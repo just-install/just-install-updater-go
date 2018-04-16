@@ -437,6 +437,51 @@ func init() {
 		),
 	)
 	AddRule(
+		"eac",
+		RegexpVersionExtractor(
+			"http://www.exactaudiocopy.de/en/index.php/weitere-seiten/download-from-alternative-servers-2/",
+			Re("Exact Audio Copy V([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"http://www.exactaudiocopy.de/en/index.php/weitere-seiten/download-from-alternative-servers-2/",
+			false,
+			"a[href*='eac'][href$='.exe']:contains('Download Installer')",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	for _, edition := range []string{
+		"committers",
+		"cpp",
+		"java",
+		"jee",
+		"php",
+	} {
+		AddRule(
+			"eclipse-"+edition,
+			RegexpVersionExtractor(
+				"https://eclipse.org/downloads/eclipse-packages/",
+				Re("\\(([0-9a-z.]+)\\) +Release"),
+			),
+			AppendToURL(
+				"&r=1",
+				HTMLDownloadExtractor(
+					"https://eclipse.org/downloads/eclipse-packages/",
+					true,
+					"a.downloadLink[href*='eclipse-"+edition+"-'][href$='-win32.zip']",
+					"a.downloadLink[href*='eclipse-"+edition+"-'][href$='-win32-x86_64.zip']",
+					"href",
+					"href",
+					nil,
+					nil,
+				),
+			),
+		)
+	}
+	AddRule(
 		"eig",
 		GitHubReleaseVersionExtractor(
 			"EvilInsultGenerator",
@@ -447,6 +492,61 @@ func init() {
 			"EvilInsultGenerator",
 			"c-sharp-desktop",
 			Re("EvilInsultGenerator_Setup.exe"),
+			nil,
+		),
+	)
+	AddRule(
+		"emacs",
+		HTMLVersionExtractor(
+			"https://ftp.gnu.org/gnu/emacs/windows/?C=M;O=D",
+			"a[href*='emacs'][href$='-i686.zip']",
+			"href",
+			Re("emacs-([0-9.]+)-"),
+		),
+		HTMLDownloadExtractor(
+			"https://ftp.gnu.org/gnu/emacs/windows/?C=M;O=D",
+			true,
+			"a[href*='emacs'][href$='-i686.zip']",
+			"a[href*='emacs'][href$='-x86_64.zip']",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"enpass",
+		HTMLVersionExtractor(
+			"https://www.enpass.io/downloads/",
+			"a[href*='Enpass_'][href$='_Setup.exe']",
+			"href",
+			Re("Enpass_([0-9.]+)_"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.enpass.io/downloads/",
+			false,
+			"a[href*='Enpass_'][href$='_Setup.exe']",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"erlang",
+		RegexpVersionExtractor(
+			"https://www.erlang.org/downloads/",
+			Re("DOWNLOAD\\s+OTP\\s+([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.erlang.org/downloads/",
+			true,
+			"a[href*='win32'][href$='exe']:contains('Windows 32-bit Binary File')",
+			"a[href*='win64'][href$='exe']:contains('Windows 64-bit Binary File')",
+			"href",
+			"href",
+			nil,
 			nil,
 		),
 	)
@@ -462,6 +562,23 @@ func init() {
 			"etcher",
 			Re("Etcher-Setup-.+-x86.exe"),
 			Re("Etcher-Setup-.+-x64.exe"),
+		),
+	)
+	AddRule(
+		"everything-search",
+		RegexpVersionExtractor(
+			"https://www.voidtools.com/downloads/",
+			Re("Download Everything ([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.voidtools.com/downloads/",
+			true,
+			"a[href$='x86-Setup.exe']:contains('Download Installer')",
+			"a[href$='x64-Setup.exe']:contains('Download Installer 64-bit')",
+			"href",
+			"href",
+			nil,
+			nil,
 		),
 	)
 	AddRule(
