@@ -748,23 +748,6 @@ func init() {
 		),
 	)
 	AddRule(
-		"gvim",
-		RegexpVersionExtractor(
-			"https://www.vim.org/download.php",
-			Re("latest version \\(currently ([0-9.]+)\\)"),
-		),
-		HTMLDownloadExtractor(
-			"http://ftp.vim.org/pub/vim/pc/?C=M;O=D",
-			false,
-			"a[href*='gvim'][href$='.exe']",
-			"",
-			"href",
-			"",
-			nil,
-			nil,
-		),
-	)
-	AddRule(
 		"gow",
 		GitHubReleaseVersionExtractor(
 			"bmatzelle",
@@ -793,6 +776,23 @@ func init() {
 		),
 	)
 	AddRule(
+		"gvim",
+		RegexpVersionExtractor(
+			"https://www.vim.org/download.php",
+			Re("latest version \\(currently ([0-9.]+)\\)"),
+		),
+		HTMLDownloadExtractor(
+			"http://ftp.vim.org/pub/vim/pc/?C=M;O=D",
+			false,
+			"a[href*='gvim'][href$='.exe']",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
 		"hashcheck",
 		GitHubReleaseVersionExtractor(
 			"gurnec",
@@ -803,6 +803,23 @@ func init() {
 			"gurnec",
 			"HashCheck",
 			Re("HashCheckSetup-.+.exe"),
+			nil,
+		),
+	)
+	AddRule(
+		"heidisql",
+		RegexpVersionExtractor(
+			"https://www.heidisql.com/download.php",
+			Re("HeidiSQL_([0-9.]+)_"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.heidisql.com/download.php",
+			false,
+			"a[href$='Setup.exe']:contains('Installer')",
+			"",
+			"href",
+			"",
+			nil,
 			nil,
 		),
 	)
@@ -831,6 +848,56 @@ func init() {
 			"d2phap",
 			"ImageGlass",
 			Re("ImageGlass_.+.exe"),
+			nil,
+		),
+	)
+	AddRule(
+		"inkscape",
+		RegexpVersionExtractor(
+			"https://inkscape.org/en/release/",
+			Re("Download Inkscape ([0-9.]+)"),
+		),
+		TemplateDownloadExtractor(
+			"https://media.inkscape.org/dl/resources/file/inkscape-{{.Version}}-x86.msi",
+			"https://media.inkscape.org/dl/resources/file/inkscape-{{.Version}}-x64.msi",
+		),
+	)
+	AddRule(
+		"jdk",
+		RegexpVersionExtractor(
+			"https://lv.binarybabel.org/catalog-api/java/jdk8.txt?p=version",
+			Re("([0-9a-zA-Z.-]+)"),
+		),
+		func(version string) (string, *string, error) {
+			buf, _, ok, err := GetURL(nil, "https://lv.binarybabel.org/catalog-api/java/jdk8.txt?p=downloads.exe", map[string]string{}, []int{200})
+			if err != nil {
+				return "", nil, err
+			}
+			if !ok {
+				return "", nil, errors.New("unexpected response code")
+			}
+			x64 := string(buf)
+			x86 := strings.Replace(x64, "x64", "i586", -1)
+			return x86, &x64, nil
+		},
+	)
+	AddRule(
+		"jre",
+		func() (string, error) {
+			version, err := RegexpVersionExtractor("https://www.java.com/en/download/manual.jsp", Re("Recommended Version ([0-9]* Update [0-9]*)"))()
+			if err != nil {
+				return "", err
+			}
+			return strings.Replace(version, " Update ", ".", 1), nil
+		},
+		HTMLDownloadExtractor(
+			"https://www.java.com/en/download/manual.jsp",
+			true,
+			"a[title='Download Java software for Windows Offline']",
+			"a[title='Download Java software for Windows (64-bit)']",
+			"href",
+			"href",
+			nil,
 			nil,
 		),
 	)
