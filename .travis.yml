@@ -15,8 +15,8 @@ deploy:
     skip_cleanup: true
     script:
       - echo "machine github.com" > ~/.netrc
-      - echo "login github.com" >> ~/.netrc
-      - echo "password $GITHUB_TOKEN" >> ~/.netrc
+      - echo "login $GITHUB_TOKEN" >> ~/.netrc
+      - echo "password x-oauth-basic" >> ~/.netrc
       - git config --global user.name "just-install-bot"
       - git config --global user.email "just-install-bot@outlook.com"
       - go run main.go registry/just-install.json
