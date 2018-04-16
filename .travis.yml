@@ -11,7 +11,8 @@ script:
   - echo "===== Reachability test =====" ; go run jiup/rules/reachability-test/main.go
 
 deploy:
-  - provider: script
+  skip_cleanup: true
+  provider: script
     script:
       - echo "machine github.com" > ~/.netrc
       - echo "login github.com" >> ~/.netrc
@@ -19,9 +20,9 @@ deploy:
       - git config --global user.name "just-install-bot"
       - git config --global user.email "just-install-bot@outlook.com"
       - go run main.go registry/just-install.json
-      - cd registry
-      - git add -A || true
-      - git commit -m "jiup-go automatic commit" || true
-      - git push
+      - git status -C registry || true
+      - git add -A -C registry || true
+      - git commit -m "jiup-go automatic commit" -C registry || true
+      - git push -C registry
     on:
       branch: master
