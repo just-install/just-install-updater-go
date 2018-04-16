@@ -644,6 +644,40 @@ func init() {
 		),
 	)
 	AddRule(
+		"geforce-experience",
+		RegexpVersionExtractor(
+			"https://www.nvidia.com/en-us/geforce/geforce-experience/",
+			Re("https://us.download.nvidia.com/GFE/GFEClient/([0-9.]+)/GeForce_Experience"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.nvidia.com/en-us/geforce/geforce-experience/",
+			false,
+			"a[href^='https://us.download.nvidia.com/GFE/GFEClient/'][href$='.exe']",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"gimp",
+		RegexpVersionExtractor(
+			"https://www.gimp.org/downloads/",
+			Re("current stable release of GIMP is <b>([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.gimp.org/downloads/",
+			false,
+			"#win a[href$='-setup.exe']",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
 		"git",
 		GitHubReleaseVersionExtractor(
 			"git-for-windows",
@@ -682,6 +716,51 @@ func init() {
 			"git-lfs",
 			"git-lfs",
 			Re("git-lfs-windows-.+.exe"),
+			nil,
+		),
+	)
+	AddRule(
+		"go",
+		RegexpVersionExtractor(
+			"https://golang.org/dl/",
+			Re("go([0-9.]+)\\.windows"),
+		),
+		TemplateDownloadExtractor(
+			"https://dl.google.com/go/go{{.Version}}.windows-386.msi",
+			"https://dl.google.com/go/go{{.Version}}.windows-amd64.msi",
+		),
+	)
+	AddRule(
+		"gog-galaxy",
+		RegexpVersionExtractor(
+			"https://www.gog.com/galaxy",
+			Re("setup_galaxy_([0-9.]+).exe"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.gog.com/galaxy",
+			false,
+			"a[href*='setup'][href$='.exe']:contains('Windows')",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"gvim",
+		RegexpVersionExtractor(
+			"https://www.vim.org/download.php",
+			Re("latest version \\(currently ([0-9.]+)\\)"),
+		),
+		HTMLDownloadExtractor(
+			"http://ftp.vim.org/pub/vim/pc/?C=M;O=D",
+			false,
+			"a[href*='gvim'][href$='.exe']",
+			"",
+			"href",
+			"",
+			nil,
 			nil,
 		),
 	)
