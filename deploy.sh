@@ -18,7 +18,7 @@ go run ../main.go just-install.json || err "Could not update registry"
 
 echo "Committing changes"
 git add -A
-git commit -S -m "jiup-go automatic commit"
+git commit -m "jiup-go automatic commit"
 
 echo "Pushing changes"
 [[ -z $GITHUB_TOKEN ]] && die "No github token"
