@@ -69,6 +69,16 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 			fmt.Printf("\r ✗  %s: %v", p, broken[p])
 			continue
 		}
+		if strings.TrimSpace(version) != version {
+			broken[p] = errors.New("version has whitespace (probably a bad regexp)")
+			fmt.Printf("\r ✗  %s: %v", p, broken[p])
+			continue
+		}
+		if strings.HasSuffix(version, ".") {
+			broken[p] = errors.New("version ends with a dot (probably a bad regexp)")
+			fmt.Printf("\r ✗  %s: %v", p, broken[p])
+			continue
+		}
 
 		x86dl, x64dl, err := r.D(version)
 		if err != nil {
