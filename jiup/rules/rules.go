@@ -1,6 +1,7 @@
 package rules
 
 import (
+	"errors"
 	"strings"
 
 	. "github.com/just-install/just-install-updater-go/jiup/rules/helpers"
@@ -702,16 +703,53 @@ func init() {
 			"https://tortoisesvn.net/downloads.html",
 			Re("The current version is ([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
-			"https://tortoisesvn.net/downloads.html",
-			true,
-			"a[href*='win32-svn']",
-			"a[href*='x64-svn']",
-			"href",
-			"href",
-			Re("(.+TortoiseSVN-[0-9.]+-win32-svn-[0-9.]+.msi)"),
-			Re("(.+TortoiseSVN-[0-9.]+-x64-svn-[0-9.]+.msi)"),
-		),
+		func(version string) (string, *string, error) {
+			// Layer 1: Link to OSDN
+			x86, x64, err := HTMLDownloadExtractor(
+				"https://tortoisesvn.net/downloads.html",
+				true,
+				"a[href^='https://osdn.net'][href*='win32-svn']",
+				"a[href^='https://osdn.net'][href*='x64-svn']",
+				"href",
+				"href",
+				nil,
+				nil,
+			)(version)
+			if err != nil {
+				return "", nil, err
+			}
+			if x64 == nil {
+				return "", nil, errors.New("x64 link empty")
+			}
+			// Layer 2: OSDN to redir link
+			x86, _, err = HTMLDownloadExtractor(
+				x86,
+				false,
+				"a.mirror_link[href*='/frs/redir'][href*='win32-svn']",
+				"",
+				"href",
+				"href",
+				nil,
+				nil,
+			)(version)
+			if err != nil {
+				return "", nil, err
+			}
+			_, x64, err = HTMLDownloadExtractor(
+				*x64,
+				true,
+				"a",
+				"a.mirror_link[href*='/frs/redir'][href*='x64-svn']",
+				"href",
+				"href",
+				nil,
+				nil,
+			)(version)
+			if err != nil {
+				return "", nil, err
+			}
+			return x86, x64, nil
+		},
 	)
 	AddRule(
 		"upx",
