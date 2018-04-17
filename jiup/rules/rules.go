@@ -1303,9 +1303,11 @@ func init() {
 	)
 	AddRule(
 		"perl",
-		RegexpVersionExtractor(
+		HTMLVersionExtractor(
 			"http://strawberryperl.com/releases.html",
-			Re("Strawberry Perl ([0-9.]+)"),
+			"a[href*='strawberry-perl-'][href$='32bit.msi']",
+			"href",
+			Re("strawberry-perl-([0-9.]+)-"),
 		),
 		HTMLDownloadExtractor(
 			"http://strawberryperl.com/releases.html",
@@ -1441,6 +1443,20 @@ func init() {
 			"https://www.python.org/ftp/python/{{.Version}}/python-{{.Version}}.exe",
 			"https://www.python.org/ftp/python/{{.Version}}/python-{{.Version}}-amd64.exe",
 		),
+	)
+	AddRule(
+		"qbittorrent",
+		RegexpVersionExtractor(
+			"http://www.oldfoss.com/qBittorrent.html",
+			Re("qbittorrent_([0-9.]+)_setup.exe"),
+		),
+		func(version string) (string, *string, error) {
+			return RegexpDownloadExtractor(
+				"http://www.oldfoss.com/qBittorrent.html",
+				Re("\"(http.+qbittorrent_"+version+"_setup.exe)\""),
+				Re("\"(http.+qbittorrent_"+version+"_x64_setup.exe)\""),
+			)(version)
+		},
 	)
 	AddRule(
 		"ruby",
