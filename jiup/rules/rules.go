@@ -1459,6 +1459,29 @@ func init() {
 		},
 	)
 	AddRule(
+		"recuva",
+		func() (string, error) {
+			version, err := RegexpVersionExtractor(
+				"https://www.ccleaner.com/recuva/download/standard",
+				Re("rcsetup([0-9]+)"),
+			)()
+			if err != nil {
+				return "", err
+			}
+			return string(version[0]) + "." + string(version[1:]), nil
+		},
+		HTMLDownloadExtractor(
+			"https://www.ccleaner.com/recuva/download/standard",
+			false,
+			"a[href$='.exe']:contains('start the download')",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
 		"ruby",
 		GitHubReleaseVersionExtractor(
 			"oneclick",
