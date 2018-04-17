@@ -997,6 +997,86 @@ func init() {
 		),
 	)
 	AddRule(
+		"mercurial",
+		RegexpVersionExtractor(
+			"https://www.mercurial-scm.org/sources.js",
+			Re("windows/mercurial-([0-9.]+)-"),
+		),
+		RegexpDownloadExtractor(
+			"https://www.mercurial-scm.org/sources.js",
+			Re("(https://www.mercurial-scm.org/release/windows/mercurial-[0-9.]+-x86.msi)"),
+			Re("(https://www.mercurial-scm.org/release/windows/mercurial-[0-9.]+-x64.msi)"),
+		),
+	)
+	AddRule(
+		"mono",
+		RegexpVersionExtractor(
+			"http://www.mono-project.com/download/stable/",
+			Re("[0-9.]+ Stable \\(([0-9.]+)\\)"),
+		),
+		HTMLDownloadExtractor(
+			"http://www.mono-project.com/download/stable/",
+			false,
+			"a[href*='download.mono-project.com'][href*='windows-installer'][href$='.msi']:not([href*='gtksharp'])",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"mountainduck",
+		RegexpVersionExtractor(
+			"https://mountainduck.io/",
+			Re("Installer-([0-9.]+).exe"),
+		),
+		HTMLDownloadExtractor(
+			"https://mountainduck.io/",
+			false,
+			"a[href*='Installer'][href$='.msi']",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"mp3tag",
+		RegexpVersionExtractor(
+			"https://www.mp3tag.de/en/download.html",
+			Re("Mp3tag v([0-9.a-z]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.mp3tag.de/en/dodownload.html",
+			false,
+			"a[href*='download'][href$='.exe']:contains('here')",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"mpc-hc",
+		RegexpVersionExtractor(
+			"https://mpc-hc.org/downloads/",
+			Re("latest stable build is v([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://mpc-hc.org/downloads/",
+			true,
+			"a[href$='.x86.exe']",
+			"a[href$='.x64.exe']",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
 		"mumble",
 		GitHubReleaseVersionExtractor(
 			"mumble-voip",
