@@ -1689,6 +1689,40 @@ func init() {
 		),
 	)
 	AddRule(
+		"teamspeak",
+		RegexpVersionExtractor(
+			"https://www.teamspeak.com/en/downloads",
+			Re("Client-win32-([0-9.]+)\\.exe"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.teamspeak.com/en/downloads",
+			true,
+			"option[value*='win32'][value$='.exe']",
+			"option[value*='win64'][value$='.exe']",
+			"value",
+			"value",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"tightvnc",
+		RegexpVersionExtractor(
+			"https://tightvnc.com/download.php",
+			Re("Version ([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://tightvnc.com/download.php",
+			true,
+			"a[href*='tightvnc-'][href$='-setup-32bit.msi']",
+			"a[href*='tightvnc-'][href$='-setup-64bit.msi']",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
 		"tortoisegit",
 		RegexpVersionExtractor(
 			"https://tortoisegit.org/download/",
