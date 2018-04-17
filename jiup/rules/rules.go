@@ -975,6 +975,28 @@ func init() {
 		),
 	)
 	AddRule(
+		"libreoffice",
+		RegexpVersionExtractor(
+			"https://www.libreoffice.org/download/libreoffice-fresh/?type=win-x86&lang=en-US",
+			Re("LibreOffice ([0-9.]+) "),
+		),
+		TemplateDownloadExtractor(
+			"https://download.documentfoundation.org/libreoffice/stable/{{.Version}}/win/x86/LibreOffice_{{.Version}}_Win_x86.msi",
+			"https://download.documentfoundation.org/libreoffice/stable/{{.Version}}/win/x86_64/LibreOffice_{{.Version}}_Win_x64.msi",
+		),
+	)
+	AddRule(
+		"lockhunter",
+		RegexpVersionExtractor(
+			"http://lockhunter.com/download.htm",
+			Re("Version: ([0-9.]+)"),
+		),
+		TemplateDownloadExtractor(
+			"http://lockhunter.com/exe/lockhuntersetup_{{.VersionD}}.exe",
+			"",
+		),
+	)
+	AddRule(
 		"mumble",
 		GitHubReleaseVersionExtractor(
 			"mumble-voip",

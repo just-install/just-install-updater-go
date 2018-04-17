@@ -11,6 +11,12 @@ import (
 	"github.com/ogier/pflag"
 )
 
+// KnownBroken contains packages known to be broken.
+// Errors during the check will not count as a failure.
+var KnownBroken = []string{
+	"freefilesync",
+}
+
 func main() {
 	//verbose := pflag.BoolP("verbose", "v", false, "Show more output")
 	nodownload := pflag.BoolP("no-download", "d", false, "Do not test downloadability")
@@ -22,9 +28,9 @@ func main() {
 		helpExit()
 	}
 
-	working, broken := testAll(*nodownload, *downloadLinks, pflag.Args())
+	working, broken, knownBroken := testAll(*nodownload, *downloadLinks, pflag.Args())
 
-	fmt.Printf("\nSummary: %d working, %d broken\n", len(working), len(broken))
+	fmt.Printf("\nSummary: %d working, %d broken, %d known broken\n", len(working), len(broken), len(knownBroken))
 
 	if len(broken) > 0 {
 		os.Exit(1)
@@ -39,9 +45,10 @@ func helpExit() {
 	os.Exit(1)
 }
 
-func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[string]error) {
+func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[string]error, []string) {
 	working := []string{}
 	broken := map[string]error{}
+	knownBroken := []string{}
 	// TODO: multithreaded for loop
 	for p, r := range rules.GetRules() {
 		if len(packages) != 0 {
@@ -57,6 +64,14 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 		}
 
 		fmt.Printf("\n    %s: testing", p)
+
+		for _, kb := range KnownBroken {
+			if p == kb {
+				knownBroken = append(knownBroken, p)
+				fmt.Printf("\r -  %s: manually marked as broken", p)
+				continue
+			}
+		}
 
 		version, err := r.V()
 		if err != nil {
@@ -158,7 +173,7 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 	}
 	fmt.Printf("\n")
 
-	return working, broken
+	return working, broken, knownBroken
 }
 
 func testDL(url string) (code int, mime string, err error) {
