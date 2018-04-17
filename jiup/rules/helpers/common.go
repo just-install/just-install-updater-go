@@ -13,8 +13,27 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+type resps struct {
+	Buf  []byte
+	Code int
+	OK   bool
+	Err  error
+}
+type reqi string
+
+var cache = map[reqi]resps{}
+
+func mkreqi(url string, headers map[string]string, acceptableStatuses []int) reqi {
+	return reqi(fmt.Sprintf("%#v;;;%#v;;;%#v", url, headers, acceptableStatuses))
+}
+
 // GetURL gets a url. The client is optional.
 func GetURL(c *http.Client, url string, headers map[string]string, acceptableStatuses []int) ([]byte, int, bool, error) {
+	ri := mkreqi(url, headers, acceptableStatuses)
+	if r, ok := cache[ri]; ok {
+		return r.Buf, r.Code, r.OK, r.Err
+	}
+
 	if c == nil {
 		c = &http.Client{
 			Timeout: time.Duration(time.Second * 10),
@@ -23,6 +42,7 @@ func GetURL(c *http.Client, url string, headers map[string]string, acceptableSta
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
+		cache[ri] = resps{nil, 0, false, err}
 		return nil, 0, false, err
 	}
 
@@ -32,12 +52,14 @@ func GetURL(c *http.Client, url string, headers map[string]string, acceptableSta
 
 	resp, err := c.Do(req)
 	if err != nil {
+		cache[ri] = resps{nil, 0, false, err}
 		return nil, 0, false, err
 	}
 	defer resp.Body.Close()
 
 	buf, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		cache[ri] = resps{nil, 0, false, err}
 		return nil, 0, false, err
 	}
 
@@ -49,6 +71,7 @@ func GetURL(c *http.Client, url string, headers map[string]string, acceptableSta
 		}
 	}
 
+	cache[ri] = resps{buf, resp.StatusCode, a, nil}
 	return buf, resp.StatusCode, a, nil
 }
 
