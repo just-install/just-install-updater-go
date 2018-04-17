@@ -13,7 +13,9 @@ import (
 
 // KnownBroken contains packages known to be broken.
 // Errors during the check will not count as a failure.
-var KnownBroken = []string{}
+var KnownBroken = []string{
+	"virtualbox",
+}
 
 func main() {
 	//verbose := pflag.BoolP("verbose", "v", false, "Show more output")

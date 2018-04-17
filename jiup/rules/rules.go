@@ -905,7 +905,7 @@ func init() {
 		"keepass",
 		RegexpVersionExtractor(
 			"https://sourceforge.net/projects/keepass/files/",
-			Re("KeePass-([0-9.]+)\\.zip"),
+			Re("KeePass-([0-9.]+)\\."),
 		),
 		TemplateDownloadExtractor(
 			"https://sourceforge.net/projects/keepass/files/KeePass%202.x/{{.Version}}/KeePass-{{.Version}}.msi/download",
@@ -1571,7 +1571,7 @@ func init() {
 		"smplayer",
 		RegexpVersionExtractor(
 			"https://sourceforge.net/projects/smplayer/files/",
-			Re("smplayer-([0-9.]+)\\.tar"),
+			Re("smplayer-([0-9.]+)\\."),
 		),
 		TemplateDownloadExtractor(
 			"https://sourceforge.net/projects/smplayer/files/SMPlayer/{{.Version}}/smplayer-{{.Version}}-win32.exe/download",
@@ -1808,6 +1808,119 @@ func init() {
 		),
 	)
 	AddRule(
+		"vagrant",
+		RegexpVersionExtractor(
+			"https://www.vagrantup.com/downloads.html",
+			Re("vagrant_([0-9.]+)_"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.vagrantup.com/downloads.html",
+			true,
+			"a[href*='vagrant_'][href$='_i686.msi']",
+			"a[href*='vagrant_'][href$='_x86_64.msi']",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"veracrypt",
+		RegexpVersionExtractor(
+			"https://sourceforge.net/projects/veracrypt/files/",
+			Re("VeraCrypt_([0-9.]+)_"),
+		),
+		TemplateDownloadExtractor(
+			"https://sourceforge.net/projects/veracrypt/files/VeraCrypt%20{{.Version}}/VeraCrypt%20Setup%20{{.Version}}.exe/download",
+			"",
+		),
+	)
+	AddRule(
+		"virtualbox",
+		RegexpVersionExtractor(
+			"https://www.virtualbox.org/wiki/Downloads",
+			Re("VirtualBox-([0-9.]+)-"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.virtualbox.org/wiki/Downloads",
+			false,
+			"a[href$='.exe']:contains('Windows')",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"virtualbox-extpack",
+		RegexpVersionExtractor(
+			"https://www.virtualbox.org/wiki/Downloads",
+			Re("VirtualBox_Extension_Pack-([0-9.]+)\\."),
+		),
+		HTMLDownloadExtractor(
+			"https://www.virtualbox.org/wiki/Downloads",
+			false,
+			"a[href$='.vbox-extpack']",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"vivaldi",
+		RegexpVersionExtractor(
+			"https://vivaldi.com/download/",
+			Re("Vivaldi\\.([0-9.]+)\\.exe"),
+		),
+		HTMLDownloadExtractor(
+			"https://vivaldi.com/download/",
+			true,
+			"a[href*='Vivaldi.'][href$='.exe']:not([href$='.x64.exe'])",
+			"a[href*='Vivaldi.'][href$='.x64.exe']",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"vlc",
+		RegexpVersionExtractor(
+			"https://www.videolan.org/vlc/download-windows.html",
+			Re("vlc-([0-9.]+)-"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.videolan.org/vlc/download-windows.html",
+			true,
+			"a[href*='vlc-'][href$='-win32.exe']",
+			"a[href*='vlc-'][href$='-win64.exe']",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"vpnunlimited",
+		RegexpVersionExtractor(
+			"https://www.vpnunlimitedapp.com/en/downloads/windows",
+			Re("_v([0-9.]+)\\."),
+		),
+		HTMLDownloadExtractor(
+			"https://www.vpnunlimitedapp.com/en/downloads/windows",
+			false,
+			"a[href*='VPN_Unlimited_'][href$='.exe']",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
 		"webtorrent",
 		GitHubReleaseVersionExtractor(
 			"webtorrent",
@@ -1819,6 +1932,45 @@ func init() {
 			"webtorrent-desktop",
 			Re("WebTorrentSetup-v[0-9.]+-ia32.exe"),
 			Re("WebTorrentSetup-v[0-9.]+.exe"),
+		),
+	)
+	AddRule(
+		"winrar",
+		RegexpVersionExtractor(
+			"https://www.win-rar.com/download.html",
+			Re("WinRAR ([0-9.]+) "),
+		),
+		TemplateDownloadExtractor(
+			"https://rarlab.com/rar/wrar{{.VersionN}}.exe",
+			"https://rarlab.com/rar/winrar-x64-{{.VersionN}}.exe",
+		),
+	)
+	AddRule(
+		"winscp",
+		RegexpVersionExtractor(
+			"https://sourceforge.net/projects/winscp/files/",
+			Re("WinSCP-([0-9.]+)-"),
+		),
+		TemplateDownloadExtractor(
+			"https://sourceforge.net/projects/winscp/files/WinSCP/{{.Version}}/WinSCP-{{.Version}}-Setup.exe/download",
+			"",
+		),
+	)
+	AddRule(
+		"wireshark",
+		RegexpVersionExtractor(
+			"https://www.wireshark.org/download.html",
+			Re("Stable Release \\(([0-9.]+)\\)"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.wireshark.org/download.html",
+			true,
+			"a[href*='Wireshark-win32-'][href$='.exe']",
+			"a[href*='Wireshark-win64-'][href$='.exe']",
+			"href",
+			"href",
+			nil,
+			nil,
 		),
 	)
 	AddRule(
@@ -1860,6 +2012,23 @@ func init() {
 			"Wox-launcher",
 			"Wox",
 			Re("Wox-[0-9.]+.exe"),
+			nil,
+		),
+	)
+	AddRule(
+		"ynab",
+		RegexpVersionExtractor(
+			"http://classic.youneedabudget.com/download",
+			Re("_([0-9.]+)_Setup.exe"),
+		),
+		HTMLDownloadExtractor(
+			"http://classic.youneedabudget.com/download",
+			false,
+			"a[href*='YNAB'][href$='Setup.exe']",
+			"",
+			"href",
+			"",
+			nil,
 			nil,
 		),
 	)
