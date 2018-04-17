@@ -4,305 +4,243 @@ import (
 	"errors"
 	"strings"
 
-	. "github.com/just-install/just-install-updater-go/jiup/rules/helpers"
+	"github.com/just-install/just-install-updater-go/jiup/rules/d"
+	"github.com/just-install/just-install-updater-go/jiup/rules/h"
+	"github.com/just-install/just-install-updater-go/jiup/rules/v"
+	"github.com/just-install/just-install-updater-go/jiup/rules/w"
 )
 
 func init() {
-	AddRule(
-		"7zip",
-		RegexpVersionExtractor(
+	Rule("7zip",
+		v.Regexp(
 			"https://7-zip.org/download.html",
-			Re("Download 7-Zip ([0-9][0-9].[0-9][0-9])"),
+			h.Re("Download 7-Zip ([0-9][0-9].[0-9][0-9])"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://www.7-zip.org/a/7z{{.VersionN}}.msi",
 			"https://www.7-zip.org/a/7z{{.VersionN}}-x64.msi",
 		),
 	)
-	AddRule(
-		"anaconda",
-		RegexpVersionExtractor(
+	Rule("anaconda",
+		v.Regexp(
 			"https://www.anaconda.com/download/",
-			Re("Anaconda3-([0-9.]+)-"),
+			h.Re("Anaconda3-([0-9.]+)-"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.anaconda.com/download/",
-			true,
-			"a[href*='Windows-x86.exe']",
-			"a[href*='Windows-x86_64.exe']",
-			"href",
-			"href",
-			Re("(.+Anaconda3-[0-9.]+-Windows-x86.exe)"),
-			Re("(.+Anaconda3-[0-9.]+-Windows-x86_64.exe)"),
+			"a[href*='Anaconda3-'][href$='-Windows-x86.exe']",
+			"a[href*='Anaconda3-'][href$='-Windows-x86_64.exe']",
 		),
 	)
-	AddRule(
-		"android-studio-ide",
-		RegexpVersionExtractor(
+	Rule("android-studio-ide",
+		v.Regexp(
 			"https://developer.android.com/studio/index.html",
-			Re("Version: ([0-9.]+)"),
+			h.Re("Version: ([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://developer.android.com/studio/index.html",
-			false,
-			"a#win-bundle",
+			"a[href*='android-studio-ide'][href$='-windows.exe']#win-bundle",
 			"",
-			"href",
-			"",
-			Re("(.+android-studio-ide-[0-9.]+-windows.exe)"),
-			nil,
 		),
 	)
-	AddRule(
-		"arduino",
-		RegexpVersionExtractor(
+	Rule("arduino",
+		v.Regexp(
 			"https://www.arduino.cc/en/Main/Software",
-			Re("arduino-([0-9.]+)-"),
+			h.Re("arduino-([0-9.]+)-"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://downloads.arduino.cc/arduino-{{.Version}}-windows.exe",
 			"",
 		),
 	)
-	AddRule(
-		"audacity",
-		RegexpVersionExtractor(
+	Rule("audacity",
+		v.Regexp(
 			"http://www.oldfoss.com/Audacity.html",
-			Re("audacity-win-([0-9.]+).exe"),
+			h.Re("audacity-win-([0-9.]+).exe"),
 		),
 		func(version string) (string, *string, error) {
-			return RegexpDownloadExtractor(
+			return d.Regexp(
 				"http://www.oldfoss.com/Audacity.html",
-				Re("\"(http.+audacity-win-"+version+".exe)\""),
+				h.Re("\"(http.+audacity-win-"+version+".exe)\""),
 				nil,
 			)(version)
 		},
 	)
-	AddRule(
-		"bleachbit",
-		RegexpVersionExtractor(
+	Rule("bleachbit",
+		v.Regexp(
 			"https://www.bleachbit.org/download/windows",
-			Re("BleachBit-([0-9.]+)-setup.exe"),
+			h.Re("BleachBit-([0-9.]+)-setup.exe"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://download.bleachbit.org/BleachBit-{{.Version}}-setup.exe",
 			"",
 		),
 	)
-	AddRule(
-		"bcuninstaller",
-		GitHubReleaseVersionExtractor(
-			"Klocman",
-			"Bulk-Crap-Uninstaller",
-			Re("v(.+)"),
+	Rule("bcuninstaller",
+		v.GitHubRelease(
+			"Klocman/Bulk-Crap-Uninstaller",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"Klocman",
-			"Bulk-Crap-Uninstaller",
-			Re(".*setup.exe"),
+		d.GitHubRelease(
+			"Klocman/Bulk-Crap-Uninstaller",
+			h.Re(".*setup.exe"),
 			nil,
 		),
 	)
-	AddRule(
-		"bitpay",
-		GitHubReleaseVersionExtractor(
-			"bitpay",
-			"copay",
-			Re("v(.+)"),
+	Rule("bitpay",
+		v.GitHubRelease(
+			"bitpay/copay",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"bitpay",
-			"copay",
-			Re("BitPay.exe"),
+		d.GitHubRelease(
+			"bitpay/copay",
+			h.Re("BitPay.exe"),
 			nil,
 		),
 	)
-	AddRule(
-		"brackets",
-		GitHubReleaseVersionExtractor(
-			"adobe",
-			"brackets",
-			Re("release-(.+)"),
+	Rule("brackets",
+		v.GitHubRelease(
+			"adobe/brackets",
+			h.Re("release-(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"adobe",
-			"brackets",
-			Re("Brackets.Release.*.msi"),
+		d.GitHubRelease(
+			"adobe/brackets",
+			h.Re("Brackets.Release.*.msi"),
 			nil,
 		),
 	)
-	AddRule(
-		"ccleaner",
+	Rule("ccleaner",
 		func() (string, error) {
-			version, err := RegexpVersionExtractor(
+			version, err := v.Regexp(
 				"https://www.ccleaner.com/ccleaner/download/standard",
-				Re("ccsetup([0-9]+)"),
+				h.Re("ccsetup([0-9]+)"),
 			)()
 			if err != nil {
 				return "", err
 			}
 			return string(version[0]) + "." + string(version[1:]), nil
 		},
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.ccleaner.com/ccleaner/download/standard",
-			false,
 			"a[href$='.exe']:contains('start the download')",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"cdburnerxp",
-		RegexpVersionExtractor(
+	Rule("cdburnerxp",
+		v.Regexp(
 			"https://download.cdburnerxp.se/msi/",
-			Re("_([0-9.]+).msi"),
+			h.Re("_([0-9.]+).msi"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://download.cdburnerxp.se/msi/",
-			true,
 			"a[href^='cdbxp_setup_'][href$='msi']:not([href~='x64'])",
 			"a[href^='cdbxp_setup_x64'][href$='msi']",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"classic-shell",
-		UnderscoreToDot(RegexpVersionExtractor(
+	Rule("classic-shell",
+		w.UnderscoreToDot(v.Regexp(
 			"http://www.oldfoss.com/Classic-Shell.html",
-			Re("ClassicShellSetup_([0-9_]+)"),
+			h.Re("ClassicShellSetup_([0-9_]+)"),
 		)),
 		func(version string) (string, *string, error) {
-			return RegexpDownloadExtractor(
+			return d.Regexp(
 				"http://www.oldfoss.com/Classic-Shell.html",
-				Re("\"(http.+ClassicShellSetup_"+strings.Replace(version, ".", "_", -1)+".exe)\""),
+				h.Re("\"(http.+ClassicShellSetup_"+strings.Replace(version, ".", "_", -1)+".exe)\""),
 				nil,
 			)(version)
 		},
 	)
-	AddRule(
-		"clementine-player",
-		GitHubReleaseVersionExtractor(
-			"clementine-player",
-			"Clementine",
-			Re("(.+)"),
+	Rule("clementine-player",
+		v.GitHubRelease(
+			"clementine-player/Clementine",
+			h.Re("(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"clementine-player",
-			"Clementine",
-			Re("ClementineSetup-.*.exe"),
+		d.GitHubRelease(
+			"clementine-player/Clementine",
+			h.Re("ClementineSetup-.*.exe"),
 			nil,
 		),
 	)
-	AddRule(
-		"cmake",
-		RegexpVersionExtractor(
+	Rule("cmake",
+		v.Regexp(
 			"https://cmake.org/download/",
-			Re("Latest Release \\(([0-9.]+)\\)"),
+			h.Re("Latest Release \\(([0-9.]+)\\)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://cmake.org/download/",
-			true,
 			"a[href$='-win32-x86.msi']",
 			"a[href$='-win64-x64.msi']",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"colemak",
-		RegexpVersionExtractor(
+	Rule("colemak",
+		v.Regexp(
 			"https://colemak.com/Windows",
-			Re("Colemak-([0-9.]+)"),
+			h.Re("Colemak-([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://colemak.com/Windows",
-			false,
 			"a:contains('Download now')",
 			"",
-			"href",
-			"",
-			nil,
+		),
+	)
+	Rule("conemu",
+		v.GitHubRelease(
+			"Maximus5/ConEmu",
+			h.Re("v(.+)"),
+		),
+		d.GitHubRelease(
+			"Maximus5/ConEmu",
+			h.Re("ConEmuSetup.*.exe"),
 			nil,
 		),
 	)
-	AddRule(
-		"conemu",
-		GitHubReleaseVersionExtractor(
-			"Maximus5",
-			"ConEmu",
-			Re("v(.+)"),
-		),
-		GitHubReleaseDownloadExtractor(
-			"Maximus5",
-			"ConEmu",
-			Re("ConEmuSetup.*.exe"),
-			nil,
-		),
-	)
-	AddRule(
-		"cpu-z",
-		RegexpVersionExtractor(
+	Rule("cpu-z",
+		v.Regexp(
 			"https://www.cpuid.com/softwares/cpu-z.html",
-			Re("Version ([0-9.]+) for [Ww]indows"),
+			h.Re("Version ([0-9.]+) for [Ww]indows"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"http://download.cpuid.com/cpu-z/cpu-z_{{.Version}}-en.exe",
 			"",
 		),
 	)
-	AddRule(
-		"crashplan",
-		RegexpVersionExtractor(
+	Rule("crashplan",
+		v.Regexp(
 			"https://www.crashplan.com/shared/js/cp.download.js",
-			Re("CPC_CLIENT_VERSION ?= ?'([0-9.]+)'"),
+			h.Re("CPC_CLIENT_VERSION ?= ?'([0-9.]+)'"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://download.code42.com/installs/win/install/CrashPlan/jre/CrashPlan_{{.Version}}_Win.msi",
 			"https://download.code42.com/installs/win/install/CrashPlan/jre/CrashPlan_{{.Version}}_Win64.msi",
 		),
 	)
-	AddRule(
-		"cryptomator",
-		HTMLVersionExtractor(
+	Rule("cryptomator",
+		v.HTML(
 			"https://cryptomator.org/downloads",
 			"meta[itemprop='softwareVersion']",
 			"content",
 			nil,
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://cryptomator.org/downloads",
-			true,
 			"#winDownload a[href$='.exe']:contains('32 Bit')",
 			"#winDownload a[href$='.exe']:contains('64 Bit')",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"crystaldisk-info",
-		UnderscoreToDot(HTMLVersionExtractor(
+	Rule("crystaldisk-info",
+		w.UnderscoreToDot(v.HTML(
 			"https://osdn.net/projects/crystaldiskinfo/releases/",
 			"a.pref-download-btn.pref-download-btn-win32[href]",
 			"href",
-			Re("CrystalDiskInfo([0-9_]+).zip"),
+			h.Re("CrystalDiskInfo([0-9_]+).zip"),
 		)),
 		func(version string) (string, *string, error) {
 			vu := strings.Replace(version, ".", "_", -1)
-			dlp, err := HTMLVersionExtractor(
+			dlp, err := v.HTML(
 				"https://osdn.net/projects/crystaldiskinfo/releases/",
 				"a.pref-download-btn.pref-download-btn-win32[href]",
 				"href",
-				Re("downloads/([0-9]+/CrystalDiskInfo"+vu+").zip"),
+				h.Re("downloads/([0-9]+/CrystalDiskInfo"+vu+").zip"),
 			)()
 			if err != nil {
 				return "", nil, err
@@ -310,21 +248,20 @@ func init() {
 			return "http://osdn.dl.osdn.jp/crystaldiskinfo/" + dlp + ".exe", nil, nil
 		},
 	)
-	AddRule(
-		"crystaldisk-mark",
-		UnderscoreToDot(HTMLVersionExtractor(
+	Rule("crystaldisk-mark",
+		w.UnderscoreToDot(v.HTML(
 			"https://osdn.net/projects/crystaldiskmark/releases/",
 			"a.pref-download-btn.pref-download-btn-win32[href]",
 			"href",
-			Re("CrystalDiskMark([0-9_]+).zip"),
+			h.Re("CrystalDiskMark([0-9_]+).zip"),
 		)),
 		func(version string) (string, *string, error) {
 			vu := strings.Replace(version, ".", "_", -1)
-			dlp, err := HTMLVersionExtractor(
+			dlp, err := v.HTML(
 				"https://osdn.net/projects/crystaldiskmark/releases/",
 				"a.pref-download-btn.pref-download-btn-win32[href]",
 				"href",
-				Re("downloads/([0-9]+/CrystalDiskMark"+vu+").zip"),
+				h.Re("downloads/([0-9]+/CrystalDiskMark"+vu+").zip"),
 			)()
 			if err != nil {
 				return "", nil, err
@@ -332,125 +269,95 @@ func init() {
 			return "http://osdn.dl.osdn.jp/crystaldiskmark/" + dlp + ".exe", nil, nil
 		},
 	)
-	AddRule(
-		"dbeaver",
-		GitHubReleaseVersionExtractor(
-			"dbeaver",
-			"dbeaver",
-			Re("(.+)"),
+	Rule("dbeaver",
+		v.GitHubRelease(
+			"dbeaver/dbeaver",
+			h.Re("(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"dbeaver",
-			"dbeaver",
-			Re("dbeaver-ce-.+-x86-setup.exe"),
-			Re("dbeaver-ce-.+-x86_64-setup.exe"),
+		d.GitHubRelease(
+			"dbeaver/dbeaver",
+			h.Re("dbeaver-ce-.+-x86-setup.exe"),
+			h.Re("dbeaver-ce-.+-x86_64-setup.exe"),
 		),
 	)
-	AddRule(
-		"defraggler",
+	Rule("defraggler",
 		func() (string, error) {
-			version, err := RegexpVersionExtractor(
+			version, err := v.Regexp(
 				"https://www.ccleaner.com/defraggler/download/standard",
-				Re("dfsetup([0-9]+)"),
+				h.Re("dfsetup([0-9]+)"),
 			)()
 			if err != nil {
 				return "", err
 			}
 			return string(version[0]) + "." + string(version[1:]), nil
 		},
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.ccleaner.com/defraggler/download/standard",
-			false,
 			"a[href$='.exe']:contains('start the download')",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"deluge",
-		RegexpVersionExtractor(
+	Rule("deluge",
+		v.Regexp(
 			"https://dev.deluge-torrent.org/wiki/Download",
-			Re("Latest Release: <strong>([0-9.]+)"),
+			h.Re("Latest Release: <strong>([0-9.]+)"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"http://download.deluge-torrent.org/windows/deluge-{{.Version}}-win32-py2.7.exe",
 			"",
 		),
 	)
-	AddRule(
-		"dependency-walker",
-		RegexpVersionExtractor(
+	Rule("dependency-walker",
+		v.Regexp(
 			"http://www.dependencywalker.com",
-			Re("Dependency Walker ([0-9.]+)"),
+			h.Re("Dependency Walker ([0-9.]+)"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"http://www.dependencywalker.com/depends{{.VersionN}}_x86.zip",
 			"http://www.dependencywalker.com/depends{{.VersionN}}_x64.zip",
 		),
 	)
-	AddRule(
-		"deskpins",
-		RegexpVersionExtractor(
+	Rule("deskpins",
+		v.Regexp(
 			"https://efotinis.neocities.org/deskpins/",
-			Re("v([0-9.]+)"),
+			h.Re("v([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://efotinis.neocities.org/deskpins/",
-			false,
 			"a[href*='DeskPins-'][href$='-setup.exe']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"ditto",
-		RegexpVersionExtractor(
+	Rule("ditto",
+		v.Regexp(
 			"http://ditto-cp.sourceforge.net/index.php",
-			Re("versionDots ?= ?\"([0-9.]+)\""),
+			h.Re("versionDots ?= ?\"([0-9.]+)\""),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://sourceforge.net/projects/ditto-cp/files/Ditto/{{.Version}}/DittoSetup_{{.VersionU}}.exe/download",
 			"https://sourceforge.net/projects/ditto-cp/files/Ditto/{{.Version}}/DittoSetup_64bit_{{.VersionU}}.exe/download",
 		),
 	)
-	AddRule(
-		"doublecmd",
-		RegexpVersionExtractor(
+	Rule("doublecmd",
+		v.Regexp(
 			"https://sourceforge.net/p/doublecmd/wiki/Download/",
-			Re("doublecmd-([0-9.]+)\\."),
+			h.Re("doublecmd-([0-9.]+)\\."),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://sourceforge.net/p/doublecmd/wiki/Download/",
-			true,
 			"a[href$='i386-win32.msi/download']",
 			"a[href$='x86_64-win64.msi/download']",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"eac",
-		RegexpVersionExtractor(
+	Rule("eac",
+		v.Regexp(
 			"http://www.exactaudiocopy.de/en/index.php/weitere-seiten/download-from-alternative-servers-2/",
-			Re("Exact Audio Copy V([0-9.]+)"),
+			h.Re("Exact Audio Copy V([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"http://www.exactaudiocopy.de/en/index.php/weitere-seiten/download-from-alternative-servers-2/",
-			false,
 			"a[href*='eac'][href$='.exe']:contains('Download Installer')",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
 	for _, edition := range []string{
@@ -460,416 +367,306 @@ func init() {
 		"jee",
 		"php",
 	} {
-		AddRule(
-			"eclipse-"+edition,
-			RegexpVersionExtractor(
+		Rule("eclipse-"+edition,
+			v.Regexp(
 				"https://eclipse.org/downloads/eclipse-packages/",
-				Re("\\(([0-9a-z.]+)\\) +Release"),
+				h.Re("\\(([0-9a-z.]+)\\) +Release"),
 			),
-			AppendToURL(
-				"&r=1",
-				HTMLDownloadExtractor(
-					"https://eclipse.org/downloads/eclipse-packages/",
-					true,
-					"a.downloadLink[href*='eclipse-"+edition+"-'][href$='-win32.zip']",
-					"a.downloadLink[href*='eclipse-"+edition+"-'][href$='-win32-x86_64.zip']",
-					"href",
-					"href",
-					nil,
-					nil,
-				),
-			),
+			w.AppendToURL("&r=1", d.HTMLA(
+				"https://eclipse.org/downloads/eclipse-packages/",
+				"a.downloadLink[href*='eclipse-"+edition+"-'][href$='-win32.zip']",
+				"a.downloadLink[href*='eclipse-"+edition+"-'][href$='-win32-x86_64.zip']",
+			)),
 		)
 	}
-	AddRule(
-		"eig",
-		GitHubReleaseVersionExtractor(
-			"EvilInsultGenerator",
-			"c-sharp-desktop",
-			Re("v(.+)"),
+	Rule("eig",
+		v.GitHubRelease(
+			"EvilInsultGenerator/c-sharp-desktop",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"EvilInsultGenerator",
-			"c-sharp-desktop",
-			Re("EvilInsultGenerator_Setup.exe"),
+		d.GitHubRelease(
+			"EvilInsultGenerator/c-sharp-desktop",
+			h.Re("EvilInsultGenerator_Setup.exe"),
 			nil,
 		),
 	)
-	AddRule(
-		"emacs",
-		HTMLVersionExtractor(
+	Rule("emacs",
+		v.HTML(
 			"https://ftp.gnu.org/gnu/emacs/windows/?C=M;O=D",
 			"a[href*='emacs'][href$='-i686.zip']",
 			"href",
-			Re("emacs-([0-9.]+)-"),
+			h.Re("emacs-([0-9.]+)-"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://ftp.gnu.org/gnu/emacs/windows/?C=M;O=D",
-			true,
 			"a[href*='emacs'][href$='-i686.zip']",
 			"a[href*='emacs'][href$='-x86_64.zip']",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"enpass",
-		HTMLVersionExtractor(
+	Rule("enpass",
+		v.HTML(
 			"https://www.enpass.io/downloads/",
 			"a[href*='Enpass_'][href$='_Setup.exe']",
 			"href",
-			Re("Enpass_([0-9.]+)_"),
+			h.Re("Enpass_([0-9.]+)_"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.enpass.io/downloads/",
-			false,
 			"a[href*='Enpass_'][href$='_Setup.exe']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"erlang",
-		RegexpVersionExtractor(
+	Rule("erlang",
+		v.Regexp(
 			"https://www.erlang.org/downloads/",
-			Re("DOWNLOAD\\s+OTP\\s+([0-9.]+)"),
+			h.Re("DOWNLOAD\\s+OTP\\s+([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.erlang.org/downloads/",
-			true,
 			"a[href*='win32'][href$='exe']:contains('Windows 32-bit Binary File')",
 			"a[href*='win64'][href$='exe']:contains('Windows 64-bit Binary File')",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"etcher",
-		GitHubReleaseVersionExtractor(
-			"resin-io",
-			"etcher",
-			Re("v(.+)"),
+	Rule("etcher",
+		v.GitHubRelease(
+			"resin-io/etcher",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"resin-io",
-			"etcher",
-			Re("Etcher-Setup-.+-x86.exe"),
-			Re("Etcher-Setup-.+-x64.exe"),
+		d.GitHubRelease(
+			"resin-io/etcher",
+			h.Re("Etcher-Setup-.+-x86.exe"),
+			h.Re("Etcher-Setup-.+-x64.exe"),
 		),
 	)
-	AddRule(
-		"everything-search",
-		RegexpVersionExtractor(
+	Rule("everything-search",
+		v.Regexp(
 			"https://www.voidtools.com/downloads/",
-			Re("Download Everything ([0-9.]+)"),
+			h.Re("Download Everything ([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.voidtools.com/downloads/",
-			true,
 			"a[href$='x86-Setup.exe']:contains('Download Installer')",
 			"a[href$='x64-Setup.exe']:contains('Download Installer 64-bit')",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"filezilla-server",
-		UnderscoreToDot(HTMLVersionExtractor(
+	Rule("filezilla-server",
+		w.UnderscoreToDot(v.HTML(
 			"https://download.filezilla-project.org/server/?C=M;O=D",
 			"a[href*='FileZilla_Server-'][href$='.exe']",
 			"href",
-			Re("FileZilla_Server-([0-9_]+)"),
+			h.Re("FileZilla_Server-([0-9_]+)"),
 		)),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://download.filezilla-project.org/server/?C=M;O=D",
-			false,
 			"a[href*='FileZilla_Server-'][href$='.exe']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"flash-player",
-		HTMLVersionExtractor(
+	Rule("flash-player",
+		v.HTML(
 			"http://get.adobe.com/flashplayer/about/",
 			"td:contains('Opera, Chromium-based browsers - PPAPI')+td",
 			"innerText",
-			Re("([0-9.]+)"),
+			h.Re("([0-9.]+)"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://fpdownload.macromedia.com/get/flashplayer/pdc/{{.Version}}/install_flash_player_{{.Version0}}_plugin.msi",
 			"",
 		),
 	)
-	AddRule(
-		"flash-player-ie",
-		HTMLVersionExtractor(
+	Rule("flash-player-ie",
+		v.HTML(
 			"http://get.adobe.com/flashplayer/about/",
 			"td:contains('Internet Explorer - ActiveX')+td",
 			"innerText",
-			Re("([0-9.]+)"),
+			h.Re("([0-9.]+)"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://fpdownload.macromedia.com/get/flashplayer/pdc/{{.Version}}/install_flash_player_{{.Version0}}_active_x.msi",
 			"",
 		),
 	)
-	AddRule(
-		"freefilesync",
-		RegexpVersionExtractor(
+	Rule("freefilesync",
+		v.Regexp(
 			"https://www.freefilesync.org/download.php",
-			Re("Download FreeFileSync ([0-9.]+)"),
+			h.Re("Download FreeFileSync ([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.freefilesync.org/download.php",
-			false,
 			"a.direct-download-link[href$='.exe']:contains('Windows Setup')",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"geforce-experience",
-		RegexpVersionExtractor(
+	Rule("geforce-experience",
+		v.Regexp(
 			"https://www.nvidia.com/en-us/geforce/geforce-experience/",
-			Re("https://us.download.nvidia.com/GFE/GFEClient/([0-9.]+)/GeForce_Experience"),
+			h.Re("https://us.download.nvidia.com/GFE/GFEClient/([0-9.]+)/GeForce_Experience"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.nvidia.com/en-us/geforce/geforce-experience/",
-			false,
 			"a[href^='https://us.download.nvidia.com/GFE/GFEClient/'][href$='.exe']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"gimp",
-		RegexpVersionExtractor(
+	Rule("gimp",
+		v.Regexp(
 			"https://www.gimp.org/downloads/",
-			Re("current stable release of GIMP is <b>([0-9.]+)"),
+			h.Re("current stable release of GIMP is <b>([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.gimp.org/downloads/",
-			false,
 			"#win a[href$='-setup.exe']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"git",
-		GitHubReleaseVersionExtractor(
-			"git-for-windows",
-			"git",
-			Re("v([0-9.]+)\\.windows.+"),
+	Rule("git",
+		v.GitHubRelease(
+			"git-for-windows/git",
+			h.Re("v([0-9.]+)\\.windows.+"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"git-for-windows",
-			"git",
-			Re("Git-.+-32-bit.exe"),
-			Re("Git-.+-64-bit.exe"),
+		d.GitHubRelease(
+			"git-for-windows/git",
+			h.Re("Git-.+-32-bit.exe"),
+			h.Re("Git-.+-64-bit.exe"),
 		),
 	)
-	AddRule(
-		"gitextensions",
-		GitHubReleaseVersionExtractor(
-			"gitextensions",
-			"gitextensions",
-			Re("v(.+)"),
+	Rule("gitextensions",
+		v.GitHubRelease(
+			"gitextensions/gitextensions",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"gitextensions",
-			"gitextensions",
-			Re("GitExtensions-.*-Setup.msi"),
+		d.GitHubRelease(
+			"gitextensions/gitextensions",
+			h.Re("GitExtensions-.*-Setup.msi"),
 			nil,
 		),
 	)
-	AddRule(
-		"git-lfs",
-		GitHubReleaseVersionExtractor(
-			"git-lfs",
-			"git-lfs",
-			Re("v(.+)"),
+	Rule("git-lfs",
+		v.GitHubRelease(
+			"git-lfs/git-lfs",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"git-lfs",
-			"git-lfs",
-			Re("git-lfs-windows-.+.exe"),
+		d.GitHubRelease(
+			"git-lfs/git-lfs",
+			h.Re("git-lfs-windows-.+.exe"),
 			nil,
 		),
 	)
-	AddRule(
-		"go",
-		RegexpVersionExtractor(
+	Rule("go",
+		v.Regexp(
 			"https://golang.org/dl/",
-			Re("go([0-9.]+)\\.windows"),
+			h.Re("go([0-9.]+)\\.windows"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://dl.google.com/go/go{{.Version}}.windows-386.msi",
 			"https://dl.google.com/go/go{{.Version}}.windows-amd64.msi",
 		),
 	)
-	AddRule(
-		"gog-galaxy",
-		RegexpVersionExtractor(
+	Rule("gog-galaxy",
+		v.Regexp(
 			"https://www.gog.com/galaxy",
-			Re("setup_galaxy_([0-9.]+).exe"),
+			h.Re("setup_galaxy_([0-9.]+).exe"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.gog.com/galaxy",
-			false,
 			"a[href*='setup'][href$='.exe']:contains('Windows')",
 			"",
-			"href",
-			"",
-			nil,
+		),
+	)
+	Rule("gow",
+		v.GitHubRelease(
+			"bmatzelle/gow",
+			h.Re("v(.+)"),
+		),
+		d.GitHubRelease(
+			"bmatzelle/gow",
+			h.Re("Gow-.+.exe"),
 			nil,
 		),
 	)
-	AddRule(
-		"gow",
-		GitHubReleaseVersionExtractor(
-			"bmatzelle",
-			"gow",
-			Re("v(.+)"),
+	Rule("greenshot",
+		v.GitHubRelease(
+			"greenshot/greenshot",
+			h.Re("Greenshot-RELEASE-([0-9.]+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"bmatzelle",
-			"gow",
-			Re("Gow-.+.exe"),
+		d.GitHubRelease(
+			"greenshot/greenshot",
+			h.Re("Greenshot-INSTALLER-.+-RELEASE.exe"),
 			nil,
 		),
 	)
-	AddRule(
-		"greenshot",
-		GitHubReleaseVersionExtractor(
-			"greenshot",
-			"greenshot",
-			Re("Greenshot-RELEASE-([0-9.]+)"),
-		),
-		GitHubReleaseDownloadExtractor(
-			"greenshot",
-			"greenshot",
-			Re("Greenshot-INSTALLER-.+-RELEASE.exe"),
-			nil,
-		),
-	)
-	AddRule(
-		"gvim",
-		RegexpVersionExtractor(
+	Rule("gvim",
+		v.Regexp(
 			"https://www.vim.org/download.php",
-			Re("latest version \\(currently ([0-9.]+)\\)"),
+			h.Re("latest version \\(currently ([0-9.]+)\\)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"http://ftp.vim.org/pub/vim/pc/?C=M;O=D",
-			false,
 			"a[href*='gvim'][href$='.exe']",
 			"",
-			"href",
-			"",
-			nil,
+		),
+	)
+	Rule("hashcheck",
+		v.GitHubRelease(
+			"gurnec/HashCheck",
+			h.Re("v(.+)"),
+		),
+		d.GitHubRelease(
+			"gurnec/HashCheck",
+			h.Re("HashCheckSetup-.+.exe"),
 			nil,
 		),
 	)
-	AddRule(
-		"hashcheck",
-		GitHubReleaseVersionExtractor(
-			"gurnec",
-			"HashCheck",
-			Re("v(.+)"),
-		),
-		GitHubReleaseDownloadExtractor(
-			"gurnec",
-			"HashCheck",
-			Re("HashCheckSetup-.+.exe"),
-			nil,
-		),
-	)
-	AddRule(
-		"heidisql",
-		RegexpVersionExtractor(
+	Rule("heidisql",
+		v.Regexp(
 			"https://www.heidisql.com/download.php",
-			Re("HeidiSQL_([0-9.]+)_"),
+			h.Re("HeidiSQL_([0-9.]+)_"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.heidisql.com/download.php",
-			false,
 			"a[href$='Setup.exe']:contains('Installer')",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"hugo",
-		GitHubReleaseVersionExtractor(
-			"gohugoio",
-			"hugo",
-			Re("v(.+)"),
+	Rule("hugo",
+		v.GitHubRelease(
+			"gohugoio/hugo",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"gohugoio",
-			"hugo",
-			Re("hugo_.+_Windows-32bit.zip"),
-			Re("hugo_.+_Windows-64bit.zip"),
+		d.GitHubRelease(
+			"gohugoio/hugo",
+			h.Re("hugo_.+_Windows-32bit.zip"),
+			h.Re("hugo_.+_Windows-64bit.zip"),
 		),
 	)
-	AddRule(
-		"imageglass",
-		GitHubReleaseVersionExtractor(
-			"d2phap",
-			"ImageGlass",
-			Re("([0-9.]+)"),
+	Rule("imageglass",
+		v.GitHubRelease(
+			"d2phap/ImageGlass",
+			h.Re("([0-9.]+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"d2phap",
-			"ImageGlass",
-			Re("ImageGlass_.+.exe"),
+		d.GitHubRelease(
+			"d2phap/ImageGlass",
+			h.Re("ImageGlass_.+.exe"),
 			nil,
 		),
 	)
-	AddRule(
-		"inkscape",
-		RegexpVersionExtractor(
+	Rule("inkscape",
+		v.Regexp(
 			"https://inkscape.org/en/release/",
-			Re("Download Inkscape ([0-9.]+)"),
+			h.Re("Download Inkscape ([0-9.]+)"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://media.inkscape.org/dl/resources/file/inkscape-{{.Version}}-x86.msi",
 			"https://media.inkscape.org/dl/resources/file/inkscape-{{.Version}}-x64.msi",
 		),
 	)
-	AddRule(
-		"jdk",
-		RegexpVersionExtractor(
+	Rule("jdk",
+		v.Regexp(
 			"https://lv.binarybabel.org/catalog-api/java/jdk8.txt?p=version",
-			Re("([0-9a-zA-Z.-]+)"),
+			h.Re("([0-9a-zA-Z.-]+)"),
 		),
 		func(version string) (string, *string, error) {
-			buf, _, ok, err := GetURL(nil, "https://lv.binarybabel.org/catalog-api/java/jdk8.txt?p=downloads.exe", map[string]string{}, []int{200})
+			buf, _, ok, err := h.GetURL(nil, "https://lv.binarybabel.org/catalog-api/java/jdk8.txt?p=downloads.exe", map[string]string{}, []int{200})
 			if err != nil {
 				return "", nil, err
 			}
@@ -881,629 +678,467 @@ func init() {
 			return x86, &x64, nil
 		},
 	)
-	AddRule(
-		"jre",
+	Rule("jre",
 		func() (string, error) {
-			version, err := RegexpVersionExtractor("https://www.java.com/en/download/manual.jsp", Re("Recommended Version ([0-9]* Update [0-9]*)"))()
+			version, err := v.Regexp("https://www.java.com/en/download/manual.jsp", h.Re("Recommended Version ([0-9]* Update [0-9]*)"))()
 			if err != nil {
 				return "", err
 			}
 			return strings.Replace(version, " Update ", ".", 1), nil
 		},
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.java.com/en/download/manual.jsp",
-			true,
 			"a[title='Download Java software for Windows Offline']",
 			"a[title='Download Java software for Windows (64-bit)']",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"keepass",
-		RegexpVersionExtractor(
+	Rule("keepass",
+		v.Regexp(
 			"https://sourceforge.net/projects/keepass/files/",
-			Re("KeePass-([0-9.]+)\\."),
+			h.Re("KeePass-([0-9.]+)\\."),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://sourceforge.net/projects/keepass/files/KeePass%202.x/{{.Version}}/KeePass-{{.Version}}.msi/download",
 			"",
 		),
 	)
-	AddRule(
-		"keepassxc",
-		GitHubReleaseVersionExtractor(
-			"keepassxreboot",
-			"keepassxc",
-			Re("([0-9.]+)"),
+	Rule("keepassxc",
+		v.GitHubRelease(
+			"keepassxreboot/keepassxc",
+			h.Re("([0-9.]+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"keepassxreboot",
-			"keepassxc",
-			Re("KeePassXC-.+-Win32.exe"),
-			Re("KeePassXC-.+-Win64.exe"),
+		d.GitHubRelease(
+			"keepassxreboot/keepassxc",
+			h.Re("KeePassXC-.+-Win32.exe"),
+			h.Re("KeePassXC-.+-Win64.exe"),
 		),
 	)
-	AddRule(
-		"keeweb",
-		GitHubReleaseVersionExtractor(
-			"keeweb",
-			"keeweb",
-			Re("v(.+)"),
+	Rule("keeweb",
+		v.GitHubRelease(
+			"keeweb/keeweb",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"keeweb",
-			"keeweb",
-			Re("KeeWeb-.+.win.ia32.exe"),
-			Re("KeeWeb-.+.win.x64.exe"),
+		d.GitHubRelease(
+			"keeweb/keeweb",
+			h.Re("KeeWeb-.+.win.ia32.exe"),
+			h.Re("KeeWeb-.+.win.x64.exe"),
 		),
 	)
-	AddRule(
-		"kicad",
-		RegexpVersionExtractor(
+	Rule("kicad",
+		v.Regexp(
 			"http://kicad-pcb.org/download/windows/",
-			Re("Stable Release Current Version: ([0-9.]+)"),
+			h.Re("Stable Release Current Version: ([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"http://kicad-pcb.org/download/windows/",
-			true,
 			"a[href$='.exe']:contains('Windows 32-bit')",
 			"a[href$='.exe']:contains('Windows 64-bit')",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"kodi",
-		RegexpVersionExtractor(
+	Rule("kodi",
+		v.Regexp(
 			"http://mirrors.kodi.tv/releases/windows/win32/?C=M&O=D",
-			Re("kodi-([0-9.]+)-"),
+			h.Re("kodi-([0-9.]+)-"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"http://mirrors.kodi.tv/releases/windows/win32/?C=M&O=D",
-			false,
 			"a[href*='kodi'][href$='-x86.exe']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"libreoffice",
-		RegexpVersionExtractor(
+	Rule("libreoffice",
+		v.Regexp(
 			"https://www.libreoffice.org/download/libreoffice-fresh/?type=win-x86&lang=en-US",
-			Re("LibreOffice ([0-9.]+) "),
+			h.Re("LibreOffice ([0-9.]+) "),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://download.documentfoundation.org/libreoffice/stable/{{.Version}}/win/x86/LibreOffice_{{.Version}}_Win_x86.msi",
 			"https://download.documentfoundation.org/libreoffice/stable/{{.Version}}/win/x86_64/LibreOffice_{{.Version}}_Win_x64.msi",
 		),
 	)
-	AddRule(
-		"lockhunter",
-		RegexpVersionExtractor(
+	Rule("lockhunter",
+		v.Regexp(
 			"http://lockhunter.com/download.htm",
-			Re("Version: ([0-9.]+)"),
+			h.Re("Version: ([0-9.]+)"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"http://lockhunter.com/exe/lockhuntersetup_{{.VersionD}}.exe",
 			"",
 		),
 	)
-	AddRule(
-		"mercurial",
-		RegexpVersionExtractor(
+	Rule("mercurial",
+		v.Regexp(
 			"https://www.mercurial-scm.org/sources.js",
-			Re("windows/mercurial-([0-9.]+)-"),
+			h.Re("windows/mercurial-([0-9.]+)-"),
 		),
-		RegexpDownloadExtractor(
+		d.Regexp(
 			"https://www.mercurial-scm.org/sources.js",
-			Re("(https://www.mercurial-scm.org/release/windows/mercurial-[0-9.]+-x86.msi)"),
-			Re("(https://www.mercurial-scm.org/release/windows/mercurial-[0-9.]+-x64.msi)"),
+			h.Re("(https://www.mercurial-scm.org/release/windows/mercurial-[0-9.]+-x86.msi)"),
+			h.Re("(https://www.mercurial-scm.org/release/windows/mercurial-[0-9.]+-x64.msi)"),
 		),
 	)
-	AddRule(
-		"mono",
-		RegexpVersionExtractor(
+	Rule("mono",
+		v.Regexp(
 			"http://www.mono-project.com/download/stable/",
-			Re("[0-9.]+ Stable \\(([0-9.]+)\\)"),
+			h.Re("[0-9.]+ Stable \\(([0-9.]+)\\)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"http://www.mono-project.com/download/stable/",
-			false,
 			"a[href*='download.mono-project.com'][href*='windows-installer'][href$='.msi']:not([href*='gtksharp'])",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"mountainduck",
-		RegexpVersionExtractor(
+	Rule("mountainduck",
+		v.Regexp(
 			"https://mountainduck.io/",
-			Re("Installer-([0-9.]+).exe"),
+			h.Re("Installer-([0-9.]+).exe"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://mountainduck.io/",
-			false,
 			"a[href*='Installer'][href$='.msi']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"mp3tag",
-		RegexpVersionExtractor(
+	Rule("mp3tag",
+		v.Regexp(
 			"https://www.mp3tag.de/en/download.html",
-			Re("Mp3tag v([0-9.a-z]+)"),
+			h.Re("Mp3tag v([0-9.a-z]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.mp3tag.de/en/dodownload.html",
-			false,
 			"a[href*='download'][href$='.exe']:contains('here')",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"mpc-hc",
-		RegexpVersionExtractor(
+	Rule("mpc-hc",
+		v.Regexp(
 			"https://mpc-hc.org/downloads/",
-			Re("latest stable build is v([0-9.]+)"),
+			h.Re("latest stable build is v([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://mpc-hc.org/downloads/",
-			true,
 			"a[href$='.x86.exe']",
 			"a[href$='.x64.exe']",
-			"href",
-			"href",
-			nil,
+		),
+	)
+	Rule("mumble",
+		v.GitHubRelease(
+			"mumble-voip/mumble",
+			h.Re("([0-9.]+)"),
+		),
+		d.GitHubRelease(
+			"mumble-voip/mumble",
+			h.Re("mumble-.+.msi"),
 			nil,
 		),
 	)
-	AddRule(
-		"mumble",
-		GitHubReleaseVersionExtractor(
-			"mumble-voip",
-			"mumble",
-			Re("([0-9.]+)"),
+	Rule("naps2",
+		v.GitHubRelease(
+			"cyanfish/naps2",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"mumble-voip",
-			"mumble",
-			Re("mumble-.+.msi"),
+		d.GitHubRelease(
+			"cyanfish/naps2",
+			h.Re("naps2-.+-setup.msi"),
 			nil,
 		),
 	)
-	AddRule(
-		"naps2",
-		GitHubReleaseVersionExtractor(
-			"cyanfish",
-			"naps2",
-			Re("v(.+)"),
-		),
-		GitHubReleaseDownloadExtractor(
-			"cyanfish",
-			"naps2",
-			Re("naps2-.+-setup.msi"),
-			nil,
-		),
-	)
-	AddRule(
-		"nextcloud",
-		HTMLVersionExtractor(
+	Rule("nextcloud",
+		v.HTML(
 			"https://nextcloud.com/install/",
 			"#tab-desktop a[href*='desktop/releases/Windows'][href$='setup.exe']",
 			"href",
-			Re("Nextcloud-([0-9.]+)-"),
+			h.Re("Nextcloud-([0-9.]+)-"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://nextcloud.com/install/",
-			false,
 			"#tab-desktop a[href*='desktop/releases/Windows'][href$='setup.exe']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"node",
-		RegexpVersionExtractor(
+	Rule("node",
+		v.Regexp(
 			"https://nodejs.org/en/download/current/",
-			Re("Latest Current Version: <strong>([0-9.]+)"),
+			h.Re("Latest Current Version: <strong>([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://nodejs.org/en/download/current/",
-			true,
 			"th:contains('Windows Installer (.msi)') ~ td>a:contains('32-bit')",
 			"th:contains('Windows Installer (.msi)') ~ td>a:contains('64-bit')",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"node-lts",
-		RegexpVersionExtractor(
+	Rule("node-lts",
+		v.Regexp(
 			"https://nodejs.org/en/download/",
-			Re("Latest LTS Version: <strong>([0-9.]+)"),
+			h.Re("Latest LTS Version: <strong>([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://nodejs.org/en/download/",
-			true,
 			"th:contains('Windows Installer (.msi)') ~ td>a:contains('32-bit')",
 			"th:contains('Windows Installer (.msi)') ~ td>a:contains('64-bit')",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"notepad++",
-		RegexpVersionExtractor(
+	Rule("notepad++",
+		v.Regexp(
 			"https://notepad-plus-plus.org/download/",
-			Re("Download Notepad\\+\\+ ([0-9.]+)"),
+			h.Re("Download Notepad\\+\\+ ([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://notepad-plus-plus.org/download/",
-			true,
 			"a[href*='npp'][href$='nstaller.exe']",
 			"a[href*='npp'][href$='nstaller.x64.exe']",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"notepad2-mod",
-		GitHubReleaseVersionExtractor(
-			"XhmikosR",
-			"notepad2-mod",
-			Re("([0-9.]+)"),
+	Rule("notepad2-mod",
+		v.GitHubRelease(
+			"XhmikosR/notepad2-mod",
+			h.Re("([0-9.]+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"XhmikosR",
-			"notepad2-mod",
-			Re("Notepad2-mod..+.exe"),
+		d.GitHubRelease(
+			"XhmikosR/notepad2-mod",
+			h.Re("Notepad2-mod..+.exe"),
 			nil,
 		),
 	)
-	AddRule(
-		"npackd",
-		GitHubReleaseVersionExtractor(
-			"tim-lebedkov",
-			"npackd-cpp",
-			Re("version_([0-9.]+)"),
+	Rule("npackd",
+		v.GitHubRelease(
+			"tim-lebedkov/npackd-cpp",
+			h.Re("version_([0-9.]+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"tim-lebedkov",
-			"npackd-cpp",
-			Re("Npackd32-.+.msi"),
-			Re("Npackd64-.+.msi"),
+		d.GitHubRelease(
+			"tim-lebedkov/npackd-cpp",
+			h.Re("Npackd32-.+.msi"),
+			h.Re("Npackd64-.+.msi"),
 		),
 	)
-	AddRule(
-		"npackdcl",
-		GitHubReleaseVersionExtractor(
-			"tim-lebedkov",
-			"npackd-cpp",
-			Re("version_([0-9.]+)"),
+	Rule("npackdcl",
+		v.GitHubRelease(
+			"tim-lebedkov/npackd-cpp",
+			h.Re("version_([0-9.]+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"tim-lebedkov",
-			"npackd-cpp",
-			Re("NpackdCL-.+.msi"),
+		d.GitHubRelease(
+			"tim-lebedkov/npackd-cpp",
+			h.Re("NpackdCL-.+.msi"),
 			nil,
 		),
 	)
-	AddRule(
-		"nxlog",
-		RegexpVersionExtractor(
+	Rule("nxlog",
+		v.Regexp(
 			"https://nxlog.co/products/nxlog-community-edition/download",
-			Re("nxlog-ce-([0-9.]+)\\.msi"),
+			h.Re("nxlog-ce-([0-9.]+)\\.msi"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://nxlog.co/products/nxlog-community-edition/download",
-			false,
 			"a[href*='nxlog-ce-'][href$='.msi']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"obs-studio",
-		RegexpVersionExtractor(
+	Rule("obs-studio",
+		v.Regexp(
 			"https://obsproject.com/download",
-			Re("download/([0-9.]+)/OBS"),
+			h.Re("download/([0-9.]+)/OBS"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://obsproject.com/download",
-			false,
 			"a[href*='OBS-Studio-'][href$='Full-Installer.exe']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"octave",
-		RegexpVersionExtractor(
+	Rule("octave",
+		v.Regexp(
 			"https://ftp.gnu.org/gnu/octave/windows/?C=M;O=D",
-			Re("octave-([0-9.]+)-w32-installer.exe"),
+			h.Re("octave-([0-9.]+)-w32-installer.exe"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://ftp.gnu.org/gnu/octave/windows/?C=M;O=D",
-			true,
 			"a[href*='octave-'][href$='-w32-installer.exe']",
 			"a[href*='octave-'][href$='-w64-installer.exe']",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"open-hardware-monitor",
-		RegexpVersionExtractor(
+	Rule("open-hardware-monitor",
+		v.Regexp(
 			"http://openhardwaremonitor.org/downloads/",
-			Re("Open Hardware Monitor ([0-9.]+)"),
+			h.Re("Open Hardware Monitor ([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"http://openhardwaremonitor.org/downloads/",
-			false,
 			"a[href*='openhardwaremonitor-'][href$='.zip']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"openssh",
-		RegexpVersionExtractor(
+	Rule("openssh",
+		v.Regexp(
 			"https://www.mls-software.com/opensshd.html",
-			Re("OpenSSH ([0-9.]+)p"),
+			h.Re("OpenSSH ([0-9.]+)p"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.mls-software.com/opensshd.html",
-			false,
 			"a[href*='setupssh-'][href$='.exe']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"perl",
-		HTMLVersionExtractor(
+	Rule("perl",
+		v.HTML(
 			"http://strawberryperl.com/releases.html",
 			"a[href*='strawberry-perl-'][href$='32bit.msi']",
 			"href",
-			Re("strawberry-perl-([0-9.]+)-"),
+			h.Re("strawberry-perl-([0-9.]+)-"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"http://strawberryperl.com/releases.html",
-			true,
 			"a[href*='strawberry-perl-'][href$='32bit.msi']",
 			"a[href*='strawberry-perl-'][href$='64bit.msi']",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"pia",
-		RegexpVersionExtractor(
+	Rule("pia",
+		v.Regexp(
 			"https://www.privateinternetaccess.com/pages/downloads",
-			Re("Clients v([0-9]+) Released"),
+			h.Re("Clients v([0-9]+) Released"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.privateinternetaccess.com/pages/downloads",
-			false,
 			"a[href*='pia-'][href$='installer-win.exe']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"plex-media-server",
-		RegexpVersionExtractor(
+	Rule("plex-media-server",
+		v.Regexp(
 			"https://plex.tv/api/downloads/1.json",
-			Re("version\":\"([0-9.]+)"),
+			h.Re("version\":\"([0-9.]+)"),
 		),
-		RegexpDownloadExtractor(
+		d.Regexp(
 			"https://plex.tv/api/downloads/1.json",
-			Re("\"(https://downloads.plex.tv/plex-media-server/[0-9a-z.-]+?/Plex-Media-Server-[0-9a-z.-]+?.exe)\""),
+			h.Re("\"(https://downloads.plex.tv/plex-media-server/[0-9a-z.-]+?/Plex-Media-Server-[0-9a-z.-]+?.exe)\""),
 			nil,
 		),
 	)
-	AddRule(
-		"processhacker",
-		GitHubReleaseVersionExtractor(
-			"processhacker",
-			"processhacker",
-			Re("v(.+)"),
+	Rule("processhacker",
+		v.GitHubRelease(
+			"processhacker/processhacker",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"processhacker",
-			"processhacker",
-			Re("processhacker-.+-setup.exe"),
+		d.GitHubRelease(
+			"processhacker/processhacker",
+			h.Re("processhacker-.+-setup.exe"),
 			nil,
 		),
 	)
-	AddRule(
-		"putty",
-		RegexpVersionExtractor(
+	Rule("putty",
+		v.Regexp(
 			"http://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html",
-			Re("latest release \\(([0-9.]+)\\)"),
+			h.Re("latest release \\(([0-9.]+)\\)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"http://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html",
-			true,
 			"span.downloadfile a[href^='https'][href*='w32/putty'][href$='.msi']",
 			"span.downloadfile a[href^='https'][href*='w64/putty'][href$='.msi']",
-			"href",
-			"href",
-			nil,
+		),
+	)
+	Rule("pycharm-community",
+		v.Regexp(
+			"https://data.services.jetbrains.com/products/releases?code=PCP%2CPCC&latest=true",
+			h.Re("version\":\"([0-9.]+)"),
+		),
+		d.Regexp(
+			"https://data.services.jetbrains.com/products/releases?code=PCP%2CPCC&latest=true",
+			h.Re("\"(https://download.jetbrains.com/python/pycharm-community-[0-9.]+.exe)\""),
 			nil,
 		),
 	)
-	AddRule(
-		"pycharm-community",
-		RegexpVersionExtractor(
-			"https://data.services.jetbrains.com/products/releases?code=PCP%2CPCC&latest=true",
-			Re("version\":\"([0-9.]+)"),
-		),
-		RegexpDownloadExtractor(
-			"https://data.services.jetbrains.com/products/releases?code=PCP%2CPCC&latest=true",
-			Re("\"(https://download.jetbrains.com/python/pycharm-community-[0-9.]+.exe)\""),
-			nil,
-		),
-	)
-	AddRule(
-		"python2",
-		HTMLVersionExtractor(
+	Rule("python2",
+		v.HTML(
 			"https://www.python.org/downloads/",
 			".download-for-current-os .download-os-windows a[href*='python-2']",
 			"innerText",
-			Re("Download Python ([0-9.]+)"),
+			h.Re("Download Python ([0-9.]+)"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://www.python.org/ftp/python/{{.Version}}/python-{{.Version}}.msi",
 			"https://www.python.org/ftp/python/{{.Version}}/python-{{.Version}}.amd64.msi",
 		),
 	)
-	AddRule(
-		"python2-yaml",
-		GitHubTagVersionExtractor(
-			"yaml",
-			"pyyaml",
-			Re("([0-9.]+)"),
+	Rule("python2-yaml",
+		v.GitHubTag(
+			"yaml/pyyaml",
+			h.Re("([0-9.]+)"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://pyyaml.org/download/pyyaml/PyYAML-{{.Version}}.win32-py2.7.exe",
 			"https://pyyaml.org/download/pyyaml/PyYAML-{{.Version}}.win-amd64-py2.7.exe",
 		),
 	)
-	AddRule(
-		"python2-win32",
-		GitHubReleaseVersionExtractor(
-			"mhammond",
-			"pywin32",
-			Re("b(.+)"),
+	Rule("python2-win32",
+		v.GitHubRelease(
+			"mhammond/pywin32",
+			h.Re("b(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"mhammond",
-			"pywin32",
-			Re("pywin32-.+.win32-py2.7.exe"),
-			Re("pywin32-.+.win-amd64-py2.7.exe"),
+		d.GitHubRelease(
+			"mhammond/pywin32",
+			h.Re("pywin32-.+.win32-py2.7.exe"),
+			h.Re("pywin32-.+.win-amd64-py2.7.exe"),
 		),
 	)
-	AddRule(
-		"python3",
-		HTMLVersionExtractor(
+	Rule("python3",
+		v.HTML(
 			"https://www.python.org/downloads/",
 			".download-for-current-os .download-os-windows a[href*='python-3']",
 			"innerText",
-			Re("Download Python ([0-9.]+)"),
+			h.Re("Download Python ([0-9.]+)"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://www.python.org/ftp/python/{{.Version}}/python-{{.Version}}.exe",
 			"https://www.python.org/ftp/python/{{.Version}}/python-{{.Version}}-amd64.exe",
 		),
 	)
-	AddRule(
-		"qbittorrent",
-		RegexpVersionExtractor(
+	Rule("qbittorrent",
+		v.Regexp(
 			"http://www.oldfoss.com/qBittorrent.html",
-			Re("qbittorrent_([0-9.]+)_setup.exe"),
+			h.Re("qbittorrent_([0-9.]+)_setup.exe"),
 		),
 		func(version string) (string, *string, error) {
-			return RegexpDownloadExtractor(
+			return d.Regexp(
 				"http://www.oldfoss.com/qBittorrent.html",
-				Re("\"(http.+qbittorrent_"+version+"_setup.exe)\""),
-				Re("\"(http.+qbittorrent_"+version+"_x64_setup.exe)\""),
+				h.Re("\"(http.+qbittorrent_"+version+"_setup.exe)\""),
+				h.Re("\"(http.+qbittorrent_"+version+"_x64_setup.exe)\""),
 			)(version)
 		},
 	)
-	AddRule(
-		"recuva",
+	Rule("recuva",
 		func() (string, error) {
-			version, err := RegexpVersionExtractor(
+			version, err := v.Regexp(
 				"https://www.ccleaner.com/recuva/download/standard",
-				Re("rcsetup([0-9]+)"),
+				h.Re("rcsetup([0-9]+)"),
 			)()
 			if err != nil {
 				return "", err
 			}
 			return string(version[0]) + "." + string(version[1:]), nil
 		},
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.ccleaner.com/recuva/download/standard",
-			false,
 			"a[href$='.exe']:contains('start the download')",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"ruby",
-		GitHubReleaseVersionExtractor(
-			"oneclick",
-			"rubyinstaller2",
-			Re("rubyinstaller-([0-9.]+)"),
+	Rule("ruby",
+		v.GitHubRelease(
+			"oneclick/rubyinstaller2",
+			h.Re("rubyinstaller-([0-9.]+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"oneclick",
-			"rubyinstaller2",
-			Re("rubyinstaller-[0-9.]+-.+-x86.exe"),
-			Re("rubyinstaller-[0-9.]+-.+-x64.exe"),
+		d.GitHubRelease(
+			"oneclick/rubyinstaller2",
+			h.Re("rubyinstaller-[0-9.]+-.+-x86.exe"),
+			h.Re("rubyinstaller-[0-9.]+-.+-x64.exe"),
 		),
 	)
-	AddRule(
-		"seafile-client",
-		NoHTTPSForVersionExtractor(HTMLVersionExtractor(
+	Rule("seafile-client",
+		w.NoHTTPSForVersionExtractor(v.HTML(
 			"https://www.seafile.com/en/download/",
 			".txt > h3:contains('Client for Windows')~a[href*='seafile'][href$='en.msi'].download-op",
 			"innerText",
-			Re("([0-9.]+)"),
+			h.Re("([0-9.]+)"),
 		)),
-		NoHTTPSForDownloadExtractor(HTMLDownloadExtractor(
+		w.NoHTTPSForDownloadExtractor(d.HTML(
 			"https://www.seafile.com/en/download/",
 			false,
 			".txt > h3:contains('Client for Windows')~a[href*='seafile'][href$='en.msi'].download-op",
@@ -1514,187 +1149,141 @@ func init() {
 			nil,
 		)),
 	)
-	AddRule(
-		"sharex",
-		GitHubReleaseVersionExtractor(
-			"ShareX",
-			"ShareX",
-			Re("v(.+)"),
+	Rule("sharex",
+		v.GitHubRelease(
+			"ShareX/ShareX",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"ShareX",
-			"ShareX",
-			Re("ShareX-.+-setup.exe"),
+		d.GitHubRelease(
+			"ShareX/ShareX",
+			h.Re("ShareX-.+-setup.exe"),
 			nil,
 		),
 	)
-	AddRule(
-		"signal",
-		RegexpVersionExtractor(
+	Rule("signal",
+		v.Regexp(
 			"https://updates.signal.org/desktop/latest.yml",
-			Re("version: ([0-9.]+)"),
+			h.Re("version: ([0-9.]+)"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://updates.signal.org/desktop/signal-desktop-win-{{.Version}}.exe",
 			"",
 		),
 	)
-	AddRule(
-		"simplenote",
-		GitHubReleaseVersionExtractor(
-			"Automattic",
-			"simplenote-electron",
-			Re("v(.+)"),
+	Rule("simplenote",
+		v.GitHubRelease(
+			"Automattic/simplenote-electron",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"Automattic",
-			"simplenote-electron",
-			Re("Simplenote-windows-.+.exe"),
+		d.GitHubRelease(
+			"Automattic/simplenote-electron",
+			h.Re("Simplenote-windows-.+.exe"),
 			nil,
 		),
 	)
-	AddRule(
-		"sharpkeys",
-		GitHubReleaseVersionExtractor(
-			"randyrants",
-			"sharpkeys",
-			Re("v(.+)"),
+	Rule("sharpkeys",
+		v.GitHubRelease(
+			"randyrants/sharpkeys",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"randyrants",
-			"sharpkeys",
-			Re("sharpkeys.+.msi"),
+		d.GitHubRelease(
+			"randyrants/sharpkeys",
+			h.Re("sharpkeys.+.msi"),
 			nil,
 		),
 	)
-	AddRule(
-		"smplayer",
-		RegexpVersionExtractor(
+	Rule("smplayer",
+		v.Regexp(
 			"https://sourceforge.net/projects/smplayer/files/",
-			Re("smplayer-([0-9.]+)\\."),
+			h.Re("smplayer-([0-9.]+)\\."),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://sourceforge.net/projects/smplayer/files/SMPlayer/{{.Version}}/smplayer-{{.Version}}-win32.exe/download",
 			"https://sourceforge.net/projects/smplayer/files/SMPlayer/{{.Version}}/smplayer-{{.Version}}-x64.exe/download",
 		),
 	)
-	AddRule(
-		"sourcetree",
-		RegexpVersionExtractor(
+	Rule("sourcetree",
+		v.Regexp(
 			"https://www.sourcetreeapp.com",
-			Re("SourceTreeSetup-([0-9.]+)\\.exe"),
+			h.Re("SourceTreeSetup-([0-9.]+)\\.exe"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.sourcetreeapp.com",
-			false,
 			"a[href*='SourceTreeSetup'][href$='exe']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"sublime-text",
-		RegexpVersionExtractor(
+	Rule("sublime-text",
+		v.Regexp(
 			"https://www.sublimetext.com/2",
-			Re("Version:</i> ([0-9.]+)"),
+			h.Re("Version:</i> ([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.sublimetext.com/2",
-			true,
 			"#dl_win_32 a[href$='exe']",
 			"#dl_win_64 a[href$='exe']",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"sublime-text-3",
-		RegexpVersionExtractor(
+	Rule("sublime-text-3",
+		v.Regexp(
 			"https://www.sublimetext.com/3",
-			Re("Version:</i> Build ([0-9]+)"),
+			h.Re("Version:</i> Build ([0-9]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.sublimetext.com/3",
-			true,
 			"#dl_win_32 a[href$='exe']",
 			"#dl_win_64 a[href$='exe']",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"sublime-text-dev",
-		RegexpVersionExtractor(
+	Rule("sublime-text-dev",
+		v.Regexp(
 			"https://www.sublimetext.com/3dev",
-			Re("Version:</i> Build ([0-9]+)"),
+			h.Re("Version:</i> Build ([0-9]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.sublimetext.com/3dev",
-			true,
 			"#dl_win_32 a[href$='exe']",
 			"#dl_win_64 a[href$='exe']",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"subversion",
-		RegexpVersionExtractor(
+	Rule("subversion",
+		v.Regexp(
 			"https://sliksvn.com/download/",
-			Re("Subversion-([0-9.]+)-"),
+			h.Re("Subversion-([0-9.]+)-"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://sliksvn.com/download/",
-			true,
 			".client a[href$='zip']:contains('32 bit')",
 			".client a[href$='zip']:contains('64 bit')",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"sumatrapdf",
-		RegexpVersionExtractor(
+	Rule("sumatrapdf",
+		v.Regexp(
 			"https://www.sumatrapdfreader.org/news.html",
-			Re(">([0-9.]+) \\(20"),
+			h.Re(">([0-9.]+) \\(20"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://www.sumatrapdfreader.org/dl/SumatraPDF-{{.Version}}-install.exe",
 			"https://www.sumatrapdfreader.org/dl/SumatraPDF-{{.Version}}-64-install.exe",
 		),
 	)
-	AddRule(
-		"syncthing",
-		GitHubReleaseVersionExtractor(
-			"syncthing",
-			"syncthing",
-			Re("v(.+)"),
+	Rule("syncthing",
+		v.GitHubRelease(
+			"syncthing/syncthing",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"syncthing",
-			"syncthing",
-			Re(".*windows-386.*.zip"),
-			Re(".*windows-amd64.*.zip"),
+		d.GitHubRelease(
+			"syncthing/syncthing",
+			h.Re(".*windows-386.*.zip"),
+			h.Re(".*windows-amd64.*.zip"),
 		),
 	)
-	AddRule(
-		"teamspeak",
-		RegexpVersionExtractor(
+	Rule("teamspeak",
+		v.Regexp(
 			"https://www.teamspeak.com/en/downloads",
-			Re("Client-win32-([0-9.]+)\\.exe"),
+			h.Re("Client-win32-([0-9.]+)\\.exe"),
 		),
-		HTMLDownloadExtractor(
+		d.HTML(
 			"https://www.teamspeak.com/en/downloads",
 			true,
 			"option[value*='win32'][value$='.exe']",
@@ -1705,57 +1294,39 @@ func init() {
 			nil,
 		),
 	)
-	AddRule(
-		"tightvnc",
-		RegexpVersionExtractor(
+	Rule("tightvnc",
+		v.Regexp(
 			"https://tightvnc.com/download.php",
-			Re("Version ([0-9.]+)"),
+			h.Re("Version ([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://tightvnc.com/download.php",
-			true,
 			"a[href*='tightvnc-'][href$='-setup-32bit.msi']",
 			"a[href*='tightvnc-'][href$='-setup-64bit.msi']",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"tortoisegit",
-		RegexpVersionExtractor(
+	Rule("tortoisegit",
+		v.Regexp(
 			"https://tortoisegit.org/download/",
-			Re("TortoiseGit-([0-9.]+)"),
+			h.Re("TortoiseGit-([0-9.]+)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://tortoisegit.org/download/",
-			true,
 			"a[href$='32bit.msi']",
 			"a[href$='64bit.msi']",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"tortoisesvn",
-		RegexpVersionExtractor(
+	Rule("tortoisesvn",
+		v.Regexp(
 			"https://tortoisesvn.net/downloads.html",
-			Re("The current version is ([0-9.]+)"),
+			h.Re("The current version is ([0-9.]+)"),
 		),
 		func(version string) (string, *string, error) {
 			// Layer 1: Link to OSDN
-			x86, x64, err := HTMLDownloadExtractor(
+			x86, x64, err := d.HTMLA(
 				"https://tortoisesvn.net/downloads.html",
-				true,
 				"a[href^='https://osdn.net'][href*='win32-svn']",
 				"a[href^='https://osdn.net'][href*='x64-svn']",
-				"href",
-				"href",
-				nil,
-				nil,
 			)(version)
 			if err != nil {
 				return "", nil, err
@@ -1764,28 +1335,18 @@ func init() {
 				return "", nil, errors.New("x64 link empty")
 			}
 			// Layer 2: OSDN to redir link
-			x86, _, err = HTMLDownloadExtractor(
+			x86, _, err = d.HTMLA(
 				x86,
-				false,
 				"a.mirror_link[href*='/frs/redir'][href*='win32-svn']",
 				"",
-				"href",
-				"",
-				nil,
-				nil,
 			)(version)
 			if err != nil {
 				return "", nil, err
 			}
-			_, x64, err = HTMLDownloadExtractor(
+			_, x64, err = d.HTMLA(
 				*x64,
-				true,
 				"a",
 				"a.mirror_link[href*='/frs/redir'][href*='x64-svn']",
-				"href",
-				"href",
-				nil,
-				nil,
 			)(version)
 			if err != nil {
 				return "", nil, err
@@ -1793,256 +1354,187 @@ func init() {
 			return x86, x64, nil
 		},
 	)
-	AddRule(
-		"upx",
-		GitHubReleaseVersionExtractor(
-			"upx",
-			"upx",
-			Re("v(.+)"),
+	Rule("upx",
+		v.GitHubRelease(
+			"upx/upx",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"upx",
-			"upx",
-			Re("upx[0-9]+w.zip"),
+		d.GitHubRelease(
+			"upx/upx",
+			h.Re("upx[0-9]+w.zip"),
 			nil,
 		),
 	)
-	AddRule(
-		"vagrant",
-		RegexpVersionExtractor(
+	Rule("vagrant",
+		v.Regexp(
 			"https://www.vagrantup.com/downloads.html",
-			Re("vagrant_([0-9.]+)_"),
+			h.Re("vagrant_([0-9.]+)_"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.vagrantup.com/downloads.html",
-			true,
 			"a[href*='vagrant_'][href$='_i686.msi']",
 			"a[href*='vagrant_'][href$='_x86_64.msi']",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"veracrypt",
-		RegexpVersionExtractor(
+	Rule("veracrypt",
+		v.Regexp(
 			"https://sourceforge.net/projects/veracrypt/files/",
-			Re("VeraCrypt_([0-9.]+)_"),
+			h.Re("VeraCrypt_([0-9.]+)_"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://sourceforge.net/projects/veracrypt/files/VeraCrypt%20{{.Version}}/VeraCrypt%20Setup%20{{.Version}}.exe/download",
 			"",
 		),
 	)
-	AddRule(
-		"virtualbox",
-		RegexpVersionExtractor(
+	Rule("virtualbox",
+		v.Regexp(
 			"https://www.virtualbox.org/wiki/Downloads",
-			Re("VirtualBox-([0-9.]+)-"),
+			h.Re("VirtualBox-([0-9.]+)-"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.virtualbox.org/wiki/Downloads",
-			false,
 			"a[href$='.exe']:contains('Windows')",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"virtualbox-extpack",
-		RegexpVersionExtractor(
+	Rule("virtualbox-extpack",
+		v.Regexp(
 			"https://www.virtualbox.org/wiki/Downloads",
-			Re("VirtualBox_Extension_Pack-([0-9.]+)\\."),
+			h.Re("VirtualBox_Extension_Pack-([0-9.]+)\\."),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.virtualbox.org/wiki/Downloads",
-			false,
 			"a[href$='.vbox-extpack']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"vivaldi",
-		RegexpVersionExtractor(
+	Rule("vivaldi",
+		v.Regexp(
 			"https://vivaldi.com/download/",
-			Re("Vivaldi\\.([0-9.]+)\\.exe"),
+			h.Re("Vivaldi\\.([0-9.]+)\\.exe"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://vivaldi.com/download/",
-			true,
 			"a[href*='Vivaldi.'][href$='.exe']:not([href$='.x64.exe'])",
 			"a[href*='Vivaldi.'][href$='.x64.exe']",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"vlc",
-		RegexpVersionExtractor(
+	Rule("vlc",
+		v.Regexp(
 			"https://www.videolan.org/vlc/download-windows.html",
-			Re("vlc-([0-9.]+)-"),
+			h.Re("vlc-([0-9.]+)-"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.videolan.org/vlc/download-windows.html",
-			true,
 			"a[href*='vlc-'][href$='-win32.exe']",
 			"a[href*='vlc-'][href$='-win64.exe']",
-			"href",
-			"href",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"vpnunlimited",
-		RegexpVersionExtractor(
+	Rule("vpnunlimited",
+		v.Regexp(
 			"https://www.vpnunlimitedapp.com/en/downloads/windows",
-			Re("_v([0-9.]+)\\."),
+			h.Re("_v([0-9.]+)\\."),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.vpnunlimitedapp.com/en/downloads/windows",
-			false,
 			"a[href*='VPN_Unlimited_'][href$='.exe']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"webtorrent",
-		GitHubReleaseVersionExtractor(
-			"webtorrent",
-			"webtorrent-desktop",
-			Re("v(.+)"),
+	Rule("webtorrent",
+		v.GitHubRelease(
+			"webtorrent/webtorrent-desktop",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"webtorrent",
-			"webtorrent-desktop",
-			Re("WebTorrentSetup-v[0-9.]+-ia32.exe"),
-			Re("WebTorrentSetup-v[0-9.]+.exe"),
+		d.GitHubRelease(
+			"webtorrent/webtorrent-desktop",
+			h.Re("WebTorrentSetup-v[0-9.]+-ia32.exe"),
+			h.Re("WebTorrentSetup-v[0-9.]+.exe"),
 		),
 	)
-	AddRule(
-		"winrar",
-		RegexpVersionExtractor(
+	Rule("winrar",
+		v.Regexp(
 			"https://www.win-rar.com/download.html",
-			Re("WinRAR ([0-9.]+) "),
+			h.Re("WinRAR ([0-9.]+) "),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://rarlab.com/rar/wrar{{.VersionN}}.exe",
 			"https://rarlab.com/rar/winrar-x64-{{.VersionN}}.exe",
 		),
 	)
-	AddRule(
-		"winscp",
-		RegexpVersionExtractor(
+	Rule("winscp",
+		v.Regexp(
 			"https://sourceforge.net/projects/winscp/files/",
-			Re("WinSCP-([0-9.]+)-"),
+			h.Re("WinSCP-([0-9.]+)-"),
 		),
-		TemplateDownloadExtractor(
+		d.Template(
 			"https://sourceforge.net/projects/winscp/files/WinSCP/{{.Version}}/WinSCP-{{.Version}}-Setup.exe/download",
 			"",
 		),
 	)
-	AddRule(
-		"wireshark",
-		RegexpVersionExtractor(
+	Rule("wireshark",
+		v.Regexp(
 			"https://www.wireshark.org/download.html",
-			Re("Stable Release \\(([0-9.]+)\\)"),
+			h.Re("Stable Release \\(([0-9.]+)\\)"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"https://www.wireshark.org/download.html",
-			true,
 			"a[href*='Wireshark-win32-'][href$='.exe']",
 			"a[href*='Wireshark-win64-'][href$='.exe']",
-			"href",
-			"href",
-			nil,
+		),
+	)
+	Rule("wixedit",
+		v.GitHubRelease(
+			"WixEdit/WixEdit",
+			h.Re("v([0-9]+\\.[0-9]+\\.[0-9]+)"),
+		),
+		d.GitHubRelease(
+			"WixEdit/WixEdit",
+			h.Re("wixedit-.+.msi"),
 			nil,
 		),
 	)
-	AddRule(
-		"wixedit",
-		GitHubReleaseVersionExtractor(
-			"WixEdit",
-			"WixEdit",
-			Re("v([0-9]+\\.[0-9]+\\.[0-9]+)"),
+	Rule("workflowy",
+		v.GitHubRelease(
+			"workflowy/desktop",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"WixEdit",
-			"WixEdit",
-			Re("wixedit-.+.msi"),
+		d.GitHubRelease(
+			"workflowy/desktop",
+			h.Re("WorkFlowy.exe"),
 			nil,
 		),
 	)
-	AddRule(
-		"workflowy",
-		GitHubReleaseVersionExtractor(
-			"workflowy",
-			"desktop",
-			Re("v(.+)"),
+	Rule("wox",
+		v.GitHubRelease(
+			"Wox-launcher/Wox",
+			h.Re("v(.+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"workflowy",
-			"desktop",
-			Re("WorkFlowy.exe"),
+		d.GitHubRelease(
+			"Wox-launcher/Wox",
+			h.Re("Wox-[0-9.]+.exe"),
 			nil,
 		),
 	)
-	AddRule(
-		"wox",
-		GitHubReleaseVersionExtractor(
-			"Wox-launcher",
-			"Wox",
-			Re("v(.+)"),
-		),
-		GitHubReleaseDownloadExtractor(
-			"Wox-launcher",
-			"Wox",
-			Re("Wox-[0-9.]+.exe"),
-			nil,
-		),
-	)
-	AddRule(
-		"ynab",
-		RegexpVersionExtractor(
+	Rule("ynab",
+		v.Regexp(
 			"http://classic.youneedabudget.com/download",
-			Re("_([0-9.]+)_Setup.exe"),
+			h.Re("_([0-9.]+)_Setup.exe"),
 		),
-		HTMLDownloadExtractor(
+		d.HTMLA(
 			"http://classic.youneedabudget.com/download",
-			false,
 			"a[href*='YNAB'][href$='Setup.exe']",
 			"",
-			"href",
-			"",
-			nil,
-			nil,
 		),
 	)
-	AddRule(
-		"youtube-dl",
-		GitHubReleaseVersionExtractor(
-			"rg3",
-			"youtube-dl",
-			Re("([0-9.]+)"),
+	Rule("youtube-dl",
+		v.GitHubRelease(
+			"rg3/youtube-dl",
+			h.Re("([0-9.]+)"),
 		),
-		GitHubReleaseDownloadExtractor(
-			"rg3",
-			"youtube-dl",
-			Re("youtube-dl.exe"),
+		d.GitHubRelease(
+			"rg3/youtube-dl",
+			h.Re("youtube-dl.exe"),
 			nil,
 		),
 	)

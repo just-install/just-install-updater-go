@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"sort"
 	"strings"
 
 	"github.com/just-install/just-install-updater-go/jiup/rules"
@@ -50,7 +51,19 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 	broken := map[string]error{}
 	knownBroken := []string{}
 	// TODO: multithreaded for loop
-	for p, r := range rules.GetRules() {
+
+	allrules := []string{}
+	for p := range rules.GetRules() {
+		allrules = append(allrules, p)
+	}
+	sort.Strings(allrules)
+
+	for _, p := range allrules {
+		vfn, dfn, ok := rules.GetRule(p)
+		if !ok {
+			panic("could not get rule which should exist: " + p)
+		}
+
 		if len(packages) != 0 {
 			c := true
 			for _, pp := range packages {
@@ -78,7 +91,7 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 			continue
 		}
 
-		version, err := r.V()
+		version, err := vfn()
 		if err != nil {
 			broken[p] = err
 			fmt.Printf("\r ✗  %s: %v", p, broken[p])
@@ -100,7 +113,7 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 			continue
 		}
 
-		x86dl, x64dl, err := r.D(version)
+		x86dl, x64dl, err := dfn(version)
 		if err != nil {
 			broken[p] = err
 			fmt.Printf("\r ✗  %s: %v", p, broken[p])

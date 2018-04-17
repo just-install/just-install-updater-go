@@ -1,9 +1,13 @@
-package helpers
+package d
 
-import "strings"
+import (
+	"strings"
 
-// TemplateDownloadExtractor creates a download link based on substituting {{.Version}}. Leave x64Tmpl empty is only x86.
-func TemplateDownloadExtractor(x86Tmpl, x64Tmpl string) DownloadExtractorFunc {
+	"github.com/just-install/just-install-updater-go/jiup/rules/c"
+)
+
+// Template creates a download link based on substituting {{.Version}}. Leave x64Tmpl empty is only x86.
+func Template(x86Tmpl, x64Tmpl string) c.DownloadExtractorFunc {
 	return func(version string) (string, *string, error) {
 		r := func(i string) string {
 			o := i

@@ -1,14 +1,11 @@
-package helpers
+package h
 
 import (
 	"bytes"
-	"crypto/tls"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"regexp"
-	"strings"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
@@ -103,66 +100,4 @@ func ResolveURL(base, rel string) (string, error) {
 	resolved := baseP.ResolveReference(urlP)
 
 	return resolved.String(), nil
-}
-
-// Re is an alias for regexp.MustCompile.
-func Re(str string) *regexp.Regexp {
-	return regexp.MustCompile(str)
-}
-
-// UnderscoreToDot wraps a version extractor and replaces underscores with dots.
-func UnderscoreToDot(f VersionExtractorFunc) VersionExtractorFunc {
-	return func() (string, error) {
-		version, err := f()
-		if err != nil {
-			return "", err
-		}
-		return strings.Replace(version, "_", ".", -1), nil
-	}
-}
-
-// AppendToURL wraps a download extractor and appends a string to each URL.
-func AppendToURL(str string, f DownloadExtractorFunc) DownloadExtractorFunc {
-	return func(version string) (string, *string, error) {
-		x86, x64, err := f(version)
-		if err != nil {
-			return "", nil, err
-		}
-		if x64 != nil {
-			t := *x64 + str
-			x64 = &t
-		}
-		x86 = x86 + str
-		return x86, x64, nil
-	}
-}
-
-// DisableHTTPSCheck disables https certificate checking for the default client.
-func DisableHTTPSCheck() {
-	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
-}
-
-// EnableHTTPSCheck reenables https certificate checking for the default client.
-func EnableHTTPSCheck() {
-	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: false}
-}
-
-// NoHTTPSForVersionExtractor wraps a VersionExtractorFunc to disable HTTPS checking.
-func NoHTTPSForVersionExtractor(f VersionExtractorFunc) VersionExtractorFunc {
-	return func() (string, error) {
-		DisableHTTPSCheck()
-		version, err := f()
-		EnableHTTPSCheck()
-		return version, err
-	}
-}
-
-// NoHTTPSForDownloadExtractor wraps a DownloadExtractorFunc to disable HTTPS checking.
-func NoHTTPSForDownloadExtractor(f DownloadExtractorFunc) DownloadExtractorFunc {
-	return func(version string) (string, *string, error) {
-		DisableHTTPSCheck()
-		x86, x64, err := f(version)
-		EnableHTTPSCheck()
-		return x86, x64, err
-	}
 }

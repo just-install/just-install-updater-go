@@ -3,9 +3,10 @@ package jiup
 import (
 	"errors"
 	"fmt"
+	"sort"
 
 	"github.com/just-install/just-install-updater-go/jiup/rules"
-	"github.com/just-install/just-install-updater-go/jiup/rules/helpers"
+	"github.com/just-install/just-install-updater-go/jiup/rules/c"
 
 	"github.com/just-install/just-install-updater-go/jiup/registry"
 )
@@ -47,9 +48,16 @@ func (u *Updater) Update(progress, verbose, force bool) (updated map[string]stri
 	skipped = []string{}
 	errored = map[string]error{}
 	// TODO: multithreaded for loop.
-	helpers.Verbose = verbose
-	i := 0
+	c.Verbose = verbose
+
+	allpkgs := []string{}
 	for pkgName := range u.Registry.Packages {
+		allpkgs = append(allpkgs, pkgName)
+	}
+	sort.Strings(allpkgs)
+
+	i := 0
+	for _, pkgName := range allpkgs {
 		i++
 		if progress {
 			fmt.Printf("[%d/%d] Checking %s\n", i, len(u.Registry.Packages), pkgName)

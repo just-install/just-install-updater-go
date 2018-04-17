@@ -1,4 +1,4 @@
-package helpers
+package d
 
 import (
 	"errors"
@@ -7,44 +7,19 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/just-install/just-install-updater-go/jiup/rules/c"
+	"github.com/just-install/just-install-updater-go/jiup/rules/h"
 )
 
-// GitHubReleaseVersionExtractor returns a version extractor for a GitHub release.
-func GitHubReleaseVersionExtractor(username, repo string, tagRe *regexp.Regexp) VersionExtractorFunc {
-	return func() (string, error) {
-		if tagRe == nil {
-			return "", errors.New("tag regex is nil")
-		}
-
-		// scrape to avoid limit
-		doc, err := GetDoc(nil, fmt.Sprintf("https://github.com/%s/%s/releases/latest", username, repo), map[string]string{}, []int{200})
-		if err != nil {
-			return "", err
-		}
-
-		tag := strings.TrimSpace(doc.Find(".release .tag-references .octicon-tag+span").First().Text())
-		if tag == "" {
-			return "", errors.New("could not find tag from GitHub")
-		}
-
-		m := tagRe.FindStringSubmatch(tag)
-		if len(m) != 2 || m[1] == "" {
-			return "", errors.New("could not find 2nd match group for tag regexp")
-		}
-
-		return m[1], nil
-	}
-}
-
-// GitHubReleaseDownloadExtractor returns a version extractor for a GitHub release. x64Re can be nil.
-func GitHubReleaseDownloadExtractor(username, repo string, x86FileRe, x64FileRe *regexp.Regexp) DownloadExtractorFunc {
+// GitHubRelease returns a version extractor for a GitHub release. x64Re can be nil.
+func GitHubRelease(repo string, x86FileRe, x64FileRe *regexp.Regexp) c.DownloadExtractorFunc {
 	return func(_ string) (string, *string, error) {
 		if x86FileRe == nil {
 			return "", nil, errors.New("x86File regex is nil")
 		}
 
 		// scrape to avoid limit
-		doc, err := GetDoc(nil, fmt.Sprintf("https://github.com/%s/%s/releases/latest", username, repo), map[string]string{}, []int{200})
+		doc, err := h.GetDoc(nil, fmt.Sprintf("https://github.com/%s/releases/latest", repo), map[string]string{}, []int{200})
 		if err != nil {
 			return "", nil, err
 		}
@@ -57,7 +32,7 @@ func GitHubReleaseDownloadExtractor(username, repo string, x86FileRe, x64FileRe 
 				err = errors.New("could not extract href from release asset")
 				return false
 			}
-			href, err = ResolveURL(fmt.Sprintf("https://github.com/%s/%s/releases/latest", username, repo), href)
+			href, err = h.ResolveURL(fmt.Sprintf("https://github.com/%s/releases/latest", repo), href)
 			if err != nil {
 				return false
 			}

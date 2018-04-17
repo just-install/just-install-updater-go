@@ -1,49 +1,16 @@
-package helpers
+package d
 
 import (
 	"errors"
 	"regexp"
 	"strings"
+
+	"github.com/just-install/just-install-updater-go/jiup/rules/c"
+	"github.com/just-install/just-install-updater-go/jiup/rules/h"
 )
 
-// HTMLVersionExtractor returns a version extractor for the first match of a css selector, an attribute (or innerText for the text), and an optional regexp on the attribute.
-func HTMLVersionExtractor(url string, versionSelector, versionAttr string, versionRe *regexp.Regexp) VersionExtractorFunc {
-	return func() (string, error) {
-		doc, err := GetDoc(nil, url, map[string]string{}, []int{200})
-		if err != nil {
-			return "", err
-		}
-
-		s := doc.Find(versionSelector).First()
-		if s.Length() != 1 {
-			return "", errors.New("could not find match for selector")
-		}
-
-		var a string
-		if versionAttr == "innerText" {
-			a = strings.TrimSpace(s.Text())
-		} else {
-			a = strings.TrimSpace(s.AttrOr(versionAttr, ""))
-		}
-		if a == "" {
-			return "", errors.New("specified attribute is empty")
-		}
-
-		if versionRe == nil {
-			return a, nil
-		}
-
-		m := versionRe.FindStringSubmatch(a)
-		if len(m) != 2 || m[1] == "" {
-			return "", errors.New("could not find 2nd match group for version")
-		}
-
-		return m[1], nil
-	}
-}
-
-// HTMLDownloadExtractor returns a download extractor for the first match of a css selector, an attribute (or innerText for the text), and an optional regexp on the url (and resolves the url).
-func HTMLDownloadExtractor(url string, hasx86_64 bool, x86Selector, x86_64Selector, x86Attr, x86_64Attr string, x86FileRe, x64FileRe *regexp.Regexp) DownloadExtractorFunc {
+// HTML returns a download extractor for the first match of a css selector, an attribute (or innerText for the text), and an optional regexp on the url (and resolves the url).
+func HTML(url string, hasx86_64 bool, x86Selector, x86_64Selector, x86Attr, x86_64Attr string, x86FileRe, x64FileRe *regexp.Regexp) c.DownloadExtractorFunc {
 	if !hasx86_64 && x86_64Selector != "" {
 		panic("x86_64Selector defined while hasx86_64 is false")
 	} else if !hasx86_64 && x86_64Attr != "" {
@@ -55,7 +22,7 @@ func HTMLDownloadExtractor(url string, hasx86_64 bool, x86Selector, x86_64Select
 	}
 
 	return func(_ string) (string, *string, error) {
-		doc, err := GetDoc(nil, url, map[string]string{}, []int{200})
+		doc, err := h.GetDoc(nil, url, map[string]string{}, []int{200})
 		if err != nil {
 			return "", nil, err
 		}
@@ -77,7 +44,7 @@ func HTMLDownloadExtractor(url string, hasx86_64 bool, x86Selector, x86_64Select
 			return "", nil, errors.New("specified attribute for x86 is empty")
 		}
 
-		a, err = ResolveURL(url, a)
+		a, err = h.ResolveURL(url, a)
 		if err != nil {
 			return "", nil, err
 		}
@@ -111,7 +78,7 @@ func HTMLDownloadExtractor(url string, hasx86_64 bool, x86Selector, x86_64Select
 			return "", nil, errors.New("specified attribute for x86_64 is empty")
 		}
 
-		a, err = ResolveURL(url, a)
+		a, err = h.ResolveURL(url, a)
 		if err != nil {
 			return "", nil, err
 		}
@@ -128,4 +95,12 @@ func HTMLDownloadExtractor(url string, hasx86_64 bool, x86Selector, x86_64Select
 
 		return x86dl, &x64dl, nil
 	}
+}
+
+// HTMLA is a shorthand version of HTML for selecting a link with a href attribute without a regex. Leave the x64 selector blank if no 64-bit version.
+func HTMLA(url, x86Selector, x86_64Selector string) c.DownloadExtractorFunc {
+	if x86_64Selector == "" {
+		return HTML(url, false, x86Selector, "", "href", "", nil, nil)
+	}
+	return HTML(url, true, x86Selector, x86_64Selector, "href", "href", nil, nil)
 }

@@ -5,27 +5,27 @@ import (
 	"fmt"
 	"strings"
 
-	. "github.com/just-install/just-install-updater-go/jiup/rules/helpers"
+	"github.com/just-install/just-install-updater-go/jiup/rules/c"
 )
 
-// Rule represents a rule for an application.
-type Rule struct {
-	V VersionExtractorFunc
-	D DownloadExtractorFunc
+// R represents a rule for an application.
+type R struct {
+	V c.VersionExtractorFunc
+	D c.DownloadExtractorFunc
 }
 
-var rules = map[string]Rule{}
+var rules = map[string]R{}
 
-// AddRule registers a rule.
-func AddRule(pkg string, versionExtractor VersionExtractorFunc, downloadExtractor DownloadExtractorFunc) {
+// Rule registers a rule.
+func Rule(pkg string, versionExtractor c.VersionExtractorFunc, downloadExtractor c.DownloadExtractorFunc) {
 	if _, ok := rules[pkg]; ok {
 		panic("rule for " + pkg + " already registered")
 	}
-	rules[pkg] = Rule{wrapV(versionExtractor), wrapD(downloadExtractor)}
+	rules[pkg] = R{wrapV(versionExtractor), wrapD(downloadExtractor)}
 }
 
 // GetRule gets a rule if it exists.
-func GetRule(pkg string) (VersionExtractorFunc, DownloadExtractorFunc, bool) {
+func GetRule(pkg string) (c.VersionExtractorFunc, c.DownloadExtractorFunc, bool) {
 	if rule, ok := rules[pkg]; ok {
 		return rule.V, rule.D, true
 	}
@@ -33,11 +33,11 @@ func GetRule(pkg string) (VersionExtractorFunc, DownloadExtractorFunc, bool) {
 }
 
 // GetRules gets all rules.
-func GetRules() map[string]Rule {
+func GetRules() map[string]R {
 	return rules
 }
 
-func wrapV(f VersionExtractorFunc) VersionExtractorFunc {
+func wrapV(f c.VersionExtractorFunc) c.VersionExtractorFunc {
 	return func() (version string, err error) {
 		version, err = f()
 		if err != nil {
@@ -50,7 +50,7 @@ func wrapV(f VersionExtractorFunc) VersionExtractorFunc {
 	}
 }
 
-func wrapD(f DownloadExtractorFunc) DownloadExtractorFunc {
+func wrapD(f c.DownloadExtractorFunc) c.DownloadExtractorFunc {
 	return func(version string) (x86 string, x86_64 *string, err error) {
 		x86, x86_64, err = f(version)
 		if err != nil {
