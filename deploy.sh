@@ -14,11 +14,14 @@ git config user.email "just-install-bot@outlook.com"
 git config user.email
 
 echo "Updating registry"
-go run ../main.go just-install.json || err "Could not update registry"
+go run ../main.go -c message.txt just-install.json || err "Could not update registry"
 
 echo "Committing changes"
-git add -A
-git commit -m "jiup-go automatic commit"
+git add just-install.json
+echo "---"
+cat message.txt
+echo "---"
+git commit -F message.txt
 
 echo "Pushing changes"
 [[ -z $GITHUB_TOKEN ]] && die "No github token"

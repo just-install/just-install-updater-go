@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 
 	"github.com/just-install/just-install-updater-go/jiup"
 	"github.com/just-install/just-install-updater-go/jiup/registry"
@@ -14,7 +15,7 @@ func main() {
 	verbose := pflag.BoolP("verbose", "v", false, "Show more output")
 	dryRun := pflag.BoolP("dry-run", "d", false, "Do not actually write the changes")
 	force := pflag.BoolP("force", "f", false, "Update all entries including ones with a matching version")
-	// testLinks := pflag.BoolP("test-links", "t", false, "Test download links for updated entries")
+	commitMessageFile := pflag.StringP("commit-message-file", "c", "", "If set, jiup-go will save a commit message describing the changes to a file.")
 	quiet := pflag.BoolP("quiet", "q", false, "Do not output progress info")
 	help := pflag.Bool("help", false, "Show this help text")
 	pflag.Parse()
@@ -46,6 +47,39 @@ func main() {
 
 	updated, unchanged, norule, skipped, errored := u.Update(!*quiet, *verbose, *force)
 
+	if commitMessageFile != nil && *commitMessageFile != "" {
+		pkgs := []string{}
+		pkgvs := []string{}
+		for pkg, v := range updated {
+			pkgs = append(pkgs, pkg)
+			pkgvs = append(pkgvs, "  - "+pkg+" ("+v+")")
+		}
+
+		cMessage := "jiup-go automatic commit"
+		if len(pkgs) > 0 {
+			cMessage = cMessage + ": updated " + listify(pkgs)
+		}
+
+		cMessage = cMessage + fmt.Sprintf("\n\n%d updated, %d unchanged, %d norule (%.0f%%), %d skipped, %d errored\n", len(updated), len(unchanged), len(norule), float32(len(norule))/float32(len(u.Registry.Packages))*100.0, len(skipped), len(errored))
+
+		if len(updated) > 0 {
+			cMessage = cMessage + "\nUpdated:\n" + strings.Join(pkgvs, "\n") + "\n"
+		}
+		if len(errored) > 0 {
+			errs := []string{}
+			for pkg, err := range errored {
+				errs = append(errs, "  - "+pkg+" ("+err.Error()+")")
+			}
+			cMessage = cMessage + "\nErrors:\n" + strings.Join(errs, "\n") + "\n"
+		}
+
+		err := ioutil.WriteFile(*commitMessageFile, []byte(cMessage), 0644)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error writing commit message: %v\n", err)
+			os.Exit(1)
+		}
+	}
+
 	if !*dryRun {
 		bufn, err := u.Registry.GetJSON()
 		if err != nil {
@@ -59,8 +93,6 @@ func main() {
 			os.Exit(1)
 		}
 	}
-
-	// test dl links for updated if flag set
 
 	fmt.Printf("\n===== RESULTS =====\n")
 	if len(norule) > 0 {
@@ -109,4 +141,17 @@ func helpExit() {
 
 func errExit() {
 	os.Exit(1)
+}
+
+func listify(arr []string) string {
+	switch len(arr) {
+	case 0:
+		return ""
+	case 1:
+		return arr[0]
+	case 2:
+		return arr[0] + " and " + arr[1]
+	default:
+		return strings.Join(arr[:len(arr)-1], ", ") + ", and " + arr[len(arr)-1]
+	}
 }
