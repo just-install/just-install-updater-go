@@ -1105,6 +1105,25 @@ func init() {
 		),
 	)
 	AddRule(
+		"nextcloud",
+		HTMLVersionExtractor(
+			"https://nextcloud.com/install/",
+			"#tab-desktop a[href*='desktop/releases/Windows'][href$='setup.exe']",
+			"href",
+			Re("Nextcloud-([0-9.]+)-"),
+		),
+		HTMLDownloadExtractor(
+			"https://nextcloud.com/install/",
+			false,
+			"#tab-desktop a[href*='desktop/releases/Windows'][href$='setup.exe']",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
 		"notepad2-mod",
 		GitHubReleaseVersionExtractor(
 			"XhmikosR",
