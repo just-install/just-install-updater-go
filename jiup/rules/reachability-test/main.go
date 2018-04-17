@@ -65,12 +65,17 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 
 		fmt.Printf("\n    %s: testing", p)
 
+		c := false
 		for _, kb := range KnownBroken {
 			if p == kb {
 				knownBroken = append(knownBroken, p)
 				fmt.Printf("\r -  %s: manually marked as broken", p)
-				continue
+				c = true
+				break
 			}
+		}
+		if c {
+			continue
 		}
 
 		version, err := r.V()
