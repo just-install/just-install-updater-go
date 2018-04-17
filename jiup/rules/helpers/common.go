@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"bytes"
+	"crypto/tls"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -133,5 +134,35 @@ func AppendToURL(str string, f DownloadExtractorFunc) DownloadExtractorFunc {
 		}
 		x86 = x86 + str
 		return x86, x64, nil
+	}
+}
+
+// DisableHTTPSCheck disables https certificate checking for the default client.
+func DisableHTTPSCheck() {
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+}
+
+// EnableHTTPSCheck reenables https certificate checking for the default client.
+func EnableHTTPSCheck() {
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: false}
+}
+
+// NoHTTPSForVersionExtractor wraps a VersionExtractorFunc to disable HTTPS checking.
+func NoHTTPSForVersionExtractor(f VersionExtractorFunc) VersionExtractorFunc {
+	return func() (string, error) {
+		DisableHTTPSCheck()
+		version, err := f()
+		EnableHTTPSCheck()
+		return version, err
+	}
+}
+
+// NoHTTPSForDownloadExtractor wraps a DownloadExtractorFunc to disable HTTPS checking.
+func NoHTTPSForDownloadExtractor(f DownloadExtractorFunc) DownloadExtractorFunc {
+	return func(version string) (string, *string, error) {
+		DisableHTTPSCheck()
+		x86, x64, err := f(version)
+		EnableHTTPSCheck()
+		return x86, x64, err
 	}
 }

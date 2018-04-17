@@ -1496,6 +1496,25 @@ func init() {
 		),
 	)
 	AddRule(
+		"seafile-client",
+		NoHTTPSForVersionExtractor(HTMLVersionExtractor(
+			"https://www.seafile.com/en/download/",
+			".txt > h3:contains('Client for Windows')~a[href*='seafile'][href$='en.msi'].download-op",
+			"innerText",
+			Re("([0-9.]+)"),
+		)),
+		NoHTTPSForDownloadExtractor(HTMLDownloadExtractor(
+			"https://www.seafile.com/en/download/",
+			false,
+			".txt > h3:contains('Client for Windows')~a[href*='seafile'][href$='en.msi'].download-op",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		)),
+	)
+	AddRule(
 		"sharex",
 		GitHubReleaseVersionExtractor(
 			"ShareX",
@@ -1507,6 +1526,17 @@ func init() {
 			"ShareX",
 			Re("ShareX-.+-setup.exe"),
 			nil,
+		),
+	)
+	AddRule(
+		"signal",
+		RegexpVersionExtractor(
+			"https://updates.signal.org/desktop/latest.yml",
+			Re("version: ([0-9.]+)"),
+		),
+		TemplateDownloadExtractor(
+			"https://updates.signal.org/desktop/signal-desktop-win-{{.Version}}.exe",
+			"",
 		),
 	)
 	AddRule(
@@ -1535,6 +1565,113 @@ func init() {
 			"sharpkeys",
 			Re("sharpkeys.+.msi"),
 			nil,
+		),
+	)
+	AddRule(
+		"smplayer",
+		RegexpVersionExtractor(
+			"https://sourceforge.net/projects/smplayer/files/",
+			Re("smplayer-([0-9.]+)\\.tar"),
+		),
+		TemplateDownloadExtractor(
+			"https://sourceforge.net/projects/smplayer/files/SMPlayer/{{.Version}}/smplayer-{{.Version}}-win32.exe/download",
+			"https://sourceforge.net/projects/smplayer/files/SMPlayer/{{.Version}}/smplayer-{{.Version}}-x64.exe/download",
+		),
+	)
+	AddRule(
+		"sourcetree",
+		RegexpVersionExtractor(
+			"https://www.sourcetreeapp.com",
+			Re("SourceTreeSetup-([0-9.]+)\\.exe"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.sourcetreeapp.com",
+			false,
+			"a[href*='SourceTreeSetup'][href$='exe']",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"sublime-text",
+		RegexpVersionExtractor(
+			"https://www.sublimetext.com/2",
+			Re("Version:</i> ([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.sublimetext.com/2",
+			true,
+			"#dl_win_32 a[href$='exe']",
+			"#dl_win_64 a[href$='exe']",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"sublime-text-3",
+		RegexpVersionExtractor(
+			"https://www.sublimetext.com/3",
+			Re("Version:</i> Build ([0-9]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.sublimetext.com/3",
+			true,
+			"#dl_win_32 a[href$='exe']",
+			"#dl_win_64 a[href$='exe']",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"sublime-text-dev",
+		RegexpVersionExtractor(
+			"https://www.sublimetext.com/3dev",
+			Re("Version:</i> Build ([0-9]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.sublimetext.com/3dev",
+			true,
+			"#dl_win_32 a[href$='exe']",
+			"#dl_win_64 a[href$='exe']",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"subversion",
+		RegexpVersionExtractor(
+			"https://sliksvn.com/download/",
+			Re("Subversion-([0-9.]+)-"),
+		),
+		HTMLDownloadExtractor(
+			"https://sliksvn.com/download/",
+			true,
+			".client a[href$='zip']:contains('32 bit')",
+			".client a[href$='zip']:contains('64 bit')",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"sumatrapdf",
+		RegexpVersionExtractor(
+			"https://www.sumatrapdfreader.org/news.html",
+			Re(">([0-9.]+) \\(20"),
+		),
+		TemplateDownloadExtractor(
+			"https://www.sumatrapdfreader.org/dl/SumatraPDF-{{.Version}}-install.exe",
+			"https://www.sumatrapdfreader.org/dl/SumatraPDF-{{.Version}}-64-install.exe",
 		),
 	)
 	AddRule(
