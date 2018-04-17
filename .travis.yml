@@ -4,11 +4,11 @@ go:
   - "1.10.x"
 
 install:
-  - echo "===== Clone registry =====" ; git clone https://github.com/just-install/registry
+  - git clone https://github.com/just-install/registry
 
 script:
-  - echo "==== Unit tests =====" ; go test -v ./...
-  - echo "===== Reachability test =====" ; go run jiup/rules/reachability-test/main.go
+  - go test -v ./...
+  - go run jiup/rules/reachability-test/main.go
 
 deploy:
   - provider: script

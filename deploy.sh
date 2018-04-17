@@ -5,28 +5,43 @@ err() {
     exit 1
 }
 
+echo '$ cd registry'
 cd registry || err "Cannot find registry"
+echo
 
-echo "Configuring git user and email"
+echo '$ git config user.name "just-install-bot"'
 git config user.name "just-install-bot"
-git config user.name
+echo
+
+echo '$ git config user.email "just-install-bot@outlook.com"'
 git config user.email "just-install-bot@outlook.com"
-git config user.email
+echo
 
-echo "Updating registry"
+echo '$ go run ../main.go -c message.txt just-install.json'
 go run ../main.go -c message.txt just-install.json || err "Could not update registry"
+echo
 
-echo "Committing changes"
+echo '$ git add just-install.json'
 git add just-install.json
-echo "---"
-cat message.txt
-echo "---"
-git commit -F message.txt
+echo
 
-echo "Pushing changes"
+echo '$ cat message.txt'
+cat message.txt
+echo
+
+echo '$ git commit -F message.txt'
+git commit -F message.txt
+echo
+
+echo '$ git push https://github.com/just-install/registry.git master'
 [[ -z $GITHUB_TOKEN ]] && die "No github token"
 git push "https://$GITHUB_TOKEN@github.com/just-install/registry.git" master >/dev/null 2>/dev/null || err "Could not push changes"
+echo
 
-echo "Cleaning up"
+echo '$ cd ..'
 cd ..
+echo
+
+echo '$ rm -rf registry'
 rm -rf registry
+echo
