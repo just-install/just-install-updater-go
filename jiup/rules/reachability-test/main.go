@@ -182,17 +182,16 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 func testDL(url string) (code int, mime string, err error) {
 	resp, err := http.Get(url)
 	if err != nil {
-		resp.Body.Close()
 		resp, err = http.Head(url)
 		if err != nil {
 			return 0, "", err
 		}
+		defer resp.Body.Close()
 	}
+	defer resp.Body.Close()
 
 	code = resp.StatusCode
 	mime = resp.Header.Get("Content-Type")
-
-	resp.Body.Close()
 
 	return code, mime, nil
 }
