@@ -902,6 +902,17 @@ func init() {
 		),
 	)
 	AddRule(
+		"keepass",
+		RegexpVersionExtractor(
+			"https://sourceforge.net/projects/keepass/files/",
+			Re("KeePass-([0-9.]+)\\.zip"),
+		),
+		TemplateDownloadExtractor(
+			"https://sourceforge.net/projects/keepass/files/KeePass%202.x/{{.Version}}/KeePass-{{.Version}}.msi/download",
+			"",
+		),
+	)
+	AddRule(
 		"keepassxc",
 		GitHubReleaseVersionExtractor(
 			"keepassxreboot",
@@ -927,6 +938,40 @@ func init() {
 			"keeweb",
 			Re("KeeWeb-.+.win.ia32.exe"),
 			Re("KeeWeb-.+.win.x64.exe"),
+		),
+	)
+	AddRule(
+		"kicad",
+		RegexpVersionExtractor(
+			"http://kicad-pcb.org/download/windows/",
+			Re("Stable Release Current Version: ([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"http://kicad-pcb.org/download/windows/",
+			true,
+			"a[href$='.exe']:contains('Windows 32-bit')",
+			"a[href$='.exe']:contains('Windows 64-bit')",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"kodi",
+		RegexpVersionExtractor(
+			"http://mirrors.kodi.tv/releases/windows/win32/?C=M&O=D",
+			Re("kodi-([0-9.]+)-"),
+		),
+		HTMLDownloadExtractor(
+			"http://mirrors.kodi.tv/releases/windows/win32/?C=M&O=D",
+			false,
+			"a[href*='kodi'][href$='-x86.exe']",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
 		),
 	)
 	AddRule(

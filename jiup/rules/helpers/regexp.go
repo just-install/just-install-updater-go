@@ -6,7 +6,7 @@ import (
 	"regexp"
 )
 
-// RegexpVersionExtractor returns a version extractor for a regex.
+// RegexpVersionExtractor returns a version extractor for the first match of a regex.
 func RegexpVersionExtractor(url string, versionRe *regexp.Regexp) VersionExtractorFunc {
 	return func() (string, error) {
 		buf, code, ok, err := GetURL(nil, url, map[string]string{}, []int{200})
@@ -25,7 +25,7 @@ func RegexpVersionExtractor(url string, versionRe *regexp.Regexp) VersionExtract
 	}
 }
 
-// RegexpDownloadExtractor returns a version extractor for a regex (and resolves the url).
+// RegexpDownloadExtractor returns a version extractor for the first match of a regex (and resolves the url).
 func RegexpDownloadExtractor(url string, x86FileRe, x64FileRe *regexp.Regexp) func(_ string) (string, *string, error) {
 	return func(_ string) (string, *string, error) {
 		buf, code, ok, err := GetURL(nil, url, map[string]string{}, []int{200})

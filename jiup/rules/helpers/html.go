@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// HTMLVersionExtractor returns a version extractor for a css selector, an attribute (or innerText for the text), and an optional regexp on the attribute.
+// HTMLVersionExtractor returns a version extractor for the first match of a css selector, an attribute (or innerText for the text), and an optional regexp on the attribute.
 func HTMLVersionExtractor(url string, versionSelector, versionAttr string, versionRe *regexp.Regexp) VersionExtractorFunc {
 	return func() (string, error) {
 		doc, err := GetDoc(nil, url, map[string]string{}, []int{200})
@@ -42,7 +42,7 @@ func HTMLVersionExtractor(url string, versionSelector, versionAttr string, versi
 	}
 }
 
-// HTMLDownloadExtractor returns a download extractor for a css selector, an attribute (or innerText for the text), and an optional regexp on the url (and resolves the url).
+// HTMLDownloadExtractor returns a download extractor for the first match of a css selector, an attribute (or innerText for the text), and an optional regexp on the url (and resolves the url).
 func HTMLDownloadExtractor(url string, hasx86_64 bool, x86Selector, x86_64Selector, x86Attr, x86_64Attr string, x86FileRe, x64FileRe *regexp.Regexp) DownloadExtractorFunc {
 	if !hasx86_64 && x86_64Selector != "" {
 		panic("x86_64Selector defined while hasx86_64 is false")
