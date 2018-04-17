@@ -13,9 +13,7 @@ import (
 
 // KnownBroken contains packages known to be broken.
 // Errors during the check will not count as a failure.
-var KnownBroken = []string{
-	"freefilesync",
-}
+var KnownBroken = []string{}
 
 func main() {
 	//verbose := pflag.BoolP("verbose", "v", false, "Show more output")
