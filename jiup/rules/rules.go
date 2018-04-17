@@ -1234,6 +1234,74 @@ func init() {
 		),
 	)
 	AddRule(
+		"obs-studio",
+		RegexpVersionExtractor(
+			"https://obsproject.com/download",
+			Re("download/([0-9.]+)/OBS"),
+		),
+		HTMLDownloadExtractor(
+			"https://obsproject.com/download",
+			false,
+			"a[href*='OBS-Studio-'][href$='Full-Installer.exe']",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"octave",
+		RegexpVersionExtractor(
+			"https://ftp.gnu.org/gnu/octave/windows/?C=M;O=D",
+			Re("octave-([0-9.]+)-w32-installer.exe"),
+		),
+		HTMLDownloadExtractor(
+			"https://ftp.gnu.org/gnu/octave/windows/?C=M;O=D",
+			true,
+			"a[href*='octave-'][href$='-w32-installer.exe']",
+			"a[href*='octave-'][href$='-w64-installer.exe']",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"open-hardware-monitor",
+		RegexpVersionExtractor(
+			"http://openhardwaremonitor.org/downloads/",
+			Re("Open Hardware Monitor ([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"http://openhardwaremonitor.org/downloads/",
+			false,
+			"a[href*='openhardwaremonitor-'][href$='.zip']",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"openssh",
+		RegexpVersionExtractor(
+			"https://www.mls-software.com/opensshd.html",
+			Re("OpenSSH ([0-9.]+)p"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.mls-software.com/opensshd.html",
+			false,
+			"a[href*='setupssh-'][href$='.exe']",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
 		"processhacker",
 		GitHubReleaseVersionExtractor(
 			"processhacker",
