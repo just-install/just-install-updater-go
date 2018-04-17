@@ -1302,6 +1302,52 @@ func init() {
 		),
 	)
 	AddRule(
+		"perl",
+		RegexpVersionExtractor(
+			"http://strawberryperl.com/releases.html",
+			Re("Strawberry Perl ([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"http://strawberryperl.com/releases.html",
+			true,
+			"a[href*='strawberry-perl-'][href$='32bit.msi']",
+			"a[href*='strawberry-perl-'][href$='64bit.msi']",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"pia",
+		RegexpVersionExtractor(
+			"https://www.privateinternetaccess.com/pages/downloads",
+			Re("Clients v([0-9]+) Released"),
+		),
+		HTMLDownloadExtractor(
+			"https://www.privateinternetaccess.com/pages/downloads",
+			false,
+			"a[href*='pia-'][href$='installer-win.exe']",
+			"",
+			"href",
+			"",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"plex-media-server",
+		RegexpVersionExtractor(
+			"https://plex.tv/api/downloads/1.json",
+			Re("version\":\"([0-9.]+)"),
+		),
+		RegexpDownloadExtractor(
+			"https://plex.tv/api/downloads/1.json",
+			Re("\"(https://downloads.plex.tv/plex-media-server/[0-9a-z.-]+?/Plex-Media-Server-[0-9a-z.-]+?.exe)\""),
+			nil,
+		),
+	)
+	AddRule(
 		"processhacker",
 		GitHubReleaseVersionExtractor(
 			"processhacker",
@@ -1316,6 +1362,60 @@ func init() {
 		),
 	)
 	AddRule(
+		"putty",
+		RegexpVersionExtractor(
+			"http://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html",
+			Re("latest release \\(([0-9.]+)\\)"),
+		),
+		HTMLDownloadExtractor(
+			"http://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html",
+			true,
+			"span.downloadfile a[href^='https'][href*='w32/putty'][href$='.msi']",
+			"span.downloadfile a[href^='https'][href*='w64/putty'][href$='.msi']",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"pycharm-community",
+		RegexpVersionExtractor(
+			"https://data.services.jetbrains.com/products/releases?code=PCP%2CPCC&latest=true",
+			Re("version\":\"([0-9.]+)"),
+		),
+		RegexpDownloadExtractor(
+			"https://data.services.jetbrains.com/products/releases?code=PCP%2CPCC&latest=true",
+			Re("\"(https://download.jetbrains.com/python/pycharm-community-[0-9.]+.exe)\""),
+			nil,
+		),
+	)
+	AddRule(
+		"python2",
+		HTMLVersionExtractor(
+			"https://www.python.org/downloads/",
+			".download-for-current-os .download-os-windows a[href*='python-2']",
+			"innerText",
+			Re("Download Python ([0-9.]+)"),
+		),
+		TemplateDownloadExtractor(
+			"https://www.python.org/ftp/python/{{.Version}}/python-{{.Version}}.msi",
+			"https://www.python.org/ftp/python/{{.Version}}/python-{{.Version}}.amd64.msi",
+		),
+	)
+	AddRule(
+		"python2-yaml",
+		GitHubTagVersionExtractor(
+			"yaml",
+			"pyyaml",
+			Re("([0-9.]+)"),
+		),
+		TemplateDownloadExtractor(
+			"https://pyyaml.org/download/pyyaml/PyYAML-{{.Version}}.win32-py2.7.exe",
+			"https://pyyaml.org/download/pyyaml/PyYAML-{{.Version}}.win-amd64-py2.7.exe",
+		),
+	)
+	AddRule(
 		"python2-win32",
 		GitHubReleaseVersionExtractor(
 			"mhammond",
@@ -1327,6 +1427,19 @@ func init() {
 			"pywin32",
 			Re("pywin32-.+.win32-py2.7.exe"),
 			Re("pywin32-.+.win-amd64-py2.7.exe"),
+		),
+	)
+	AddRule(
+		"python3",
+		HTMLVersionExtractor(
+			"https://www.python.org/downloads/",
+			".download-for-current-os .download-os-windows a[href*='python-3']",
+			"innerText",
+			Re("Download Python ([0-9.]+)"),
+		),
+		TemplateDownloadExtractor(
+			"https://www.python.org/ftp/python/{{.Version}}/python-{{.Version}}.exe",
+			"https://www.python.org/ftp/python/{{.Version}}/python-{{.Version}}-amd64.exe",
 		),
 	)
 	AddRule(
