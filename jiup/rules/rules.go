@@ -1124,6 +1124,57 @@ func init() {
 		),
 	)
 	AddRule(
+		"node",
+		RegexpVersionExtractor(
+			"https://nodejs.org/en/download/current/",
+			Re("Latest Current Version: <strong>([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://nodejs.org/en/download/current/",
+			true,
+			"th:contains('Windows Installer (.msi)') ~ td>a:contains('32-bit')",
+			"th:contains('Windows Installer (.msi)') ~ td>a:contains('64-bit')",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"node-lts",
+		RegexpVersionExtractor(
+			"https://nodejs.org/en/download/",
+			Re("Latest LTS Version: <strong>([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://nodejs.org/en/download/",
+			true,
+			"th:contains('Windows Installer (.msi)') ~ td>a:contains('32-bit')",
+			"th:contains('Windows Installer (.msi)') ~ td>a:contains('64-bit')",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
+		"notepad++",
+		RegexpVersionExtractor(
+			"https://notepad-plus-plus.org/download/",
+			Re("Download Notepad\\+\\+ ([0-9.]+)"),
+		),
+		HTMLDownloadExtractor(
+			"https://notepad-plus-plus.org/download/",
+			true,
+			"a[href*='npp'][href$='nstaller.exe']",
+			"a[href*='npp'][href$='nstaller.x64.exe']",
+			"href",
+			"href",
+			nil,
+			nil,
+		),
+	)
+	AddRule(
 		"notepad2-mod",
 		GitHubReleaseVersionExtractor(
 			"XhmikosR",
@@ -1162,6 +1213,23 @@ func init() {
 			"tim-lebedkov",
 			"npackd-cpp",
 			Re("NpackdCL-.+.msi"),
+			nil,
+		),
+	)
+	AddRule(
+		"nxlog",
+		RegexpVersionExtractor(
+			"https://nxlog.co/products/nxlog-community-edition/download",
+			Re("nxlog-ce-([0-9.]+)\\.msi"),
+		),
+		HTMLDownloadExtractor(
+			"https://nxlog.co/products/nxlog-community-edition/download",
+			false,
+			"a[href*='nxlog-ce-'][href$='.msi']",
+			"",
+			"href",
+			"",
+			nil,
 			nil,
 		),
 	)
