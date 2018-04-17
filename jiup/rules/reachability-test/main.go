@@ -116,7 +116,7 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 		}
 		if !nodownload {
 			code, mime, err := testDL(x86dl)
-			if err != nil {
+			if err != nil && !(p == "tightvnc" && strings.Contains(err.Error(), "connection reset")) {
 				broken[p] = err
 				fmt.Printf("\r ✗  %s: %v", p, broken[p])
 				continue
@@ -145,7 +145,7 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 			}
 			if !nodownload {
 				code, mime, err := testDL(*x64dl)
-				if err != nil {
+				if err != nil && !(p == "tightvnc" && strings.Contains(err.Error(), "connection reset")) {
 					broken[p] = err
 					fmt.Printf("\r ✗  %s: %v", p, broken[p])
 					continue
@@ -180,7 +180,17 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 }
 
 func testDL(url string) (code int, mime string, err error) {
-	resp, err := http.Get(url)
+	resp, err := http.Head(url)
+	if err == nil {
+		code = resp.StatusCode
+		mime = resp.Header.Get("Content-Type")
+
+		resp.Body.Close()
+
+		return code, mime, nil
+	}
+
+	resp, err = http.Get(url)
 	if err != nil {
 		return 0, "", err
 	}
