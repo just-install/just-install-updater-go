@@ -1062,10 +1062,10 @@ func init() {
 			"yaml/pyyaml",
 			h.Re("([0-9.]+)"),
 		),
-		d.Template(
+		w.NoHTTPSForDownloadExtractor(d.Template(
 			"https://pyyaml.org/download/pyyaml/PyYAML-{{.Version}}.win32-py2.7.exe",
 			"https://pyyaml.org/download/pyyaml/PyYAML-{{.Version}}.win-amd64-py2.7.exe",
-		),
+		)),
 	)
 	Rule("python2-win32",
 		v.GitHubRelease(
