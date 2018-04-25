@@ -17,6 +17,7 @@ import (
 var KnownBroken = []string{
 	"virtualbox",
 	"doublecmd",
+	"python2-yaml",
 }
 
 func main() {
