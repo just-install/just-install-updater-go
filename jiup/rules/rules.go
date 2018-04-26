@@ -34,12 +34,12 @@ func init() {
 	)
 	Rule("android-studio-ide",
 		v.Regexp(
-			"https://developer.android.com/studio/index.html",
-			h.Re("Version: ([0-9.]+)"),
+			"https://developer.android.com/studio/",
+			h.Re("android-studio-ide-([0-9.]+)-"),
 		),
 		d.HTMLA(
-			"https://developer.android.com/studio/index.html",
-			"a[href*='android-studio-ide'][href$='-windows.exe']#win-bundle",
+			"https://developer.android.com/studio/",
+			"a[href*='android-studio-ide'][href$='-windows.exe'].button.devsite-dialog-button",
 			"",
 		),
 	)
