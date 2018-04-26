@@ -35,7 +35,7 @@ func init() {
 	Rule("android-studio-ide",
 		v.Regexp(
 			"https://developer.android.com/studio/",
-			h.Re("android-studio-ide-([0-9.]+)-"),
+			h.Re("install/([0-9.]+)/android-studio-ide-"),
 		),
 		d.HTMLA(
 			"https://developer.android.com/studio/",
