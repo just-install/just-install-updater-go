@@ -15,10 +15,10 @@ type tcase struct {
 
 func TestTestDL(t *testing.T) {
 	for _, c := range []tcase{
-		{"https://httpbin.org/status/200", 200, "text/html", false},
-		{"https://httpbin.org/status/404", 404, "text/html", false},
+		{"https://eu.httpbin.org/status/200", 200, "text/html", false},
+		{"https://eu.httpbin.org/status/404", 404, "text/html", false},
 		{"http://127.0.0.1:3453", 0, "", true},
-		{"https://httpbin.org/get", 200, "application/json", false},
+		{"https://eu.httpbin.org/get", 200, "application/json", false},
 	} {
 		code, mime, err := testDL(c.URL)
 		if c.HasError {
