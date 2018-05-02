@@ -1063,8 +1063,8 @@ func init() {
 			h.Re("([0-9.]+)"),
 		),
 		w.NoHTTPSForDownloadExtractor(d.Template(
-			"https://pyyaml.org/download/pyyaml/PyYAML-{{.Version}}.win32-py2.7.exe",
-			"https://pyyaml.org/download/pyyaml/PyYAML-{{.Version}}.win-amd64-py2.7.exe",
+			"http://pyyaml.org/download/pyyaml/PyYAML-{{.Version}}.win32-py2.7.exe",
+			"http://pyyaml.org/download/pyyaml/PyYAML-{{.Version}}.win-amd64-py2.7.exe",
 		)),
 	)
 	Rule("python2-win32",

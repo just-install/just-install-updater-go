@@ -15,9 +15,7 @@ import (
 // KnownBroken contains packages known to be broken.
 // Errors during the check will not count as a failure.
 var KnownBroken = []string{
-	"virtualbox",
-	"doublecmd",
-	"python2-yaml",
+	"freefilesync",
 }
 
 func main() {
