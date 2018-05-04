@@ -1047,10 +1047,10 @@ func init() {
 	)
 	Rule("python2",
 		v.HTML(
-			"https://www.python.org/downloads/",
-			".download-for-current-os .download-os-windows a[href*='python-2']",
+			"https://www.python.org/downloads/windows",
+			"a:contains('Python 2')",
 			"innerText",
-			h.Re("Download Python ([0-9.]+)"),
+			h.Re("Python (2\\.[0-9.]+)"),
 		),
 		d.Template(
 			"https://www.python.org/ftp/python/{{.Version}}/python-{{.Version}}.msi",
