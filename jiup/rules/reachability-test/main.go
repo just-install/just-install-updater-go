@@ -16,7 +16,7 @@ import (
 // Errors during the check will not count as a failure.
 var KnownBroken = []string{
 	"freefilesync",
-	"workflowly",
+	"workflowy",
 	"pia",
 }
 
