@@ -18,6 +18,7 @@ var KnownBroken = []string{
 	"freefilesync",
 	"workflowy",
 	"pia",
+	"jre",
 }
 
 func main() {
