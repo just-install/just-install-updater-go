@@ -19,6 +19,7 @@ var KnownBroken = []string{
 	"workflowy",
 	"pia",
 	"jre",
+	"gog-galaxy",
 }
 
 func main() {
