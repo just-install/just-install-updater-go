@@ -993,7 +993,7 @@ func init() {
 	Rule("pia",
 		v.Regexp(
 			"https://www.privateinternetaccess.com/pages/downloads",
-			h.Re("Clients v([0-9]+) Released"),
+			h.Re("v([0-9]+)"),
 		),
 		d.HTMLA(
 			"https://www.privateinternetaccess.com/pages/downloads",
