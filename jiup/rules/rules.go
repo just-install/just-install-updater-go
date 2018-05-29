@@ -537,7 +537,7 @@ func init() {
 		),
 		d.GitHubRelease(
 			"gitextensions/gitextensions",
-			h.Re("GitExtensions-.*-Setup.msi"),
+			h.Re("GitExtensions-.*.msi"),
 			nil,
 		),
 	)
