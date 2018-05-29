@@ -1495,14 +1495,14 @@ func init() {
 		),
 	)
 	Rule("workflowy",
-		v.GitHubRelease(
-			"workflowy/desktop",
-			h.Re("v(.+)"),
+		v.Regexp(
+			"https://workflowy.com/downloads/windows/",
+			h.Re("download/v([0-9.]+)/WorkFlowy"),
 		),
-		d.GitHubRelease(
-			"workflowy/desktop",
-			h.Re("WorkFlowy.exe"),
-			nil,
+		d.HTMLA(
+			"https://workflowy.com/downloads/windows/",
+			".js--start-download[href*='Installer.exe']",
+			"",
 		),
 	)
 	Rule("wox",
