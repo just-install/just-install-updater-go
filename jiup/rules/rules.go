@@ -1057,16 +1057,6 @@ func init() {
 			"https://www.python.org/ftp/python/{{.Version}}/python-{{.Version}}.amd64.msi",
 		),
 	)
-	Rule("python2-yaml",
-		v.GitHubTag(
-			"yaml/pyyaml",
-			h.Re("([0-9.]+)"),
-		),
-		w.NoHTTPSForDownloadExtractor(d.Template(
-			"http://pyyaml.org/download/pyyaml/PyYAML-{{.Version}}.win32-py2.7.exe",
-			"http://pyyaml.org/download/pyyaml/PyYAML-{{.Version}}.win-amd64-py2.7.exe",
-		)),
-	)
 	Rule("python2-win32",
 		v.GitHubRelease(
 			"mhammond/pywin32",
