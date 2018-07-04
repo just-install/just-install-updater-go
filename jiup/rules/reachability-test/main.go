@@ -15,8 +15,9 @@ import (
 // KnownBroken contains packages known to be broken.
 // Errors during the check will not count as a failure.
 var KnownBroken = []string{
-	"freefilesync", // The server is unreliable.
-	"emacs",        // FIXME: They now put different versions in different folders.
+	"freefilesync",     // The server is unreliable.
+	"emacs",            // FIXME: They now put different versions in different folders.
+	"crystaldisk-mark", // FIXME
 }
 
 func main() {
