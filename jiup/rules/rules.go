@@ -709,8 +709,8 @@ func init() {
 		),
 		d.GitHubRelease(
 			"keepassxreboot/keepassxc",
-			h.Re("KeePassXC-.+-Win32.exe"),
-			h.Re("KeePassXC-.+-Win64.exe"),
+			h.Re("KeePassXC-.+-Win32.msi"),
+			h.Re("KeePassXC-.+-Win64.msi"),
 		),
 	)
 	Rule("keeweb",
