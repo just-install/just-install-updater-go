@@ -515,7 +515,7 @@ func init() {
 		),
 		d.HTMLA(
 			"https://www.gimp.org/downloads/",
-			"#win a[href$='-setup.exe']",
+			"#win a[href*='-setup'][href$='.exe']",
 			"",
 		),
 	)
