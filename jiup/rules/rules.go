@@ -370,13 +370,24 @@ func init() {
 		Rule("eclipse-"+edition,
 			v.Regexp(
 				"https://eclipse.org/downloads/eclipse-packages/",
-				h.Re("\\(([0-9a-z.]+)\\) +Release"),
+				h.Re("eclipse-"+edition+"-([a-zA-Z0-9]+-[a-zA-Z0-9]+)-win32"), // e.g. photon-R
 			),
-			w.AppendToURL("&r=1", d.HTMLA(
-				"https://eclipse.org/downloads/eclipse-packages/",
-				"a.downloadLink[href*='eclipse-"+edition+"-'][href$='-win32.zip']",
-				"a.downloadLink[href*='eclipse-"+edition+"-'][href$='-win32-x86_64.zip']",
-			)),
+			func(version string) (string, *string, error) {
+				x86, x64, err := d.HTMLA(
+					"https://eclipse.org/downloads/eclipse-packages/",
+					".downloadLink-content a[href*='?file='][href*='eclipse-"+edition+"-'][href$='-win32.zip']",
+					".downloadLink-content a[href*='?file='][href*='eclipse-"+edition+"-'][href$='-win32-x86_64.zip']",
+				)(version)
+
+				if err != nil {
+					return "", nil, err
+				}
+
+				x86 = "http://ftp.osuosl.org/pub/eclipse" + strings.SplitN(strings.SplitN(x86, "?file=", 2)[1], "&", 2)[0]
+				*x64 = "http://ftp.osuosl.org/pub/eclipse" + strings.SplitN(strings.SplitN(*x64, "?file=", 2)[1], "&", 2)[0]
+
+				return x86, x64, nil
+			},
 		)
 	}
 	Rule("eig",
