@@ -17,6 +17,7 @@ import (
 var KnownBroken = []string{
 	"freefilesync",     // The server is unreliable.
 	"octave",           // The server is unreliable.
+	"jre",              // The server is unreliable.
 	"gimp",             // The tests fail, but it seems to work fine when manually testing it
 	"emacs",            // FIXME: They now put different versions in different folders.
 	"crystaldisk-mark", // FIXME
