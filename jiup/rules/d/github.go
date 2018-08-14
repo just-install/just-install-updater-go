@@ -26,7 +26,7 @@ func GitHubRelease(repo string, x86FileRe, x64FileRe *regexp.Regexp) c.DownloadE
 
 		files := [][]string{}
 		err = nil
-		doc.Find(".release").First().Find(".f3+.mt-2 .d-block.py-2 a[href]").EachWithBreak(func(_ int, s *goquery.Selection) bool {
+		doc.Find(".release").First().Find(".Details-element:contains('Assets') ul li a[href][href*='download']").EachWithBreak(func(_ int, s *goquery.Selection) bool {
 			href := strings.TrimSpace(s.AttrOr("href", ""))
 			if href == "" {
 				err = errors.New("could not extract href from release asset")

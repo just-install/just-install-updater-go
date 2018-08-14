@@ -23,7 +23,7 @@ func GitHubTag(repo string, tagRe *regexp.Regexp) c.VersionExtractorFunc {
 			return "", err
 		}
 
-		tag := strings.TrimSpace(doc.Find(".releases-tag-list .tag-info .tag-name").First().Text())
+		tag := strings.TrimSpace(doc.Find(".commit.Details .commit-title a").First().Text())
 		if tag == "" {
 			return "", errors.New("could not find tag from GitHub")
 		}
@@ -50,7 +50,7 @@ func GitHubRelease(repo string, tagRe *regexp.Regexp) c.VersionExtractorFunc {
 			return "", err
 		}
 
-		tag := strings.TrimSpace(doc.Find(".release .tag-references .octicon-tag+span").First().Text())
+		tag := strings.TrimSpace(doc.Find(".release .octicon-tag+span").First().Text())
 		if tag == "" {
 			return "", errors.New("could not find tag from GitHub")
 		}
