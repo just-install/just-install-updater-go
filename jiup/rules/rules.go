@@ -947,11 +947,11 @@ func init() {
 	Rule("obs-studio",
 		v.Regexp(
 			"https://obsproject.com/download",
-			h.Re("download/([0-9.]+)/OBS"),
+			h.Re("Version: ([0-9.]+)"),
 		),
 		d.HTMLA(
 			"https://obsproject.com/download",
-			"a[href*='OBS-Studio-'][href$='Full-Installer.exe']",
+			"a[href*='OBS-Studio-'][href$='Full-Installer-x64.exe']",
 			"",
 		),
 	)
