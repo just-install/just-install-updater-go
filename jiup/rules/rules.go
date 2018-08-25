@@ -76,6 +76,17 @@ func init() {
 			"",
 		),
 	)
+	Rule("bcc",
+		v.GitHubRelease(
+			"wormt/bcc",
+			h.Re("(.+)"),
+		),
+		d.GitHubRelease(
+			"wormt/bcc",
+			h.Re("bcc-.+-32bit.zip"),
+			h.Re("bcc-.+-64bit.zip"),
+		),
+	)
 	Rule("bcuninstaller",
 		v.GitHubRelease(
 			"Klocman/Bulk-Crap-Uninstaller",
