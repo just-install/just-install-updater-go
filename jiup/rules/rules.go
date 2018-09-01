@@ -1373,8 +1373,8 @@ func init() {
 		),
 		d.GitHubRelease(
 			"upx/upx",
-			h.Re("upx[0-9]+w.zip"),
-			nil,
+			h.Re("upx-[0-9.]+-win32.zip"),
+			h.Re("upx-[0-9.]+-win64.zip"),
 		),
 	)
 	Rule("vagrant",
