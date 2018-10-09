@@ -22,6 +22,9 @@ var KnownBroken = []string{
 	"emacs",            // FIXME: They now put different versions in different folders.
 	"crystaldisk-mark", // FIXME
 	"workflowy",        // FIXME
+	"audacity",         // https://github.com/just-install/just-install-updater-go/issues/17
+	"classic-shell",    // https://github.com/just-install/just-install-updater-go/issues/17
+	"qbittorrent",      // https://github.com/just-install/just-install-updater-go/issues/17
 }
 
 func main() {
