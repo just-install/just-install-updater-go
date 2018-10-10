@@ -20,7 +20,6 @@ var KnownBroken = []string{
 	"jre",              // The server is unreliable.
 	"gimp",             // The tests fail, but it seems to work fine when manually testing it
 	"crystaldisk-mark", // FIXME
-	"workflowy",        // FIXME
 	"audacity",         // https://github.com/just-install/just-install-updater-go/issues/17
 	"classic-shell",    // https://github.com/just-install/just-install-updater-go/issues/17
 	"qbittorrent",      // https://github.com/just-install/just-install-updater-go/issues/17
