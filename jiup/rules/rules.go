@@ -591,7 +591,7 @@ func init() {
 		),
 		d.GitHubRelease(
 			"git-lfs/git-lfs",
-			h.Re("git-lfs-windows-.+.exe"),
+			h.Re("git-lfs-windows-v.+.exe"),
 			nil,
 		),
 	)
