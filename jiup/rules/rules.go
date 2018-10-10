@@ -280,6 +280,17 @@ func init() {
 			return "http://osdn.dl.osdn.jp/crystaldiskmark/" + dlp + ".exe", nil, nil
 		},
 	)
+	Rule("cyberduck",
+		v.Regexp(
+			"https://update.cyberduck.io/windows/?C=M;O=D",
+			h.Re("Cyberduck-Installer-([0-9.]+).msi"),
+		),
+		d.HTMLA(
+			"https://update.cyberduck.io/windows/?C=M;O=D",
+			"a[href$='.msi']",
+			"",
+		),
+	)
 	Rule("dbeaver",
 		v.GitHubRelease(
 			"dbeaver/dbeaver",
