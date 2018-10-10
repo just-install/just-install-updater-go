@@ -1132,6 +1132,17 @@ func init() {
 			"",
 		),
 	)
+	Rule("retroarch",
+		v.Regexp(
+			"https://www.retroarch.com/?page=platforms",
+			h.Re("https://buildbot.libretro.com/stable/([0-9.]+)/windows/"),
+		),
+		d.HTMLA(
+			"https://www.retroarch.com/?page=platforms",
+			"a[href$='.exe']:contains('Installer (32bit)')",
+			"a[href$='.exe']:contains('Installer (64bit)')",
+		),
+	)
 	Rule("ruby",
 		v.GitHubRelease(
 			"oneclick/rubyinstaller2",
