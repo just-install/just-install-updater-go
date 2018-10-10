@@ -519,6 +519,16 @@ func init() {
 			"",
 		),
 	)
+	Rule("freeplane",
+		v.Regexp(
+			"https://sourceforge.net/projects/freeplane/files/freeplane%20stable/",
+			h.Re("Freeplane-Setup-([0-9.]+).exe"),
+		),
+		d.Template(
+			"https://sourceforge.net/projects/freeplane/files/freeplane%20stable/Freeplane-Setup-{{.Version}}.exe/download",
+			"",
+		),
+	)
 	Rule("geforce-experience",
 		v.Regexp(
 			"https://www.nvidia.com/en-us/geforce/geforce-experience/",
