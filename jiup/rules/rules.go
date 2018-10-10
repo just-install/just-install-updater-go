@@ -909,15 +909,13 @@ func init() {
 		),
 	)
 	Rule("nextcloud",
-		v.HTML(
-			"https://nextcloud.com/install/",
-			"#tab-desktop a[href*='desktop/releases/Windows'][href$='setup.exe']",
-			"href",
+		v.Regexp(
+			"https://download.nextcloud.com/desktop/releases/Windows/?C=M;O=D",
 			h.Re("Nextcloud-([0-9.]+)-"),
 		),
 		d.HTMLA(
-			"https://nextcloud.com/install/",
-			"#tab-desktop a[href*='desktop/releases/Windows'][href$='setup.exe']",
+			"https://download.nextcloud.com/desktop/releases/Windows/?C=M;O=D",
+			"a[href$='setup.exe']",
 			"",
 		),
 	)
