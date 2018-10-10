@@ -261,24 +261,20 @@ func init() {
 		},
 	)
 	Rule("crystaldisk-mark",
-		w.UnderscoreToDot(v.HTML(
+		v.HTML(
 			"https://osdn.net/projects/crystaldiskmark/releases/",
-			"a.pref-download-btn.pref-download-btn-win32[href]",
-			"href",
-			h.Re("CrystalDiskMark([0-9_]+).zip"),
-		)),
+			".release-item-title a[href*='crystaldiskmark/releases']",
+			"innerText",
+			h.Re("([0-9.]+)"),
+		),
 		func(version string) (string, *string, error) {
 			vu := strings.Replace(version, ".", "_", -1)
-			dlp, err := v.HTML(
-				"https://osdn.net/projects/crystaldiskmark/releases/",
-				"a.pref-download-btn.pref-download-btn-win32[href]",
-				"href",
-				h.Re("downloads/([0-9]+/CrystalDiskMark"+vu+").zip"),
-			)()
-			if err != nil {
-				return "", nil, err
-			}
-			return "http://osdn.dl.osdn.jp/crystaldiskmark/" + dlp + ".exe", nil, nil
+			x86, x64, err := d.HTMLA(
+				"https://osdn.net/dl/crystaldiskmark/CrystalDiskMark"+vu+".exe",
+				"a.mirror_link",
+				"",
+			)(version)
+			return x86, x64, err
 		},
 	)
 	Rule("cyberduck",
