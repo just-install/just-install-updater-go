@@ -362,11 +362,11 @@ func init() {
 	)
 	Rule("duck",
 		v.Regexp(
-			"https://dist.duck.sh/",
+			"https://dist.duck.sh/?C=M;O=D",
 			h.Re("duck-([0-9.]+).msi"),
 		),
 		d.HTMLA(
-			"https://dist.duck.sh/",
+			"https://dist.duck.sh/?C=M;O=D",
 			"a[href$='.msi']",
 			"",
 		),
