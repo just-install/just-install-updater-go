@@ -19,7 +19,6 @@ var KnownBroken = []string{
 	"octave",           // The server is unreliable.
 	"jre",              // The server is unreliable.
 	"gimp",             // The tests fail, but it seems to work fine when manually testing it
-	"emacs",            // FIXME: They now put different versions in different folders.
 	"crystaldisk-mark", // FIXME
 	"workflowy",        // FIXME
 	"audacity",         // https://github.com/just-install/just-install-updater-go/issues/17

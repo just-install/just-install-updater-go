@@ -2,6 +2,7 @@ package rules
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/just-install/just-install-updater-go/jiup/rules/d"
@@ -413,17 +414,38 @@ func init() {
 		),
 	)
 	Rule("emacs",
-		v.HTML(
-			"https://ftp.gnu.org/gnu/emacs/windows/?C=M;O=D",
-			"a[href*='emacs'][href$='-i686.zip']",
-			"href",
-			h.Re("emacs-([0-9.]+)-"),
-		),
-		d.HTMLA(
-			"https://ftp.gnu.org/gnu/emacs/windows/?C=M;O=D",
-			"a[href*='emacs'][href$='-i686.zip']",
-			"a[href*='emacs'][href$='-x86_64.zip']",
-		),
+		func() (string, error) {
+			majorVersion, err := v.HTML(
+				"https://ftp.gnu.org/gnu/emacs/windows/?C=M;O=D",
+				"a[href*='emacs-']",
+				"href",
+				h.Re("emacs-([0-9]+)"),
+			)()
+			if err != nil {
+				return "", err
+			}
+
+			version, err := v.HTML(
+				"https://ftp.gnu.org/gnu/emacs/windows/emacs-"+majorVersion+"/?C=N;O=D",
+				"a[href*='emacs-']",
+				"href",
+				h.Re("emacs-([0-9.]+)"),
+			)()
+			if err != nil {
+				return "", err
+			}
+
+			if strings.Split(version, ".")[0] != majorVersion {
+				return "", errors.New("emacs rule needs to be updated")
+			}
+
+			return version, nil
+		},
+		func(version string) (string, *string, error) {
+			majorVersion := strings.Split(version, ".")[0]
+			x64 := fmt.Sprintf("https://ftp.gnu.org/gnu/emacs/windows/emacs-%s/emacs-%s-x86_64.zip", majorVersion, version)
+			return fmt.Sprintf("https://ftp.gnu.org/gnu/emacs/windows/emacs-%s/emacs-%s-i686.zip", majorVersion, version), &x64, nil
+		},
 	)
 	Rule("enpass",
 		v.HTML(
