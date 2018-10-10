@@ -360,6 +360,17 @@ func init() {
 			"a[href$='x86_64-win64.msi/download']",
 		),
 	)
+	Rule("duck",
+		v.Regexp(
+			"https://dist.duck.sh/",
+			h.Re("duck-([0-9.]+).msi"),
+		),
+		d.HTMLA(
+			"https://dist.duck.sh/",
+			"a[href$='.msi']",
+			"",
+		),
+	)
 	Rule("eac",
 		v.Regexp(
 			"http://www.exactaudiocopy.de/en/index.php/weitere-seiten/download-from-alternative-servers-2/",
