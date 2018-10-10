@@ -820,6 +820,17 @@ func init() {
 			"",
 		),
 	)
+	Rule("marktext",
+		v.GitHubRelease(
+			"marktext/marktext",
+			h.Re("v(.+)"),
+		),
+		d.GitHubRelease(
+			"marktext/marktext",
+			h.Re("marktext-setup-.+.exe"),
+			nil,
+		),
+	)
 	Rule("mercurial",
 		v.Regexp(
 			"https://www.mercurial-scm.org/sources.js",
