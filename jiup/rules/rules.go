@@ -1125,6 +1125,17 @@ func init() {
 			)(version)
 		},
 	)
+	Rule("qtox",
+		v.GitHubRelease(
+			"qTox/qTox",
+			h.Re("v(.+)"),
+		),
+		d.GitHubRelease(
+			"qTox/qTox",
+			h.Re("setup-qtox-i686-release.exe"),
+			h.Re("setup-qtox-x86_64-release.exe"),
+		),
+	)
 	Rule("recuva",
 		func() (string, error) {
 			version, err := v.Regexp(
