@@ -671,6 +671,17 @@ func init() {
 			"",
 		),
 	)
+	Rule("hexchat",
+		v.Regexp(
+			"https://hexchat.github.io/downloads.html",
+			h.Re("HexChat ([0-9.]+)"),
+		),
+		d.HTMLA(
+			"https://hexchat.github.io/downloads.html",
+			"a[href$='x86.exe']",
+			"a[href$='x64.exe']",
+		),
+	)
 	Rule("hugo",
 		v.GitHubRelease(
 			"gohugoio/hugo",
