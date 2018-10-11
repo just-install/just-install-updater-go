@@ -613,6 +613,17 @@ func init() {
 			nil,
 		),
 	)
+	Rule("git-credential-manager-for-windows",
+		v.GitHubRelease(
+			"Microsoft/Git-Credential-Manager-for-Windows",
+			h.Re("v(.+)"),
+		),
+		d.GitHubRelease(
+			"Microsoft/Git-Credential-Manager-for-Windows",
+			h.Re("GCMW-.+.exe"),
+			nil,
+		),
+	)
 	Rule("git-lfs",
 		v.GitHubRelease(
 			"git-lfs/git-lfs",
