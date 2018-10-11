@@ -1525,13 +1525,12 @@ func init() {
 	)
 	Rule("vlc",
 		v.Regexp(
-			"https://www.videolan.org/vlc/download-windows.html",
-			h.Re("vlc-([0-9.]+)-"),
+			"https://download.videolan.org/pub/videolan/vlc/last/win32/",
+			h.Re("vlc-([0-9.]+)-win32.msi"),
 		),
-		d.HTMLA(
-			"https://www.videolan.org/vlc/download-windows.html",
-			"a[href*='vlc-'][href$='-win32.exe']",
-			"a[href*='vlc-'][href$='-win64.exe']",
+		d.Template(
+			"https://download.videolan.org/pub/videolan/vlc/last/win32/vlc-{{.Version}}-win32.msi",
+			"https://download.videolan.org/pub/videolan/vlc/last/win64/vlc-{{.Version}}-win64.msi",
 		),
 	)
 	Rule("vpnunlimited",
