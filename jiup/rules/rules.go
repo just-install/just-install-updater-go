@@ -1409,6 +1409,17 @@ func init() {
 			"a[href*='tightvnc-'][href$='-setup-64bit.msi']",
 		),
 	)
+	Rule("tor-browser",
+		v.Regexp(
+			"https://www.torproject.org/download/download.html.en",
+			h.Re("torbrowser-install-([0-9.]+)_en"),
+		),
+		d.HTMLA(
+			"https://www.torproject.org/download/download.html.en",
+			"a.button.win-tbb",
+			"a.button.win-tbb64",
+		),
+	)
 	Rule("tortoisegit",
 		v.Regexp(
 			"https://tortoisegit.org/download/",
