@@ -829,6 +829,17 @@ func init() {
 			"",
 		),
 	)
+	Rule("krita",
+		v.Regexp(
+			"https://krita.org/en/download/krita-desktop/",
+			h.Re("krita-x86-([0-9.]+)-"),
+		),
+		d.HTMLA(
+			"https://krita.org/en/download/krita-desktop/",
+			"a[href*='krita-x86'][href$='.exe']",
+			"a[href*='krita-x64'][href$='.exe']",
+		),
+	)
 	Rule("libreoffice",
 		v.Regexp(
 			"https://www.libreoffice.org/download/libreoffice-fresh/?type=win-x86&lang=en-US",
