@@ -1104,6 +1104,17 @@ func init() {
 			nil,
 		),
 	)
+	Rule("powershell-core",
+		v.GitHubRelease(
+			"PowerShell/PowerShell",
+			h.Re("v(.+)"),
+		),
+		d.GitHubRelease(
+			"PowerShell/PowerShell",
+			h.Re("PowerShell-.+-win-x86.msi"),
+			h.Re("PowerShell-.+-win-x64.msi"),
+		),
+	)
 	Rule("processhacker",
 		v.GitHubRelease(
 			"processhacker/processhacker",
