@@ -23,6 +23,7 @@ var KnownBroken = []string{
 	"classic-shell", // https://github.com/just-install/just-install-updater-go/issues/17
 	"qbittorrent",   // https://github.com/just-install/just-install-updater-go/issues/17
 	"simplenote",    // TODO: fix this
+	"jdk",           // The server is unreliable.
 }
 
 func main() {
