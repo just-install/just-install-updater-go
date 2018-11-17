@@ -216,16 +216,6 @@ func init() {
 			"",
 		),
 	)
-	Rule("crashplan",
-		v.Regexp(
-			"https://www.crashplan.com/shared/js/cp.download.js",
-			h.Re("CPC_CLIENT_VERSION ?= ?'([0-9.]+)'"),
-		),
-		d.Template(
-			"https://download.code42.com/installs/win/install/CrashPlan/jre/CrashPlan_{{.Version}}_Win.msi",
-			"https://download.code42.com/installs/win/install/CrashPlan/jre/CrashPlan_{{.Version}}_Win64.msi",
-		),
-	)
 	Rule("cryptomator",
 		v.HTML(
 			"https://cryptomator.org/downloads",
