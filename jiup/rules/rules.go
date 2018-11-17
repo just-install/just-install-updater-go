@@ -216,16 +216,6 @@ func init() {
 			"",
 		),
 	)
-	Rule("crashplan",
-		v.Regexp(
-			"https://www.crashplan.com/shared/js/cp.download.js",
-			h.Re("CPC_CLIENT_VERSION ?= ?'([0-9.]+)'"),
-		),
-		d.Template(
-			"https://download.code42.com/installs/win/install/CrashPlan/jre/CrashPlan_{{.Version}}_Win.msi",
-			"https://download.code42.com/installs/win/install/CrashPlan/jre/CrashPlan_{{.Version}}_Win64.msi",
-		),
-	)
 	Rule("cryptomator",
 		v.HTML(
 			"https://cryptomator.org/downloads",
@@ -555,7 +545,7 @@ func init() {
 		),
 		d.HTMLA(
 			"https://www.freefilesync.org/download.php",
-			"a.direct-download-link[href$='.exe']:contains('Windows Setup')",
+			"a.direct-download-link[href$='.exe']",
 			"",
 		),
 	)
@@ -616,7 +606,7 @@ func init() {
 	Rule("git-credential-manager-for-windows",
 		v.GitHubRelease(
 			"Microsoft/Git-Credential-Manager-for-Windows",
-			h.Re("v(.+)"),
+			h.Re("(.+)"),
 		),
 		d.GitHubRelease(
 			"Microsoft/Git-Credential-Manager-for-Windows",
@@ -1314,7 +1304,7 @@ func init() {
 		),
 		d.GitHubRelease(
 			"Automattic/simplenote-electron",
-			h.Re("Simplenote-[0-9.]+-Setup.exe"),
+			h.Re("Simplenote-win-[0-9.]+.exe"),
 			nil,
 		),
 	)
