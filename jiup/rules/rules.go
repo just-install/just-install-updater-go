@@ -616,7 +616,7 @@ func init() {
 	Rule("git-credential-manager-for-windows",
 		v.GitHubRelease(
 			"Microsoft/Git-Credential-Manager-for-Windows",
-			h.Re("v(.+)"),
+			h.Re("(.+)"),
 		),
 		d.GitHubRelease(
 			"Microsoft/Git-Credential-Manager-for-Windows",
