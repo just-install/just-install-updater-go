@@ -555,7 +555,7 @@ func init() {
 		),
 		d.HTMLA(
 			"https://www.freefilesync.org/download.php",
-			"a.direct-download-link[href$='.exe']:contains('Windows Setup')",
+			"a.direct-download-link[href$='.exe']",
 			"",
 		),
 	)
