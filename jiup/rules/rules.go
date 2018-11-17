@@ -1314,7 +1314,7 @@ func init() {
 		),
 		d.GitHubRelease(
 			"Automattic/simplenote-electron",
-			h.Re("Simplenote-[0-9.]+-Setup.exe"),
+			h.Re("Simplenote-win-[0-9.]+.exe"),
 			nil,
 		),
 	)
