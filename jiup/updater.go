@@ -115,7 +115,9 @@ func (u *Updater) Update(progress, verbose, force bool) (updated map[string]stri
 			continue
 		}
 		if verbose {
-			fmt.Printf("  %s: x86: %s\n", pkgName, x86dl)
+			if x86dl != nil {
+				fmt.Printf("  %s: x86: %s\n", pkgName, *x86dl)
+			}
 			if x86_64dl != nil {
 				fmt.Printf("  %s: x86_64: %s\n", pkgName, *x86_64dl)
 			} else {
@@ -123,29 +125,17 @@ func (u *Updater) Update(progress, verbose, force bool) (updated map[string]stri
 			}
 		}
 
-		if x86dl == "" {
-			errored[pkgName] = errors.New("empty x86 download link returned")
+		if x86dl == nil && x86_64dl == nil {
+			errored[pkgName] = errors.New("x86 and x86_64 urls are both empty")
 			if verbose {
 				fmt.Printf("  Error parsing links for %s: %v\n", pkgName, err)
 			}
 			continue
 		}
 
-		do64 := false
-		if x86_64dl != nil {
-			if *x86_64dl == "" {
-				errored[pkgName] = errors.New("empty (but not nil) x86_64 download link returned")
-				if verbose {
-					fmt.Printf("  Error parsing links for %s: %v\n", pkgName, err)
-				}
-				continue
-			}
-			do64 = true
-		}
-
 		tmp := u.Registry.Packages[pkgName]
-		if tmp.Version == "latest" && tmp.Installer.X86 == x86dl {
-			if !(do64 && *tmp.Installer.X86_64 != *x86_64dl) {
+		if tmp.Version == "latest" {
+			if !((x86dl != nil && tmp.Installer.X86 != nil && *tmp.Installer.X86 != *x86dl) || x86_64dl != nil && tmp.Installer.X86_64 != nil && *tmp.Installer.X86_64 != *x86_64dl) {
 				// Not updated a package with no version
 				if verbose {
 					fmt.Printf("  Version for %s is latest, and download links have not changed\n", pkgName)
@@ -155,11 +145,7 @@ func (u *Updater) Update(progress, verbose, force bool) (updated map[string]stri
 			}
 		}
 		tmp.Installer.X86 = x86dl
-		if do64 {
-			tmp.Installer.X86_64 = x86_64dl
-		} else {
-			tmp.Installer.X86_64 = nil
-		}
+		tmp.Installer.X86_64 = x86_64dl
 		tmp.Version = version
 		u.Registry.Packages[pkgName] = tmp
 

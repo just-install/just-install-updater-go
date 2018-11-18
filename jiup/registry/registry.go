@@ -26,8 +26,8 @@ type Package struct {
 			X86      *Options            `json:"x86,omitempty"`    // maybe optional
 			X86_64   *Options            `json:"x86_64,omitempty"` // optional
 		} `json:"options,omitempty"` // optional
-		X86    string  `json:"x86"`
-		X86_64 *string `json:"x86_64,omitempty"` // optional
+		X86    *string `json:"x86,omitempty"` // optional, but at least either x86 or x86_64 must be defined
+		X86_64 *string `json:"x86_64,omitempty"`
 	} `json:"installer"`
 	Version string `json:"version"`
 }

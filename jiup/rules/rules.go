@@ -59,7 +59,7 @@ func init() {
 			"http://www.oldfoss.com/Audacity.html",
 			h.Re("audacity-win-([0-9.]+).exe"),
 		),
-		func(version string) (string, *string, error) {
+		func(version string) (*string, *string, error) {
 			return d.Regexp(
 				"http://www.oldfoss.com/Audacity.html",
 				h.Re("\"(http.+audacity-win-"+version+".exe)\""),
@@ -154,7 +154,7 @@ func init() {
 			"http://www.oldfoss.com/Classic-Shell.html",
 			h.Re("ClassicShellSetup_([0-9_]+)"),
 		)),
-		func(version string) (string, *string, error) {
+		func(version string) (*string, *string, error) {
 			return d.Regexp(
 				"http://www.oldfoss.com/Classic-Shell.html",
 				h.Re("\"(http.+ClassicShellSetup_"+strings.Replace(version, ".", "_", -1)+".exe)\""),
@@ -225,7 +225,7 @@ func init() {
 		),
 		d.HTMLA(
 			"https://cryptomator.org/downloads",
-			"#winDownload a[href$='.exe']:contains('32 Bit')",
+			"",
 			"#winDownload a[href$='.exe']:contains('64 Bit')",
 		),
 	)
@@ -236,7 +236,7 @@ func init() {
 			"href",
 			h.Re("CrystalDiskInfo([0-9_]+).zip"),
 		)),
-		func(version string) (string, *string, error) {
+		func(version string) (*string, *string, error) {
 			vu := strings.Replace(version, ".", "_", -1)
 			dlp, err := v.HTML(
 				"https://osdn.net/projects/crystaldiskinfo/releases/",
@@ -245,9 +245,9 @@ func init() {
 				h.Re("downloads/([0-9]+/CrystalDiskInfo"+vu+").zip"),
 			)()
 			if err != nil {
-				return "", nil, err
+				return nil, nil, err
 			}
-			return "http://osdn.dl.osdn.jp/crystaldiskinfo/" + dlp + ".exe", nil, nil
+			return h.StrPtr("http://osdn.dl.osdn.jp/crystaldiskinfo/" + dlp + ".exe"), nil, nil
 		},
 	)
 	Rule("crystaldisk-mark",
@@ -257,7 +257,7 @@ func init() {
 			"innerText",
 			h.Re("([0-9.]+)"),
 		),
-		func(version string) (string, *string, error) {
+		func(version string) (*string, *string, error) {
 			vu := strings.Replace(version, ".", "_", -1)
 			x86, x64, err := d.HTMLA(
 				"https://osdn.net/dl/crystaldiskmark/CrystalDiskMark"+vu+".exe",
@@ -392,7 +392,7 @@ func init() {
 				"https://eclipse.org/downloads/eclipse-packages/",
 				h.Re("eclipse-"+edition+"-([a-zA-Z0-9]+-[a-zA-Z0-9]+)-win32"), // e.g. photon-R
 			),
-			func(version string) (string, *string, error) {
+			func(version string) (*string, *string, error) {
 				x86, x64, err := d.HTMLA(
 					"https://eclipse.org/downloads/eclipse-packages/",
 					".downloadLink-content a[href*='?file='][href*='eclipse-"+edition+"-'][href$='-win32.zip']",
@@ -400,10 +400,10 @@ func init() {
 				)(version)
 
 				if err != nil {
-					return "", nil, err
+					return nil, nil, err
 				}
 
-				x86 = "http://ftp.osuosl.org/pub/eclipse" + strings.SplitN(strings.SplitN(x86, "?file=", 2)[1], "&", 2)[0]
+				*x86 = "http://ftp.osuosl.org/pub/eclipse" + strings.SplitN(strings.SplitN(*x86, "?file=", 2)[1], "&", 2)[0]
 				*x64 = "http://ftp.osuosl.org/pub/eclipse" + strings.SplitN(strings.SplitN(*x64, "?file=", 2)[1], "&", 2)[0]
 
 				return x86, x64, nil
@@ -449,10 +449,11 @@ func init() {
 
 			return version, nil
 		},
-		func(version string) (string, *string, error) {
+		func(version string) (*string, *string, error) {
 			majorVersion := strings.Split(version, ".")[0]
+			x86 := fmt.Sprintf("https://ftp.gnu.org/gnu/emacs/windows/emacs-%s/emacs-%s-i686.zip", majorVersion, version)
 			x64 := fmt.Sprintf("https://ftp.gnu.org/gnu/emacs/windows/emacs-%s/emacs-%s-x86_64.zip", majorVersion, version)
-			return fmt.Sprintf("https://ftp.gnu.org/gnu/emacs/windows/emacs-%s/emacs-%s-i686.zip", majorVersion, version), &x64, nil
+			return &x86, &x64, nil
 		},
 	)
 	Rule("enpass",
@@ -749,17 +750,17 @@ func init() {
 			"https://lv.binarybabel.org/catalog-api/java/jdk8.txt?p=version",
 			h.Re("([0-9a-zA-Z.-]+)"),
 		),
-		func(version string) (string, *string, error) {
+		func(version string) (*string, *string, error) {
 			buf, _, ok, err := h.GetURL(nil, "https://lv.binarybabel.org/catalog-api/java/jdk8.txt?p=downloads.exe", map[string]string{}, []int{200})
 			if err != nil {
-				return "", nil, err
+				return nil, nil, err
 			}
 			if !ok {
-				return "", nil, errors.New("unexpected response code")
+				return nil, nil, errors.New("unexpected response code")
 			}
 			x64 := string(buf)
 			x86 := strings.Replace(x64, "x64", "i586", -1)
-			return x86, &x64, nil
+			return &x86, &x64, nil
 		},
 	)
 	Rule("jre",
@@ -1200,7 +1201,7 @@ func init() {
 			"http://www.oldfoss.com/qBittorrent.html",
 			h.Re("qbittorrent_([0-9.]+)_setup.exe"),
 		),
-		func(version string) (string, *string, error) {
+		func(version string) (*string, *string, error) {
 			return d.Regexp(
 				"http://www.oldfoss.com/qBittorrent.html",
 				h.Re("\"(http.+qbittorrent_"+version+"_setup.exe)\""),
@@ -1267,7 +1268,6 @@ func init() {
 		)),
 		w.NoHTTPSForDownloadExtractor(d.HTML(
 			"https://www.seafile.com/en/download/",
-			false,
 			".txt > h3:contains('Client for Windows')~a[href*='seafile'][href$='en.msi'].download-op",
 			"",
 			"href",
@@ -1412,7 +1412,6 @@ func init() {
 		),
 		d.HTML(
 			"https://www.teamspeak.com/en/downloads",
-			true,
 			"option[value*='win32'][value$='.exe']",
 			"option[value*='win64'][value$='.exe']",
 			"value",
@@ -1459,7 +1458,7 @@ func init() {
 			"https://tortoisesvn.net/downloads.html",
 			h.Re("The current version is ([0-9.]+)"),
 		),
-		func(version string) (string, *string, error) {
+		func(version string) (*string, *string, error) {
 			// Layer 1: Link to OSDN
 			x86, x64, err := d.HTMLA(
 				"https://tortoisesvn.net/downloads.html",
@@ -1467,19 +1466,19 @@ func init() {
 				"a[href^='https://osdn.net'][href*='x64-svn']",
 			)(version)
 			if err != nil {
-				return "", nil, err
+				return nil, nil, err
 			}
 			if x64 == nil {
-				return "", nil, errors.New("x64 link empty")
+				return nil, nil, errors.New("x64 link empty")
 			}
 			// Layer 2: OSDN to redir link
 			x86, _, err = d.HTMLA(
-				x86,
+				*x86,
 				"a.mirror_link[href*='/frs/redir'][href*='win32-svn']",
 				"",
 			)(version)
 			if err != nil {
-				return "", nil, err
+				return nil, nil, err
 			}
 			_, x64, err = d.HTMLA(
 				*x64,
@@ -1487,7 +1486,7 @@ func init() {
 				"a.mirror_link[href*='/frs/redir'][href*='x64-svn']",
 			)(version)
 			if err != nil {
-				return "", nil, err
+				return nil, nil, err
 			}
 			return x86, x64, nil
 		},

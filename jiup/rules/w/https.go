@@ -29,7 +29,7 @@ func NoHTTPSForVersionExtractor(f c.VersionExtractorFunc) c.VersionExtractorFunc
 
 // NoHTTPSForDownloadExtractor wraps a DownloadExtractorFunc to disable HTTPS checking.
 func NoHTTPSForDownloadExtractor(f c.DownloadExtractorFunc) c.DownloadExtractorFunc {
-	return func(version string) (string, *string, error) {
+	return func(version string) (*string, *string, error) {
 		DisableHTTPSCheck()
 		x86, x64, err := f(version)
 		EnableHTTPSCheck()

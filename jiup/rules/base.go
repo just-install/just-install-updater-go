@@ -51,23 +51,25 @@ func wrapV(f c.VersionExtractorFunc) c.VersionExtractorFunc {
 }
 
 func wrapD(f c.DownloadExtractorFunc) c.DownloadExtractorFunc {
-	return func(version string) (x86 string, x86_64 *string, err error) {
+	return func(version string) (x86 *string, x86_64 *string, err error) {
 		x86, x86_64, err = f(version)
-		if err != nil {
-			return "", nil, err
-		}
-		if strings.TrimSpace(x86) == "" {
-			return "", nil, errors.New("x86 link is empty")
-		}
-		if !strings.HasPrefix(x86, "http") {
-			return "", nil, fmt.Errorf("x86 link (%s) does not start with http", x86)
+		if x86 != nil {
+			if err != nil {
+				return nil, nil, err
+			}
+			if strings.TrimSpace(*x86) == "" {
+				return nil, nil, errors.New("x86 link is empty")
+			}
+			if !strings.HasPrefix(*x86, "http") {
+				return nil, nil, fmt.Errorf("x86 link (%s) does not start with http", *x86)
+			}
 		}
 		if x86_64 != nil {
 			if strings.TrimSpace(*x86_64) == "" {
-				return "", nil, errors.New("x86_64 link is empty")
+				return nil, nil, errors.New("x86_64 link is empty")
 			}
 			if !strings.HasPrefix(*x86_64, "http") {
-				return "", nil, fmt.Errorf("x86_64 link (%s) does not start with http", *x86_64)
+				return nil, nil, fmt.Errorf("x86_64 link (%s) does not start with http", *x86_64)
 			}
 		}
 		return x86, x86_64, nil

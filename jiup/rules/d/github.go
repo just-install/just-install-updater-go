@@ -13,15 +13,15 @@ import (
 
 // GitHubRelease returns a version extractor for a GitHub release. x64Re can be nil.
 func GitHubRelease(repo string, x86FileRe, x64FileRe *regexp.Regexp) c.DownloadExtractorFunc {
-	return func(_ string) (string, *string, error) {
-		if x86FileRe == nil {
-			return "", nil, errors.New("x86File regex is nil")
+	return func(_ string) (*string, *string, error) {
+		if x86FileRe == nil && x64FileRe == nil {
+			return nil, nil, errors.New("at least one of x86 and x64 regexps must be defined")
 		}
 
 		// scrape to avoid limit
 		doc, err := h.GetDoc(nil, fmt.Sprintf("https://github.com/%s/releases/latest", repo), map[string]string{}, []int{200})
 		if err != nil {
-			return "", nil, err
+			return nil, nil, err
 		}
 
 		files := [][]string{}
@@ -54,36 +54,40 @@ func GitHubRelease(repo string, x86FileRe, x64FileRe *regexp.Regexp) c.DownloadE
 			return true
 		})
 		if err != nil {
-			return "", nil, err
+			return nil, nil, err
 		}
 		if len(files) == 0 {
-			return "", nil, errors.New("could not extract list of assets")
+			return nil, nil, errors.New("could not extract list of assets")
 		}
 
-		x86 := ""
-		for _, file := range files {
-			if x86FileRe.MatchString(file[1]) {
-				x86 = file[0]
-				break
-			}
-		}
-		if x86 == "" {
-			return "", nil, errors.New("could not find asset filename match for x86")
-		}
-
-		if x64FileRe != nil {
-			x64 := ""
+		var x86dl, x64dl *string
+		if x86FileRe != nil {
 			for _, file := range files {
-				if x64FileRe.MatchString(file[1]) {
-					x64 = file[0]
+				if x86FileRe.MatchString(file[1]) {
+					x86dl = h.StrPtr(file[0])
 					break
 				}
 			}
-			if x64 == "" {
-				return "", nil, errors.New("could not find asset filename match for x86_64")
+			if x86dl == nil {
+				return nil, nil, errors.New("could not find asset filename match for x86")
 			}
-			return x86, &x64, nil
 		}
-		return x86, nil, nil
+
+		if x64FileRe != nil {
+			for _, file := range files {
+				if x64FileRe.MatchString(file[1]) {
+					x64dl = h.StrPtr(file[0])
+					break
+				}
+			}
+			if x64dl == nil {
+				return nil, nil, errors.New("could not find asset filename match for x64")
+			}
+		}
+
+		if x86dl == nil && x64dl == nil {
+			return nil, nil, errors.New("could not find match for x86 or x64")
+		}
+		return x86dl, x64dl, nil
 	}
 }

@@ -127,75 +127,56 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 			fmt.Printf("\r ✗  %s: %v", p, broken[p])
 			continue
 		}
-		if strings.TrimSpace(x86dl) == "" {
-			broken[p] = errors.New("empty x86 download link")
+		if x86dl == nil && x64dl == nil {
+			broken[p] = errors.New("one or both of x86 and x64 must be defined")
 			fmt.Printf("\r ✗  %s: %v", p, broken[p])
 			continue
 		}
-		if !strings.HasPrefix(x86dl, "http") {
-			broken[p] = fmt.Errorf("x86 link (%s) does not start with http", x86dl)
+		if (x86dl != nil && strings.TrimSpace(*x86dl) == "") || (x64dl != nil && strings.TrimSpace(*x64dl) == "") {
+			broken[p] = errors.New("use nil if no link, not a blank string")
 			fmt.Printf("\r ✗  %s: %v", p, broken[p])
 			continue
 		}
-		if !nodownload {
-			code, mime, err := testDL(x86dl)
-			if err != nil && !(p == "tightvnc" && strings.Contains(err.Error(), "connection reset")) {
-				broken[p] = err
-				fmt.Printf("\r ✗  %s: %v", p, broken[p])
+
+		res := fmt.Sprintf("\r ✓  %s: %s", p, version)
+		for _, l := range []struct {
+			arch string
+			link *string
+		}{{"x86", x86dl}, {"x86_64", x64dl}} {
+			if l.link == nil {
 				continue
 			}
-			if code != 200 {
-				broken[p] = fmt.Errorf("x86 download status code %d", code)
-				fmt.Printf("\r ✗  %s: %v", p, broken[p])
-				continue
-			}
-			if strings.HasPrefix(mime, "text/html") && !strings.Contains(x86dl, "sourceforge") && !strings.Contains(x86dl, "oracle") {
-				broken[p] = errors.New("x86 download mime text/html")
-				fmt.Printf("\r ✗  %s: %v", p, broken[p])
-				continue
-			}
-		}
-		if x64dl != nil {
-			if strings.TrimSpace(*x64dl) == "" {
-				broken[p] = errors.New("empty x86_64 download link")
-				fmt.Printf("\r ✗  %s: %v", p, broken[p])
-				continue
-			}
-			if !strings.HasPrefix(*x64dl, "http") {
-				broken[p] = fmt.Errorf("x86_64 link (%s) does not start with http", *x64dl)
+			if !strings.HasPrefix(*l.link, "http") {
+				broken[p] = fmt.Errorf("%s link (%s) does not start with http", l.arch, *l.link)
 				fmt.Printf("\r ✗  %s: %v", p, broken[p])
 				continue
 			}
 			if !nodownload {
-				code, mime, err := testDL(*x64dl)
+				code, mime, err := testDL(*l.link)
 				if err != nil && !(p == "tightvnc" && strings.Contains(err.Error(), "connection reset")) {
 					broken[p] = err
 					fmt.Printf("\r ✗  %s: %v", p, broken[p])
 					continue
 				}
 				if code != 200 {
-					broken[p] = fmt.Errorf("x86_64 download status code %d", code)
+					broken[p] = fmt.Errorf("%s download status code %d", l.arch, code)
 					fmt.Printf("\r ✗  %s: %v", p, broken[p])
 					continue
 				}
-				if strings.HasPrefix(mime, "text/html") && !strings.Contains(*x64dl, "sourceforge") && !strings.Contains(*x64dl, "oracle") {
-					broken[p] = errors.New("x86_64 download mime text/html")
+				if strings.HasPrefix(mime, "text/html") && !strings.Contains(*l.link, "sourceforge") && !strings.Contains(*l.link, "oracle") {
+					broken[p] = fmt.Errorf("%s download mime text/html", l.arch)
 					fmt.Printf("\r ✗  %s: %v", p, broken[p])
 					continue
 				}
 			}
-		}
-
-		working = append(working, p)
-		if downloadLinks {
-			if x64dl == nil {
-				fmt.Printf("\r ✓  %s: %s x86(%s)", p, version, x86dl)
+			if downloadLinks {
+				res = fmt.Sprintf("%s %s(%s)", res, l.arch, *l.link)
 			} else {
-				fmt.Printf("\r ✓  %s: %s x86(%s) x64(%s)", p, version, x86dl, *x64dl)
+				res += "                " // workaround for carriage returns
 			}
-		} else {
-			fmt.Printf("\r ✓  %s: %s           ", p, version)
 		}
+		working = append(working, p)
+		fmt.Print(res)
 	}
 	fmt.Printf("\n")
 

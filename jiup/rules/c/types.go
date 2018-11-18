@@ -14,5 +14,5 @@ type VersionExtractorFunc func() (version string, err error)
 // DownloadExtractorFunc represents a function which extracts a download link for a version.
 // The version is just a hint if it is for string substitution. If not for string substitution,
 // just return the latest version.
-// It can return an nil string pointer for x86_64 if not available.
-type DownloadExtractorFunc func(version string) (x86 string, x86_64 *string, err error)
+// It can return an nil string pointer for x86 or x86_64 if not available.
+type DownloadExtractorFunc func(version string) (x86 *string, x86_64 *string, err error)
