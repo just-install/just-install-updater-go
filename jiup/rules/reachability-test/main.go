@@ -15,15 +15,16 @@ import (
 // KnownBroken contains packages known to be broken.
 // Errors during the check will not count as a failure.
 var KnownBroken = []string{
-	"freefilesync",  // The server is unreliable.
-	"octave",        // The server is unreliable.
-	"jre",           // The server is unreliable.
-	"gimp",          // The tests fail, but it seems to work fine when manually testing it
-	"audacity",      // https://github.com/just-install/just-install-updater-go/issues/17
-	"classic-shell", // https://github.com/just-install/just-install-updater-go/issues/17
-	"qbittorrent",   // https://github.com/just-install/just-install-updater-go/issues/17
-	"cryptomator",   // https://github.com/just-install/just-install-updater-go/issues/15
-	"jdk",           // The server is unreliable.
+	"freefilesync",     // The server is unreliable.
+	"octave",           // The server is unreliable.
+	"jre",              // The server is unreliable.
+	"gimp",             // The tests fail, but it seems to work fine when manually testing it
+	"audacity",         // https://github.com/just-install/just-install-updater-go/issues/17
+	"classic-shell",    // https://github.com/just-install/just-install-updater-go/issues/17
+	"qbittorrent",      // https://github.com/just-install/just-install-updater-go/issues/17
+	"cryptomator",      // https://github.com/just-install/just-install-updater-go/issues/15
+	"jdk",              // The server is unreliable.
+	"crystaldisk-info", // TODO: fixme
 }
 
 func main() {
