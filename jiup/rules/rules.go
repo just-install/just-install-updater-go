@@ -289,23 +289,6 @@ func init() {
 			h.Re("dbeaver-ce-.+-x86_64-setup.exe"),
 		),
 	)
-	Rule("defraggler",
-		func() (string, error) {
-			version, err := v.Regexp(
-				"https://www.ccleaner.com/defraggler/download/standard",
-				h.Re("dfsetup([0-9]+)"),
-			)()
-			if err != nil {
-				return "", err
-			}
-			return string(version[0]) + "." + string(version[1:]), nil
-		},
-		d.HTMLA(
-			"https://www.ccleaner.com/defraggler/download/standard",
-			"a[href$='.exe']:contains('start the download')",
-			"",
-		),
-	)
 	Rule("deluge",
 		v.Regexp(
 			"https://dev.deluge-torrent.org/wiki/Download",
@@ -1218,23 +1201,6 @@ func init() {
 			"qTox/qTox",
 			h.Re("setup-qtox-i686-release.exe"),
 			h.Re("setup-qtox-x86_64-release.exe"),
-		),
-	)
-	Rule("recuva",
-		func() (string, error) {
-			version, err := v.Regexp(
-				"https://www.ccleaner.com/recuva/download/standard",
-				h.Re("rcsetup([0-9]+)"),
-			)()
-			if err != nil {
-				return "", err
-			}
-			return string(version[0]) + "." + string(version[1:]), nil
-		},
-		d.HTMLA(
-			"https://www.ccleaner.com/recuva/download/standard",
-			"a[href$='.exe']:contains('start the download')",
-			"",
 		),
 	)
 	Rule("retroarch",
