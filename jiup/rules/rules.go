@@ -1098,7 +1098,7 @@ func init() {
 	Rule("php",
 	     v.Regexp(
 		        "https://windows.php.net/download",
-		        h.Re("PHP [0-9.]+ \(([0-9.]+)\)"),
+		        h.Re("PHP [0-9.]+ \\(([0-9.]+)\\)"),
 	     ),
         )
 	Rule("pia",
