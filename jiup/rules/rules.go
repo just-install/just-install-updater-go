@@ -1095,6 +1095,17 @@ func init() {
 			"a[href*='strawberry-perl-'][href$='64bit.msi']",
 		),
 	)
+	Rule("php",
+	     v.Regexp(
+		        "https://windows.php.net/download",
+		        h.Re("PHP [0-9.]+ \\(([0-9.]+)\\)"),
+	     ),
+	     d.HTMLA(
+		        "https://windows.php.net/download",
+		        "a[href*='/downloads/releases/'][href$='VC15-x86.zip']",
+		        "a[href*='/downloads/releases/'][href$='VC15-x64.zip']",
+	     ),
+        )
 	Rule("pia",
 		v.Regexp(
 			"https://www.privateinternetaccess.com/pages/downloads",
