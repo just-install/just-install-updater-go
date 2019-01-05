@@ -1022,8 +1022,8 @@ func init() {
 		),
 		d.GitHubRelease(
 			"tim-lebedkov/npackd-cpp",
-			h.Re("NpackdCL-.+.msi"),
-			nil,
+			h.Re("NpackdCL32-.+.msi"),
+			h.Re("NpackdCL64-.+.msi"),
 		),
 	)
 	Rule("nxlog",
