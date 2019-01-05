@@ -458,13 +458,13 @@ func init() {
 	Rule("enpass",
 		v.HTML(
 			"https://www.enpass.io/downloads/",
-			"a[href*='Enpass_'][href$='_Setup.exe']",
+			"a[href*='Enpass-setup.exe']",
 			"href",
-			h.Re("Enpass_([0-9.]+)_"),
+			h.Re("/([0-9.]+)/Enpass-setup.exe"),
 		),
 		d.HTMLA(
 			"https://www.enpass.io/downloads/",
-			"a[href*='Enpass_'][href$='_Setup.exe']",
+			"a[href*='Enpass-setup.exe']",
 			"",
 		),
 	)
