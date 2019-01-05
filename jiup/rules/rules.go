@@ -1422,8 +1422,8 @@ func init() {
 		),
 		d.HTML(
 			"https://www.teamspeak.com/en/downloads",
-			"option[value*='win32'][value$='.exe']",
-			"option[value*='win64'][value$='.exe']",
+			"input.mirror[value*='win32'][value$='.exe']",
+			"input.mirror[value*='win64'][value$='.exe']",
 			"value",
 			"value",
 			nil,
