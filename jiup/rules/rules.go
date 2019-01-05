@@ -390,12 +390,12 @@ func init() {
 		Rule("eclipse-"+edition,
 			v.Regexp(
 				"https://eclipse.org/downloads/eclipse-packages/",
-				h.Re("eclipse-"+edition+"-([a-zA-Z0-9]+-[a-zA-Z0-9]+)-win32"), // e.g. photon-R
+				h.Re("eclipse-"+edition+"-([a-zA-Z0-9]+-[a-zA-Z0-9]+-[a-zA-Z0-9]+)-win32"), // e.g. photon-R
 			),
 			func(version string) (*string, *string, error) {
-				x86, x64, err := d.HTMLA(
+				_, x64, err := d.HTMLA(
 					"https://eclipse.org/downloads/eclipse-packages/",
-					".downloadLink-content a[href*='?file='][href*='eclipse-"+edition+"-'][href$='-win32.zip']",
+					"",
 					".downloadLink-content a[href*='?file='][href*='eclipse-"+edition+"-'][href$='-win32-x86_64.zip']",
 				)(version)
 
@@ -403,10 +403,9 @@ func init() {
 					return nil, nil, err
 				}
 
-				*x86 = "http://ftp.osuosl.org/pub/eclipse" + strings.SplitN(strings.SplitN(*x86, "?file=", 2)[1], "&", 2)[0]
 				*x64 = "http://ftp.osuosl.org/pub/eclipse" + strings.SplitN(strings.SplitN(*x64, "?file=", 2)[1], "&", 2)[0]
 
-				return x86, x64, nil
+				return nil, x64, nil
 			},
 		)
 	}
@@ -1096,16 +1095,16 @@ func init() {
 		),
 	)
 	Rule("php",
-	     v.Regexp(
-		        "https://windows.php.net/download",
-		        h.Re("PHP [0-9.]+ \\(([0-9.]+)\\)"),
-	     ),
-	     d.HTMLA(
-		        "https://windows.php.net/download",
-		        "a[href*='/downloads/releases/'][href$='VC15-x86.zip']",
-		        "a[href*='/downloads/releases/'][href$='VC15-x64.zip']",
-	     ),
-        )
+		v.Regexp(
+			"https://windows.php.net/download",
+			h.Re("PHP [0-9.]+ \\(([0-9.]+)\\)"),
+		),
+		d.HTMLA(
+			"https://windows.php.net/download",
+			"a[href*='/downloads/releases/'][href$='VC15-x86.zip']",
+			"a[href*='/downloads/releases/'][href$='VC15-x64.zip']",
+		),
+	)
 	Rule("pia",
 		v.Regexp(
 			"https://www.privateinternetaccess.com/pages/downloads",
