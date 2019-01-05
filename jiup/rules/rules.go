@@ -1261,7 +1261,7 @@ func init() {
 	Rule("ruby",
 		v.GitHubRelease(
 			"oneclick/rubyinstaller2",
-			h.Re("rubyinstaller-([0-9.]+)"),
+			h.Re("RubyInstaller-([0-9.]+)"),
 		),
 		d.GitHubRelease(
 			"oneclick/rubyinstaller2",
