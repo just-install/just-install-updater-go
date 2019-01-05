@@ -1525,8 +1525,8 @@ func init() {
 	)
 	Rule("veracrypt",
 		v.Regexp(
-			"https://sourceforge.net/projects/veracrypt/files/",
-			h.Re("VeraCrypt_([0-9.]+)_"),
+			"https://www.veracrypt.fr/en/Downloads.html",
+			h.Re("For +Windows: *([0-9.]+)"),
 		),
 		d.Template(
 			"https://sourceforge.net/projects/veracrypt/files/VeraCrypt%20{{.Version}}/VeraCrypt%20Setup%20{{.Version}}.exe/download",
