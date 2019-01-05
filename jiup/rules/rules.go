@@ -99,17 +99,6 @@ func init() {
 			nil,
 		),
 	)
-	Rule("bitpay",
-		v.GitHubRelease(
-			"bitpay/copay",
-			h.Re("v(.+)"),
-		),
-		d.GitHubRelease(
-			"bitpay/copay",
-			h.Re("BitPay.exe"),
-			nil,
-		),
-	)
 	Rule("brackets",
 		v.GitHubRelease(
 			"adobe/brackets",

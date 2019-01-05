@@ -25,7 +25,7 @@ var KnownBroken = []string{
 	"cryptomator",      // https://github.com/just-install/just-install-updater-go/issues/15
 	"jdk",              // The server is unreliable.
 	"crystaldisk-info", // TODO: fixme
-	"bitpay",           // TODO: remove this entry if doesn't become available as a standalone download again by January 2019
+	"ditto",            // Temporary server issues
 }
 
 func main() {
