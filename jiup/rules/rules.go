@@ -804,8 +804,8 @@ func init() {
 		),
 		d.HTMLA(
 			"http://kicad-pcb.org/download/windows/",
-			"a[href$='.exe']:contains('Windows 32-bit')",
-			"a[href$='.exe']:contains('Windows 64-bit')",
+			"a[href$='-i686.exe']",
+			"a[href$='-x86_64.exe']",
 		),
 	)
 	Rule("kodi",
@@ -1094,17 +1094,6 @@ func init() {
 			"a[href*='/downloads/releases/'][href$='VC15-x64.zip']",
 		),
 	)
-	Rule("pia",
-		v.Regexp(
-			"https://www.privateinternetaccess.com/pages/downloads",
-			h.Re("v([0-9]+)"),
-		),
-		d.HTMLA(
-			"https://www.privateinternetaccess.com/pages/downloads",
-			"a[href*='pia-'][href$='installer-win.exe']",
-			"",
-		),
-	)
 	Rule("plex-media-server",
 		v.Regexp(
 			"https://plex.tv/api/downloads/1.json",
@@ -1112,7 +1101,7 @@ func init() {
 		),
 		d.Regexp(
 			"https://plex.tv/api/downloads/1.json",
-			h.Re("\"(https://downloads.plex.tv/plex-media-server/[0-9a-z.-]+?/Plex-Media-Server-[0-9a-z.-]+?.exe)\""),
+			h.Re("\"(https://downloads.plex.tv/plex-media-server-new/[0-9a-z.-]+?/windows/PlexMediaServer-[0-9a-z.-]+?-x86.exe)\""),
 			nil,
 		),
 	)
