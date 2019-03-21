@@ -26,6 +26,7 @@ var KnownBroken = []string{
 	"jdk",              // The server is unreliable.
 	"crystaldisk-info", // TODO: fixme
 	"ditto",            // Temporary server issues
+	"mumble",           // latest rc doesn't have windows builds
 }
 
 func main() {
