@@ -1,7 +1,7 @@
 language: go
 
 go:
-  - "1.10.x"
+  - "1.12.x"
 
 install:
   - git clone https://github.com/just-install/registry

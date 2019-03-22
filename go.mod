@@ -1,0 +1,13 @@
+module github.com/just-install/just-install-updater-go
+
+go 1.12
+
+require (
+	github.com/PuerkitoBio/goquery v0.0.0-20180324162212-ea1bc64a6308
+	github.com/andybalholm/cascadia v1.0.0 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/ogier/pflag v0.0.0-20160129220114-45c278ab3607
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/stretchr/testify v0.0.0-20180319223459-c679ae2cc0cb
+	golang.org/x/net v0.0.0-20180406214816-61147c48b25b // indirect
+)
