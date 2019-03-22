@@ -8,7 +8,7 @@ import (
 
 	"github.com/just-install/just-install-updater-go/jiup"
 	"github.com/just-install/just-install-updater-go/jiup/registry"
-	"github.com/ogier/pflag"
+	"github.com/spf13/pflag"
 )
 
 func main() {

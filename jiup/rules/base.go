@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/just-install/just-install-updater-go/jiup/rules/c"
+	c "github.com/just-install/just-install-updater-go/jiup/rules/common"
 )
 
 // R represents a rule for an application.
