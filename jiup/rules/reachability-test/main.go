@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/just-install/just-install-updater-go/jiup/rules"
-	"github.com/ogier/pflag"
+	"github.com/spf13/pflag"
 )
 
 // KnownBroken contains packages known to be broken.
