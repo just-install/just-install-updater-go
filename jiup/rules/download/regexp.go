@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/just-install/just-install-updater-go/jiup/rules/c"
-	"github.com/just-install/just-install-updater-go/jiup/rules/h"
+	c "github.com/just-install/just-install-updater-go/jiup/rules/common"
+	h "github.com/just-install/just-install-updater-go/jiup/rules/helper"
 )
 
 // Regexp returns a version extractor for the first match of a regex (and resolves the url).

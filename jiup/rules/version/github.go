@@ -6,8 +6,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/just-install/just-install-updater-go/jiup/rules/c"
-	"github.com/just-install/just-install-updater-go/jiup/rules/h"
+	c "github.com/just-install/just-install-updater-go/jiup/rules/common"
+	h "github.com/just-install/just-install-updater-go/jiup/rules/helper"
 )
 
 // GitHubTag returns a version extractor for a GitHub tag.

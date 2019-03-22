@@ -1,7 +1,7 @@
 package v
 
 import (
-	"github.com/just-install/just-install-updater-go/jiup/rules/c"
+	c "github.com/just-install/just-install-updater-go/jiup/rules/common"
 )
 
 // Latest always returns the version latest.

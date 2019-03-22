@@ -6,7 +6,7 @@ import (
 	"sort"
 
 	"github.com/just-install/just-install-updater-go/jiup/rules"
-	"github.com/just-install/just-install-updater-go/jiup/rules/c"
+	c "github.com/just-install/just-install-updater-go/jiup/rules/common"
 
 	"github.com/just-install/just-install-updater-go/jiup/registry"
 )

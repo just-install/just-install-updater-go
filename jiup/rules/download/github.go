@@ -7,11 +7,11 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/just-install/just-install-updater-go/jiup/rules/c"
-	"github.com/just-install/just-install-updater-go/jiup/rules/h"
+	c "github.com/just-install/just-install-updater-go/jiup/rules/common"
+	h "github.com/just-install/just-install-updater-go/jiup/rules/helper"
 )
 
-// GitHubRelease returns a version extractor for a GitHub release. x64Re can be nil.
+// GitHubRelease returns a download extractor for a GitHub release. x64Re can be nil.
 func GitHubRelease(repo string, x86FileRe, x64FileRe *regexp.Regexp) c.DownloadExtractorFunc {
 	return func(_ string) (*string, *string, error) {
 		if x86FileRe == nil && x64FileRe == nil {

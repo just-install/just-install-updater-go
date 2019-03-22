@@ -4,9 +4,8 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/just-install/just-install-updater-go/jiup/rules/h"
-
-	"github.com/just-install/just-install-updater-go/jiup/rules/c"
+	c "github.com/just-install/just-install-updater-go/jiup/rules/common"
+	h "github.com/just-install/just-install-updater-go/jiup/rules/helper"
 )
 
 // Template creates a download link based on substituting {{.Version}}. Leave a template empty if no link for that version.

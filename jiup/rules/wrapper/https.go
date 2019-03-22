@@ -4,7 +4,7 @@ import (
 	"crypto/tls"
 	"net/http"
 
-	"github.com/just-install/just-install-updater-go/jiup/rules/c"
+	c "github.com/just-install/just-install-updater-go/jiup/rules/common"
 )
 
 // DisableHTTPSCheck disables https certificate checking for the default client.

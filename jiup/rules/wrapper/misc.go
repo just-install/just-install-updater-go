@@ -3,9 +3,8 @@ package w
 import (
 	"strings"
 
-	"github.com/just-install/just-install-updater-go/jiup/rules/h"
-
-	"github.com/just-install/just-install-updater-go/jiup/rules/c"
+	c "github.com/just-install/just-install-updater-go/jiup/rules/common"
+	h "github.com/just-install/just-install-updater-go/jiup/rules/helper"
 )
 
 // UnderscoreToDot wraps a version extractor and replaces underscores with dots.

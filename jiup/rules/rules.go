@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/just-install/just-install-updater-go/jiup/rules/d"
-	"github.com/just-install/just-install-updater-go/jiup/rules/h"
-	"github.com/just-install/just-install-updater-go/jiup/rules/v"
-	"github.com/just-install/just-install-updater-go/jiup/rules/w"
+	d "github.com/just-install/just-install-updater-go/jiup/rules/download"
+	h "github.com/just-install/just-install-updater-go/jiup/rules/helper"
+	v "github.com/just-install/just-install-updater-go/jiup/rules/version"
+	w "github.com/just-install/just-install-updater-go/jiup/rules/wrapper"
 )
 
 func init() {

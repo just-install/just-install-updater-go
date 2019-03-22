@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/just-install/just-install-updater-go/jiup/rules/c"
-	"github.com/just-install/just-install-updater-go/jiup/rules/h"
+	c "github.com/just-install/just-install-updater-go/jiup/rules/common"
+	h "github.com/just-install/just-install-updater-go/jiup/rules/helper"
 )
 
 // HTML returns a download extractor for the first match of a css selector, an attribute (or innerText for the text), and an optional regexp on the url (and resolves the url).
