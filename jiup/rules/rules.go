@@ -1186,16 +1186,13 @@ func init() {
 	)
 	Rule("qbittorrent",
 		v.Regexp(
-			"http://www.oldfoss.com/qBittorrent.html",
-			h.Re("qbittorrent_([0-9.]+)_setup.exe"),
+			"https://sourceforge.net/projects/qbittorrent/files/",
+			h.Re("qbittorrent-([0-9.]+)"),
 		),
-		func(version string) (*string, *string, error) {
-			return d.Regexp(
-				"http://www.oldfoss.com/qBittorrent.html",
-				h.Re("\"(http.+qbittorrent_"+version+"_setup.exe)\""),
-				h.Re("\"(http.+qbittorrent_"+version+"_x64_setup.exe)\""),
-			)(version)
-		},
+		d.Template(
+			"https://sourceforge.net/projects/qbittorrent/files/qbittorrent-win32/qbittorrent-{{.Version}}/qbittorrent_{{.Version}}_setup.exe/download",
+			"https://sourceforge.net/projects/qbittorrent/files/qbittorrent-win32/qbittorrent-{{.Version}}/qbittorrent_{{.Version}}_x64_setup.exe/download",
+		),
 	)
 	Rule("qtox",
 		v.GitHubRelease(
