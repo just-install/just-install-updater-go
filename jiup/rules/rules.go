@@ -1477,16 +1477,13 @@ func init() {
 		},
 	)
 	Rule("transmission",
-	     v.HTML(
-		     "https://transmissionbt.com/download/",
-		     "#current-version",
-		     "innerText",
-		     nil,
+	     v.Regexp(
+		     "https://transmissionbt.com/includes/js/constants.js",
+		     h.Re("current_version: \"(.*)\""),
 	     ),
-	     d.HTMLA(
-		     "https://transmissionbt.com/download/",
-		     "#msi32-link>a",
-		     "#msi64-link>a",
+	     d.Template(
+		     "https://github.com/transmission/transmission-releases/raw/master/transmission-{{.Version}}-x86.msi",
+		     "https://github.com/transmission/transmission-releases/raw/master/transmission-{{.Version}}-x64.msi",
 	     ),
 	)
 	Rule("upx",
