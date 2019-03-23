@@ -139,16 +139,14 @@ func init() {
 		),
 	)
 	Rule("classic-shell",
-		w.UnderscoreToDot(v.Regexp(
-			"http://www.oldfoss.com/Classic-Shell.html",
-			h.Re("ClassicShellSetup_([0-9_]+)"),
-		)),
+		v.Regexp(
+			"https://sourceforge.net/projects/classicshell/files/",
+			h.Re("Classic Shell v([0-9.]+)"),
+		),
 		func(version string) (*string, *string, error) {
-			return d.Regexp(
-				"http://www.oldfoss.com/Classic-Shell.html",
-				h.Re("\"(http.+ClassicShellSetup_"+strings.Replace(version, ".", "_", -1)+".exe)\""),
-				nil,
-			)(version)
+			vu := strings.Replace(version, ".", "_", -1)
+
+			return h.StrPtr("https://sourceforge.net/projects/classicshell/files/Version%20" + version + "%20general%20release/ClassicShellSetup_" + vu + ".exe/download"), nil, nil
 		},
 	)
 	Rule("clementine-player",
