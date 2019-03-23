@@ -1481,7 +1481,7 @@ func init() {
 		     "https://transmissionbt.com/download/",
 		     "#current-version",
 		     "innerText",
-	     )
+	     ),
 	     d.HTMLA(
 		     "https://transmissionbt.com/download/",
 		     "#msi32-link>a",
