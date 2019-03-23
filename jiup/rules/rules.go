@@ -1477,12 +1477,11 @@ func init() {
 		},
 	)
 	Rule("transmission",
-	     v.RegExp(
+	     v.HTML(
 		     "https://transmissionbt.com/download/",
-		     h.Re(
-			     "The current release version is (.*)"
-		     )
-	     ),
+		     "#current-version",
+		     "innerText",
+	     )
 	     d.HTMLA(
 		     "https://transmissionbt.com/download/",
 		     "#msi32-link>a",
