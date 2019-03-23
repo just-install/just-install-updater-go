@@ -1476,6 +1476,16 @@ func init() {
 			return x86, x64, nil
 		},
 	)
+	Rule("transmission",
+	     v.Regexp(
+		     "https://transmissionbt.com/includes/js/constants.js",
+		     h.Re("current_version: \"(.*)\""),
+	     ),
+	     d.Template(
+		     "https://github.com/transmission/transmission-releases/raw/master/transmission-{{.Version}}-x86.msi",
+		     "https://github.com/transmission/transmission-releases/raw/master/transmission-{{.Version}}-x64.msi",
+	     ),
+	)
 	Rule("upx",
 		v.GitHubRelease(
 			"upx/upx",
