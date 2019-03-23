@@ -1476,6 +1476,19 @@ func init() {
 			return x86, x64, nil
 		},
 	)
+	Rule("transmission",
+	     v.RegExp(
+		     "https://transmissionbt.com/download/",
+		     h.Re(
+			     "The current release version is (.*)"
+		     )
+	     ),
+	     d.HTMLA(
+		     "https://transmissionbt.com/download/",
+		     "#msi32-link>a",
+		     "#msi64-link>a"
+	     ),
+	)
 	Rule("upx",
 		v.GitHubRelease(
 			"upx/upx",
