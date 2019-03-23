@@ -1481,6 +1481,7 @@ func init() {
 		     "https://transmissionbt.com/download/",
 		     "#current-version",
 		     "innerText",
+		     nil,
 	     ),
 	     d.HTMLA(
 		     "https://transmissionbt.com/download/",
