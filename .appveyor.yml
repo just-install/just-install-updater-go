@@ -13,10 +13,10 @@ install:
 - sudo dpkg -i go1.12.1.deb
 - go mod download
 
+build: off
+
 test_script:
 - go test -v ./...
 - 'go run jiup/rules/reachability-test/main.go || [[ $APPVEYOR_FORCED_BUILD == "true" ]]'
-
-test: off
 
 # TODO: deployments
