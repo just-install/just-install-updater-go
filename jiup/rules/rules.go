@@ -1485,7 +1485,7 @@ func init() {
 	     d.HTMLA(
 		     "https://transmissionbt.com/download/",
 		     "#msi32-link>a",
-		     "#msi64-link>a"
+		     "#msi64-link>a",
 	     ),
 	)
 	Rule("upx",
