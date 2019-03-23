@@ -725,12 +725,20 @@ func init() {
 	)
 	Rule("inkscape",
 		v.Regexp(
-			"https://inkscape.org/en/release/",
-			h.Re("Download Inkscape ([0-9.]+)"),
+			"https://inkscape.org/release/",
+			h.Re("Inkscape ([0-9.]+)"),
 		),
-		d.Template(
-			"https://media.inkscape.org/dl/resources/file/inkscape-{{.Version}}-x86.msi",
-			"https://media.inkscape.org/dl/resources/file/inkscape-{{.Version}}-x64.msi",
+		w.SplitDownload(
+			d.HTMLA(
+				"https://inkscape.org/release/inkscape-{{.Version}}/windows/32-bit/msi/dl/",
+				"a[href$='.msi']:contains('click here')",
+				"",
+			),
+			d.HTMLA(
+				"https://inkscape.org/release/inkscape-{{.Version}}/windows/64-bit/msi/dl/",
+				"",
+				"a[href$='.msi']:contains('click here')",
+			),
 		),
 	)
 	Rule("jdk",
@@ -1477,14 +1485,14 @@ func init() {
 		},
 	)
 	Rule("transmission",
-	     v.Regexp(
-		     "https://transmissionbt.com/includes/js/constants.js",
-		     h.Re("current_version: \"(.*)\""),
-	     ),
-	     d.Template(
-		     "https://github.com/transmission/transmission-releases/raw/master/transmission-{{.Version}}-x86.msi",
-		     "https://github.com/transmission/transmission-releases/raw/master/transmission-{{.Version}}-x64.msi",
-	     ),
+		v.Regexp(
+			"https://transmissionbt.com/includes/js/constants.js",
+			h.Re("current_version: \"(.*)\""),
+		),
+		d.Template(
+			"https://github.com/transmission/transmission-releases/raw/master/transmission-{{.Version}}-x86.msi",
+			"https://github.com/transmission/transmission-releases/raw/master/transmission-{{.Version}}-x64.msi",
+		),
 	)
 	Rule("upx",
 		v.GitHubRelease(

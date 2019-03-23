@@ -12,9 +12,11 @@ import (
 )
 
 // HTML returns a download extractor for the first match of a css selector, an attribute (or innerText for the text), and an optional regexp on the url (and resolves the url).
-// If a match fails, the next one (if any) is tried.
+// If a match fails, the next one (if any) is tried. {{.Version}} is replaced with the current version.
 func HTML(url string, x86Selector, x64Selector, x86Attr, x64Attr string, x86FileRe, x64FileRe *regexp.Regexp) c.DownloadExtractorFunc {
-	return func(_ string) (*string, *string, error) {
+	return func(version string) (*string, *string, error) {
+		url := strings.Replace(url, "{{.Version}}", version, -1)
+
 		doc, err := h.GetDoc(nil, url, map[string]string{}, []int{200})
 		if err != nil {
 			return nil, nil, err

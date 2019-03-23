@@ -33,3 +33,18 @@ func AppendToURL(str string, f c.DownloadExtractorFunc) c.DownloadExtractorFunc 
 		return x86, x64, nil
 	}
 }
+
+// SplitDownload runs a different helper for each architecture.
+func SplitDownload(x86, x64 c.DownloadExtractorFunc) c.DownloadExtractorFunc {
+	return func(version string) (*string, *string, error) {
+		dx86, _, err := x86(version)
+		if err != nil {
+			return nil, nil, err
+		}
+		_, dx64, err := x64(version)
+		if err != nil {
+			return nil, nil, err
+		}
+		return dx86, dx64, nil
+	}
+}
