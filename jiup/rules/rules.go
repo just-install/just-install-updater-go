@@ -272,7 +272,7 @@ func init() {
 		),
 		d.GitHubRelease(
 			"dbeaver/dbeaver",
-			h.Re("dbeaver-ce-.+-x86-setup.exe"),
+			nil,
 			h.Re("dbeaver-ce-.+-x86_64-setup.exe"),
 		),
 	)
@@ -1424,13 +1424,13 @@ func init() {
 	)
 	Rule("tor-browser",
 		v.Regexp(
-			"https://www.torproject.org/download/download.html.en",
-			h.Re("torbrowser-install-([0-9.]+)_en"),
+			"https://www.torproject.org/download/languages/",
+			h.Re("dist/torbrowser/([0-9.]+)/"),
 		),
 		d.HTMLA(
-			"https://www.torproject.org/download/download.html.en",
-			"a.button.win-tbb",
-			"a.button.win-tbb64",
+			"https://www.torproject.org/download/languages/",
+			"tr:contains('English') a[href$='en-US.exe']:contains('32-bit')",
+			"tr:contains('English') a[href$='en-US.exe']:contains('64-bit')",
 		),
 	)
 	Rule("tortoisegit",
