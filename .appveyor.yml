@@ -19,6 +19,14 @@ build: off
 
 test_script:
 - go test -v ./...
-- 'go run jiup/rules/reachability-test/main.go || [[ $APPVEYOR_FORCED_BUILD == "true" ]]'
+- 'go run jiup/rules/reachability-test/main.go || [[ $APPVEYOR_FORCED_BUILD == "True" ]] || [[ $APPVEYOR_RE_BUILD == "True" ]]'
 
-# TODO: deployments
+for:
+- branches:
+    only:
+    - master
+  environment:
+    GITHUB_TOKEN:
+      secure: jnQXdVRI6HFMlf4o2lgVVlKyPO3jXsoxffGYNpcExEeMtSZUYQYPmXRGn9ykvZsl
+  deploy_script:
+  - bash deploy.sh
