@@ -24,13 +24,13 @@ func init() {
 	)
 	Rule("anaconda",
 		v.Regexp(
-			"https://www.anaconda.com/download/",
+			"https://www.anaconda.com/distribution/",
 			h.Re("Anaconda3-([0-9.]+)-"),
 		),
 		d.HTMLA(
-			"https://www.anaconda.com/download/",
-			"a[href*='Anaconda3-'][href$='-Windows-x86.exe']",
-			"a[href*='Anaconda3-'][href$='-Windows-x86_64.exe']",
+			"https://www.anaconda.com/distribution/",
+			"#windows a[href*='Anaconda3-'][href$='-Windows-x86.exe']",
+			"#windows a[href*='Anaconda3-'][href$='-Windows-x86_64.exe']",
 		),
 	)
 	Rule("android-studio-ide",
