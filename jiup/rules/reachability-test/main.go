@@ -102,8 +102,12 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 
 		version, err := vfn()
 		if err != nil {
-			broken[p] = err
-			fmt.Printf("\r ✗  %s: %v", p, broken[p])
+			fmt.Printf("\r ✗  %s: %v", p, err)
+			if strings.Contains(err.Error(), "Client.Timeout") {
+				fmt.Printf(" [IGNORING TIMEOUT]")
+			} else {
+				broken[p] = err
+			}
 			continue
 		}
 		if strings.TrimSpace(version) == "" {
@@ -124,8 +128,12 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 
 		x86dl, x64dl, err := dfn(version)
 		if err != nil {
-			broken[p] = err
-			fmt.Printf("\r ✗  %s: %v", p, broken[p])
+			fmt.Printf("\r ✗  %s: %v", p, err)
+			if strings.Contains(err.Error(), "Client.Timeout") {
+				fmt.Print(" [IGNORING TIMEOUT]")
+			} else {
+				broken[p] = err
+			}
 			continue
 		}
 		if x86dl == nil && x64dl == nil {
@@ -155,8 +163,12 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 			if !nodownload {
 				code, mime, err := testDL(*l.link)
 				if err != nil && !(p == "tightvnc" && strings.Contains(err.Error(), "connection reset")) {
-					broken[p] = err
-					fmt.Printf("\r ✗  %s: %v", p, broken[p])
+					fmt.Printf("\r ✗  %s: %v", p, err)
+					if strings.Contains(err.Error(), "Client.Timeout") {
+						fmt.Print(" [IGNORING TIMEOUT]")
+					} else {
+						broken[p] = err
+					}
 					continue
 				}
 				if code != 200 {
