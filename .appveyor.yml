@@ -29,4 +29,5 @@ for:
     GITHUB_TOKEN:
       secure: jnQXdVRI6HFMlf4o2lgVVlKyPO3jXsoxffGYNpcExEeMtSZUYQYPmXRGn9ykvZsl
   deploy_script:
+  - git clone https://github.com/just-install/registry
   - bash deploy.sh
