@@ -18,8 +18,10 @@ steps:
   commands:
   - go build ./jiup/rules/reachability-test
 - name: test
-  image: golang:1.12-stretch
+  image: debian:stretch
   commands:
+  - apt update
+  - apt install -y jq
   - ./reachability-test
 # todo: decide on conditions to run this and updating the registry
 
@@ -41,8 +43,10 @@ steps:
   commands:
   - go build
 - name: update
-  image: golang:1.12-stretch
+  image: debian:stretch
   commands:
+  - apt update
+  - apt install -y jq
   - cd registry
   - ../just-install-updater-go -c message.txt just-install.json
   depends_on: [ build, clone-registry ]
