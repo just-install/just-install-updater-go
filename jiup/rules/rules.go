@@ -468,13 +468,13 @@ func init() {
 	)
 	Rule("etcher",
 		v.GitHubRelease(
-			"resin-io/etcher",
+			"balena-io/etcher",
 			h.Re("v(.+)"),
 		),
 		d.GitHubRelease(
-			"resin-io/etcher",
-			h.Re("Etcher-Setup-.+-x86.exe"),
-			h.Re("Etcher-Setup-.+-x64.exe"),
+			"balena-io/etcher",
+			nil,
+			h.Re("balenaEtcher-Setup-.+.exe"),
 		),
 	)
 	Rule("everything-search",
