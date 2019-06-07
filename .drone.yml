@@ -5,6 +5,8 @@ steps:
 - name: test
   image: golang:1.12-stretch
   commands:
+  - apt update
+  - apt install -y jq
   - go test -v ./...
 
 ---
