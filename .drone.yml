@@ -23,7 +23,7 @@ steps:
   image: debian:stretch
   commands:
   - apt update
-  - apt install -y jq
+  - apt install -y jq ca-certificates
   - ./reachability-test
 # todo: decide on conditions to run this and updating the registry
 
@@ -48,7 +48,7 @@ steps:
   image: debian:stretch
   commands:
   - apt update
-  - apt install -y jq
+  - apt install -y jq ca-certificates
   - cd registry
   - ../just-install-updater-go -c message.txt just-install.json
   depends_on: [ build, clone-registry ]
