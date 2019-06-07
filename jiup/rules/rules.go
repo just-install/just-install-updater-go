@@ -410,7 +410,7 @@ func init() {
 	Rule("emacs",
 		func() (string, error) {
 			majorVersion, err := v.HTML(
-				"https://ftp.gnu.org/gnu/emacs/windows/?C=M;O=D",
+				"https://ftp.gnu.org/gnu/emacs/windows/?C=M;O=A",
 				"a[href*='emacs-']",
 				"href",
 				h.Re("emacs-([0-9]+)"),
@@ -468,13 +468,13 @@ func init() {
 	)
 	Rule("etcher",
 		v.GitHubRelease(
-			"resin-io/etcher",
+			"balena-io/etcher",
 			h.Re("v(.+)"),
 		),
 		d.GitHubRelease(
-			"resin-io/etcher",
-			h.Re("Etcher-Setup-.+-x86.exe"),
-			h.Re("Etcher-Setup-.+-x64.exe"),
+			"balena-io/etcher",
+			nil,
+			h.Re("balenaEtcher-Setup-.+.exe"),
 		),
 	)
 	Rule("everything-search",
