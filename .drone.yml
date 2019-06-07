@@ -1,0 +1,67 @@
+kind: pipeline
+name: default
+
+steps:
+- name: test
+  image: golang:1.12-stretch
+  commands:
+  - go test -v ./...
+
+---
+
+kind: pipeline
+name: reachability-test
+
+steps:
+- name: build
+  image: golang:1.12-stretch
+  commands:
+  - go build ./jiup/rules/reachability-test
+- name: test
+  image: golang:1.12-stretch
+  commands:
+  - ./reachability-test
+# todo: decide on conditions to run this and updating the registry
+
+depends_on:
+- default
+
+---
+
+kind: pipeline
+name: update-registry
+
+steps:
+- name: clone-registry
+  image: golang:1.12-stretch
+  commands:
+  - git clone https://github.com/just-install/registry
+- name: build
+  image: golang:1.12-stretch
+  commands:
+  - go build
+- name: update
+  image: golang:1.12-stretch
+  commands:
+  - cd registry
+  - ../just-install-updater-go -c message.txt just-install.json
+  depends_on: [ build, clone-registry ]
+- name: commit
+  image: golang:1.12-stretch
+  commands:
+  - cd registry
+  - git config user.name "just-install-bot"
+  - git config user.email "just-install-bot@outlook.com"
+  - git add just-install.json
+  - cat message.txt
+  - git commit -F message.txt
+  depends_on: [ update ]
+#-name: push
+# image: golang:1.12-stretch
+# commands:
+# - cd registry
+# - git push "https://$GITHUB_TOKEN@github.com/just-install/registry.git" master >/dev/null 2>/dev/null
+# depends_on: [ commit ]
+
+depends_on:
+- default
