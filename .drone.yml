@@ -60,7 +60,7 @@ steps:
   - git config user.email "just-install-bot@outlook.com"
   - git add just-install.json
   - cat message.txt
-  - git commit -F message.txt
+  - git commit -F message.txt || true
   depends_on: [ update ]
 #-name: push
 # image: golang:1.12-stretch
