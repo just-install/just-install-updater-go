@@ -24,7 +24,7 @@ steps:
   commands:
   - apt update
   - apt install -y jq ca-certificates
-  - ./reachability-test
+  - ./reachability-test --alternate-output
 # todo: decide on conditions to run this and updating the registry
 
 depends_on:
