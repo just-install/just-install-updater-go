@@ -5,8 +5,8 @@ steps:
 - name: test
   image: golang:1.12-stretch
   commands:
-  - apt update
-  - apt install -y jq
+  - apt update -qq
+  - apt install -qqy jq
   - go test -v ./...
 
 ---
@@ -22,8 +22,8 @@ steps:
 - name: test
   image: debian:stretch
   commands:
-  - apt update
-  - apt install -y jq ca-certificates
+  - apt update -qq
+  - apt install -qqy jq ca-certificates
   - ./reachability-test --alternate-output
 # todo: decide on conditions to run this and updating the registry
 
@@ -48,7 +48,7 @@ steps:
   image: debian:stretch
   commands:
   - apt update
-  - apt install -y jq ca-certificates
+  - apt install -qqy jq ca-certificates
   - cd registry
   - ../just-install-updater-go -c message.txt just-install.json
   depends_on: [ build, clone-registry ]
