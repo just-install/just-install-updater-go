@@ -25,6 +25,7 @@ var KnownBroken = []string{
 	"crystaldisk-info", // TODO: fixme
 	"ditto",            // Temporary server issues
 	"mumble",           // latest rc doesn't have windows builds
+	"deluge",           // Version 2.0.x doesn't have Windows builds
 }
 
 func main() {
