@@ -1631,17 +1631,6 @@ func init() {
 			nil,
 		),
 	)
-	Rule("workflowy",
-		v.Regexp(
-			"https://workflowy.com/downloads/windows/",
-			h.Re("download/v([0-9.]+)/WorkFlowy"),
-		),
-		d.HTMLA(
-			"https://workflowy.com/downloads/windows/",
-			".js--start-download[href*='Installer.exe']",
-			"",
-		),
-	)
 	Rule("wox",
 		v.GitHubRelease(
 			"Wox-launcher/Wox",
