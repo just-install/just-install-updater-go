@@ -26,6 +26,7 @@ var KnownBroken = []string{
 	"ditto",            // Temporary server issues
 	"mumble",           // latest rc doesn't have windows builds
 	"deluge",           // Version 2.0.x doesn't have Windows builds
+	"smplayer",         // SMPlayer 19.10.2 is a source-only download
 }
 
 func main() {
