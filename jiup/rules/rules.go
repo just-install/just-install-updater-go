@@ -852,7 +852,7 @@ func init() {
 			h.Re("Version: ([0-9.]+)"),
 		),
 		d.Template(
-			"http://lockhunter.com/exe/lockhuntersetup_{{.VersionD}}.exe",
+			"https://lockhunter.com/assets/exe/lockhuntersetup_{{.VersionD}}.exe",
 			"",
 		),
 	)
