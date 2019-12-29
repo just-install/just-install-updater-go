@@ -891,11 +891,11 @@ func init() {
 	)
 	Rule("mountainduck",
 		v.Regexp(
-			"https://mountainduck.io/",
+			"https://mountainduck.io/changelog",
 			h.Re("Installer-([0-9.]+).exe"),
 		),
 		d.HTMLA(
-			"https://mountainduck.io/",
+			"https://mountainduck.io/changelog",
 			"a[href*='Installer'][href$='.msi']",
 			"",
 		),
