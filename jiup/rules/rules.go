@@ -206,14 +206,14 @@ func init() {
 	Rule("cryptomator",
 		v.HTML(
 			"https://cryptomator.org/downloads",
-			"meta[itemprop='softwareVersion']",
+			"[itemprop='softwareVersion']",
 			"content",
 			nil,
 		),
 		d.HTMLA(
 			"https://cryptomator.org/downloads",
 			"",
-			"#winDownload a[href$='.exe']:contains('64 Bit')",
+			"[itemprop='operatingSystem'][content='Windows'] ~ div [itemprop='downloadUrl'][href*='x64'][href$='.exe']",
 		),
 	)
 	Rule("crystaldisk-info",
