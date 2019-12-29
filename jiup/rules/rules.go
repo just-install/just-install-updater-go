@@ -978,14 +978,14 @@ func init() {
 		),
 	)
 	Rule("notepad++",
-		v.Regexp(
-			"https://notepad-plus-plus.org/download/",
-			h.Re("Download Notepad\\+\\+ ([0-9.]+)"),
+		v.GitHubRelease(
+			"notepad-plus-plus/notepad-plus-plus",
+			h.Re("v([0-9.]+)"),
 		),
-		d.HTMLA(
-			"https://notepad-plus-plus.org/download/",
-			"a[href*='npp'][href$='nstaller.exe']",
-			"a[href*='npp'][href$='nstaller.x64.exe']",
+		d.GitHubRelease(
+			"notepad-plus-plus/notepad-plus-plus",
+			h.Re("npp..+.Installer.exe"),
+			h.Re("npp..+.Installer.x64.exe"),
 		),
 	)
 	Rule("notepad2-mod",
