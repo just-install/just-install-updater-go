@@ -757,20 +757,6 @@ func init() {
 			return &x86, &x64, nil
 		},
 	)
-	Rule("jre",
-		func() (string, error) {
-			version, err := v.Regexp("https://www.java.com/en/download/manual.jsp", h.Re("Recommended Version ([0-9]* Update [0-9]*)"))()
-			if err != nil {
-				return "", err
-			}
-			return strings.Replace(version, " Update ", ".", 1), nil
-		},
-		d.HTMLA(
-			"https://www.java.com/en/download/manual.jsp",
-			"a[title='Download Java software for Windows Offline']",
-			"a[title='Download Java software for Windows (64-bit)']",
-		),
-	)
 	Rule("keepass",
 		v.Regexp(
 			"https://sourceforge.net/projects/keepass/files/",
