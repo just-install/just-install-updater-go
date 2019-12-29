@@ -295,11 +295,12 @@ func init() {
 	)
 	Rule("deluge",
 		v.Regexp(
-			"https://dev.deluge-torrent.org/wiki/Download",
-			h.Re("Latest Release: <strong>([0-9.]+)"),
+			"https://ftp.osuosl.org/pub/deluge/windows/?C=M;O=D",
+			h.Re("deluge-([0-9.]+)"),
 		),
-		d.Template(
-			"http://download.deluge-torrent.org/windows/deluge-{{.Version}}-win32-py2.7.exe",
+		d.HTMLA(
+			"https://ftp.osuosl.org/pub/deluge/windows/?C=M;O=D",
+			"a[href$='-win32-py2.7.exe']",
 			"",
 		),
 	)
