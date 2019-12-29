@@ -18,7 +18,6 @@ var KnownBroken = []string{
 	"audacity",         // https://github.com/just-install/just-install-updater-go/issues/17
 	"cryptomator",      // https://github.com/just-install/just-install-updater-go/issues/15
 	"crystaldisk-info", // TODO: fixme
-	"ditto",            // Temporary server issues
 	"deluge",           // Version 2.0.x doesn't have Windows builds
 	"smplayer",         // SMPlayer 19.10.2 is a source-only download
 }
