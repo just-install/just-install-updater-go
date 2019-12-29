@@ -375,6 +375,7 @@ func init() {
 		"jee",
 		"php",
 	} {
+		edition := edition
 		Rule("eclipse-"+edition,
 			v.Regexp(
 				"https://eclipse.org/downloads/eclipse-packages/",
@@ -384,7 +385,7 @@ func init() {
 				_, x64, err := d.HTMLA(
 					"https://eclipse.org/downloads/eclipse-packages/",
 					"",
-					".downloadLink-content a[href*='?file='][href*='eclipse-"+edition+"-'][href$='-win32-x86_64.zip']",
+					".downloadLink-content .windows a[href*='?file='][href*='eclipse-"+edition+"-'][href$='-win32-x86_64.zip']",
 				)(version)
 
 				if err != nil {
