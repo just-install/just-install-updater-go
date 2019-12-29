@@ -1568,17 +1568,6 @@ func init() {
 			"https://download.videolan.org/pub/videolan/vlc/last/win64/vlc-{{.Version}}-win64.msi",
 		),
 	)
-	Rule("vpnunlimited",
-		v.Regexp(
-			"https://www.vpnunlimitedapp.com/en/downloads/windows",
-			h.Re("_v([0-9.]+)\\."),
-		),
-		d.HTMLA(
-			"https://www.vpnunlimitedapp.com/en/downloads/windows",
-			"a[href*='VPN_Unlimited_'][href$='.exe']",
-			"",
-		),
-	)
 	Rule("webtorrent",
 		v.GitHubRelease(
 			"webtorrent/webtorrent-desktop",
