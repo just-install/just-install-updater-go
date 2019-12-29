@@ -17,7 +17,6 @@ import (
 var KnownBroken = []string{
 	"audacity",         // https://github.com/just-install/just-install-updater-go/issues/17
 	"cryptomator",      // https://github.com/just-install/just-install-updater-go/issues/15
-	"jdk",              // The server is unreliable.
 	"crystaldisk-info", // TODO: fixme
 	"ditto",            // Temporary server issues
 	"mumble",           // latest rc doesn't have windows builds

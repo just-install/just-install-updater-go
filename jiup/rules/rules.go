@@ -739,24 +739,6 @@ func init() {
 			),
 		),
 	)
-	Rule("jdk",
-		v.Regexp(
-			"https://lv.binarybabel.org/catalog-api/java/jdk8.txt?p=version",
-			h.Re("([0-9a-zA-Z.-]+)"),
-		),
-		func(version string) (*string, *string, error) {
-			buf, _, ok, err := h.GetURL(nil, "https://lv.binarybabel.org/catalog-api/java/jdk8.txt?p=downloads.exe", map[string]string{}, []int{200})
-			if err != nil {
-				return nil, nil, err
-			}
-			if !ok {
-				return nil, nil, errors.New("unexpected response code")
-			}
-			x64 := string(buf)
-			x86 := strings.Replace(x64, "x64", "i586", -1)
-			return &x86, &x64, nil
-		},
-	)
 	Rule("keepass",
 		v.Regexp(
 			"https://sourceforge.net/projects/keepass/files/",
