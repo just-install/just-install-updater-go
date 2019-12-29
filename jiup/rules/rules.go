@@ -40,8 +40,8 @@ func init() {
 		),
 		d.HTMLA(
 			"https://developer.android.com/studio/",
-			"a[href*='android-studio-ide'][href$='-windows.exe'].button.devsite-dialog-button",
 			"",
+			"a[href*='android-studio-ide'][href$='-windows.exe'].button.devsite-dialog-close",
 		),
 	)
 	Rule("arduino",
