@@ -1575,8 +1575,8 @@ func init() {
 		),
 		d.GitHubRelease(
 			"webtorrent/webtorrent-desktop",
-			h.Re("WebTorrentSetup-v[0-9.]+-ia32.exe"),
 			h.Re("WebTorrentSetup-v[0-9.]+.exe"),
+			nil,
 		),
 	)
 	Rule("winrar",
