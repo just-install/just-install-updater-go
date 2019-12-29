@@ -1643,17 +1643,6 @@ func init() {
 			nil,
 		),
 	)
-	Rule("ynab",
-		v.Regexp(
-			"http://classic.youneedabudget.com/download",
-			h.Re("_([0-9.]+)_Setup.exe"),
-		),
-		d.HTMLA(
-			"http://classic.youneedabudget.com/download",
-			"a[href*='YNAB'][href$='Setup.exe']",
-			"",
-		),
-	)
 	Rule("youtube-dl",
 		v.GitHubRelease(
 			"rg3/youtube-dl",
