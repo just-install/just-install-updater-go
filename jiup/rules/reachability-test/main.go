@@ -15,7 +15,6 @@ import (
 // KnownBroken contains packages known to be broken.
 // Errors during the check will not count as a failure.
 var KnownBroken = []string{
-	"freefilesync",     // The server is unreliable.
 	"octave",           // The server is unreliable.
 	"jre",              // The server is unreliable.
 	"gimp",             // The tests fail, but it seems to work fine when manually testing it
@@ -178,7 +177,7 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 					fmt.Printf("\r ✗  %s: %v", p, broken[p])
 					continue
 				}
-				if strings.HasPrefix(mime, "text/html") && !strings.Contains(*l.link, "sourceforge") && !strings.Contains(*l.link, "oracle") {
+				if strings.HasPrefix(mime, "text/html") && !strings.Contains(*l.link, "sourceforge") && !strings.Contains(*l.link, "oracle") && !strings.Contains(*l.link, "freefilesync") {
 					broken[p] = fmt.Errorf("%s download mime text/html", l.arch)
 					fmt.Printf("\r ✗  %s: %v", p, broken[p])
 					continue

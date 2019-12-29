@@ -528,7 +528,7 @@ func init() {
 	Rule("freefilesync",
 		v.Regexp(
 			"https://www.freefilesync.org/download.php",
-			h.Re("Download FreeFileSync ([0-9.]+)"),
+			h.Re("FreeFileSync_([0-9.]+)_"),
 		),
 		d.HTMLA(
 			"https://www.freefilesync.org/download.php",
