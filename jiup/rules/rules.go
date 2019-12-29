@@ -40,8 +40,8 @@ func init() {
 		),
 		d.HTMLA(
 			"https://developer.android.com/studio/",
-			"a[href*='android-studio-ide'][href$='-windows.exe'].button.devsite-dialog-button",
 			"",
+			"a[href*='android-studio-ide'][href$='-windows.exe'].button.devsite-dialog-close",
 		),
 	)
 	Rule("arduino",
@@ -206,14 +206,14 @@ func init() {
 	Rule("cryptomator",
 		v.HTML(
 			"https://cryptomator.org/downloads",
-			"meta[itemprop='softwareVersion']",
+			"[itemprop='softwareVersion']",
 			"content",
 			nil,
 		),
 		d.HTMLA(
 			"https://cryptomator.org/downloads",
 			"",
-			"#winDownload a[href$='.exe']:contains('64 Bit')",
+			"[itemprop='operatingSystem'][content='Windows'] ~ div [itemprop='downloadUrl'][href*='x64'][href$='.exe']",
 		),
 	)
 	Rule("crystaldisk-info",
@@ -295,11 +295,12 @@ func init() {
 	)
 	Rule("deluge",
 		v.Regexp(
-			"https://dev.deluge-torrent.org/wiki/Download",
-			h.Re("Latest Release: <strong>([0-9.]+)"),
+			"https://ftp.osuosl.org/pub/deluge/windows/?C=M;O=D",
+			h.Re("deluge-([0-9.]+)"),
 		),
-		d.Template(
-			"http://download.deluge-torrent.org/windows/deluge-{{.Version}}-win32-py2.7.exe",
+		d.HTMLA(
+			"https://ftp.osuosl.org/pub/deluge/windows/?C=M;O=D",
+			"a[href$='-win32-py2.7.exe']",
 			"",
 		),
 	)
@@ -374,6 +375,7 @@ func init() {
 		"jee",
 		"php",
 	} {
+		edition := edition
 		Rule("eclipse-"+edition,
 			v.Regexp(
 				"https://eclipse.org/downloads/eclipse-packages/",
@@ -383,7 +385,7 @@ func init() {
 				_, x64, err := d.HTMLA(
 					"https://eclipse.org/downloads/eclipse-packages/",
 					"",
-					".downloadLink-content a[href*='?file='][href*='eclipse-"+edition+"-'][href$='-win32-x86_64.zip']",
+					".downloadLink-content .windows a[href*='?file='][href*='eclipse-"+edition+"-'][href$='-win32-x86_64.zip']",
 				)(version)
 
 				if err != nil {
@@ -528,7 +530,7 @@ func init() {
 	Rule("freefilesync",
 		v.Regexp(
 			"https://www.freefilesync.org/download.php",
-			h.Re("Download FreeFileSync ([0-9.]+)"),
+			h.Re("FreeFileSync_([0-9.]+)_"),
 		),
 		d.HTMLA(
 			"https://www.freefilesync.org/download.php",
@@ -739,38 +741,6 @@ func init() {
 			),
 		),
 	)
-	Rule("jdk",
-		v.Regexp(
-			"https://lv.binarybabel.org/catalog-api/java/jdk8.txt?p=version",
-			h.Re("([0-9a-zA-Z.-]+)"),
-		),
-		func(version string) (*string, *string, error) {
-			buf, _, ok, err := h.GetURL(nil, "https://lv.binarybabel.org/catalog-api/java/jdk8.txt?p=downloads.exe", map[string]string{}, []int{200})
-			if err != nil {
-				return nil, nil, err
-			}
-			if !ok {
-				return nil, nil, errors.New("unexpected response code")
-			}
-			x64 := string(buf)
-			x86 := strings.Replace(x64, "x64", "i586", -1)
-			return &x86, &x64, nil
-		},
-	)
-	Rule("jre",
-		func() (string, error) {
-			version, err := v.Regexp("https://www.java.com/en/download/manual.jsp", h.Re("Recommended Version ([0-9]* Update [0-9]*)"))()
-			if err != nil {
-				return "", err
-			}
-			return strings.Replace(version, " Update ", ".", 1), nil
-		},
-		d.HTMLA(
-			"https://www.java.com/en/download/manual.jsp",
-			"a[title='Download Java software for Windows Offline']",
-			"a[title='Download Java software for Windows (64-bit)']",
-		),
-	)
 	Rule("keepass",
 		v.Regexp(
 			"https://sourceforge.net/projects/keepass/files/",
@@ -891,11 +861,11 @@ func init() {
 	)
 	Rule("mountainduck",
 		v.Regexp(
-			"https://mountainduck.io/",
+			"https://mountainduck.io/changelog",
 			h.Re("Installer-([0-9.]+).exe"),
 		),
 		d.HTMLA(
-			"https://mountainduck.io/",
+			"https://mountainduck.io/changelog",
 			"a[href*='Installer'][href$='.msi']",
 			"",
 		),
@@ -978,14 +948,14 @@ func init() {
 		),
 	)
 	Rule("notepad++",
-		v.Regexp(
-			"https://notepad-plus-plus.org/download/",
-			h.Re("Download Notepad\\+\\+ ([0-9.]+)"),
+		v.GitHubRelease(
+			"notepad-plus-plus/notepad-plus-plus",
+			h.Re("v([0-9.]+)"),
 		),
-		d.HTMLA(
-			"https://notepad-plus-plus.org/download/",
-			"a[href*='npp'][href$='nstaller.exe']",
-			"a[href*='npp'][href$='nstaller.x64.exe']",
+		d.GitHubRelease(
+			"notepad-plus-plus/notepad-plus-plus",
+			h.Re("npp..+.Installer.exe"),
+			h.Re("npp..+.Installer.x64.exe"),
 		),
 	)
 	Rule("notepad2-mod",
@@ -1517,10 +1487,11 @@ func init() {
 	Rule("veracrypt",
 		v.Regexp(
 			"https://www.veracrypt.fr/en/Downloads.html",
-			h.Re("For +Windows: *([0-9.]+)"),
+			h.Re("Latest Stable Release.+- *([0-9.]+(?:-Update[0-9]+)?)"),
 		),
-		d.Template(
-			"https://sourceforge.net/projects/veracrypt/files/VeraCrypt%20{{.Version}}/VeraCrypt%20Setup%20{{.Version}}.exe/download",
+		d.HTMLA(
+			"https://www.veracrypt.fr/en/Downloads.html",
+			"a[href*='VeraCrypt%20Setup'][href$='.exe']",
 			"",
 		),
 	)
@@ -1567,17 +1538,6 @@ func init() {
 			"https://download.videolan.org/pub/videolan/vlc/last/win64/vlc-{{.Version}}-win64.msi",
 		),
 	)
-	Rule("vpnunlimited",
-		v.Regexp(
-			"https://www.vpnunlimitedapp.com/en/downloads/windows",
-			h.Re("_v([0-9.]+)\\."),
-		),
-		d.HTMLA(
-			"https://www.vpnunlimitedapp.com/en/downloads/windows",
-			"a[href*='VPN_Unlimited_'][href$='.exe']",
-			"",
-		),
-	)
 	Rule("webtorrent",
 		v.GitHubRelease(
 			"webtorrent/webtorrent-desktop",
@@ -1585,8 +1545,8 @@ func init() {
 		),
 		d.GitHubRelease(
 			"webtorrent/webtorrent-desktop",
-			h.Re("WebTorrentSetup-v[0-9.]+-ia32.exe"),
 			h.Re("WebTorrentSetup-v[0-9.]+.exe"),
+			nil,
 		),
 	)
 	Rule("winrar",
@@ -1632,14 +1592,14 @@ func init() {
 		),
 	)
 	Rule("workflowy",
-		v.Regexp(
-			"https://workflowy.com/downloads/windows/",
-			h.Re("download/v([0-9.]+)/WorkFlowy"),
+		v.GitHubRelease(
+			"workflowy/desktop",
+			h.Re("v([0-9.]+)"),
 		),
-		d.HTMLA(
-			"https://workflowy.com/downloads/windows/",
-			".js--start-download[href*='Installer.exe']",
-			"",
+		d.GitHubRelease(
+			"workflowy/desktop",
+			h.Re(".+Installer.exe"),
+			nil,
 		),
 	)
 	Rule("wox",
@@ -1651,17 +1611,6 @@ func init() {
 			"Wox-launcher/Wox",
 			h.Re("Wox-[0-9.]+.exe"),
 			nil,
-		),
-	)
-	Rule("ynab",
-		v.Regexp(
-			"http://classic.youneedabudget.com/download",
-			h.Re("_([0-9.]+)_Setup.exe"),
-		),
-		d.HTMLA(
-			"http://classic.youneedabudget.com/download",
-			"a[href*='YNAB'][href$='Setup.exe']",
-			"",
 		),
 	)
 	Rule("youtube-dl",
