@@ -1280,16 +1280,19 @@ func init() {
 			nil,
 		),
 	)
-	Rule("smplayer",
-		v.Regexp(
-			"https://sourceforge.net/projects/smplayer/files/",
-			h.Re("smplayer-([0-9.]+)\\."),
-		),
-		d.Template(
-			"https://sourceforge.net/projects/smplayer/files/SMPlayer/{{.Version}}/smplayer-{{.Version}}-win32.exe/download",
-			"https://sourceforge.net/projects/smplayer/files/SMPlayer/{{.Version}}/smplayer-{{.Version}}-x64.exe/download",
-		),
-	)
+	// FIXME: SMPlayer's download page says "Download Latest Version smplayer-19.10.2.tar.bz2 (5.2
+	// MB)" but that version doesn't have an installer (it's a source-only download).
+	//
+	// Rule("smplayer",
+	//  v.Regexp(
+	//      "https://sourceforge.net/projects/smplayer/files/",
+	//      h.Re("smplayer-([0-9.]+)\\."),
+	//  ),
+	//  d.Template(
+	//      "https://sourceforge.net/projects/smplayer/files/SMPlayer/{{.Version}}/smplayer-{{.Version}}-win32.exe/download",
+	//      "https://sourceforge.net/projects/smplayer/files/SMPlayer/{{.Version}}/smplayer-{{.Version}}-x64.exe/download",
+	//  ),
+	// )
 	Rule("sourcetree",
 		v.Regexp(
 			"https://www.sourcetreeapp.com",

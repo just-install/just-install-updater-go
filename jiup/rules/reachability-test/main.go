@@ -17,7 +17,6 @@ import (
 var KnownBroken = []string{
 	"audacity",         // https://github.com/just-install/just-install-updater-go/issues/17
 	"crystaldisk-info", // TODO: fixme
-	"smplayer",         // SMPlayer 19.10.2 is a source-only download
 }
 
 func main() {
