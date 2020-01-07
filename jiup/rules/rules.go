@@ -719,8 +719,8 @@ func init() {
 		),
 		d.GitHubRelease(
 			"d2phap/ImageGlass",
-			h.Re("ImageGlass_.+.exe"),
-			nil,
+			h.Re("ImageGlass_([0-9.]+)_x86.msi"),
+			h.Re("ImageGlass_([0-9.]+)_x64.msi"),
 		),
 	)
 	Rule("inkscape",
