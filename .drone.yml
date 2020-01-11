@@ -1,0 +1,10 @@
+name: jiup-go
+kind: pipeline
+type: docker
+
+steps:
+- name: test
+  image: golang:1.13
+  commands:
+  # TODO: rename jiup-ng to jiup when finished refactoring
+  - go test -coverprofile=/dev/null ./jiup-ng/...
