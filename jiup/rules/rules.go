@@ -99,6 +99,17 @@ func init() {
 			nil,
 		),
 	)
+	Rule("bootnext",
+		v.AppVeyorBranch(
+			"geek1011/bootnext",
+			"master",
+		),
+		d.AppVeyorArtifacts(
+			"geek1011/bootnext",
+			nil,
+			h.Re("bootnext[.]msi"),
+		),
+	)
 	Rule("brackets",
 		v.GitHubRelease(
 			"adobe/brackets",
