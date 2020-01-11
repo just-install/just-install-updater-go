@@ -2,6 +2,7 @@ package h
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -78,11 +79,21 @@ func GetDoc(c *http.Client, url string, headers map[string]string, acceptableSta
 	buf, s, a, err := GetURL(c, url, headers, acceptableStatuses)
 	if err != nil {
 		return nil, err
-	}
-	if !a {
+	} else if !a {
 		return nil, fmt.Errorf("unexpected response status: %d", s)
 	}
 	return goquery.NewDocumentFromReader(bytes.NewReader(buf))
+}
+
+// GetJSON gets a JSON document from a url.
+func GetJSON(c *http.Client, url string, headers map[string]string, acceptableStatuses []int, out interface{}) error {
+	buf, s, a, err := GetURL(c, url, headers, acceptableStatuses)
+	if err != nil {
+		return err
+	} else if !a {
+		return fmt.Errorf("unexpected response status: %d", s)
+	}
+	return json.Unmarshal(buf, out)
 }
 
 // ResolveURL resolves a relative url.
