@@ -180,7 +180,9 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 				res += "                " // workaround for carriage returns
 			}
 		}
-		working = append(working, p)
+		if broken[p] == nil {
+			working = append(working, p)
+		}
 		fmt.Print(res)
 	}
 	fmt.Printf("\n")
