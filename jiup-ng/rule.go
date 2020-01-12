@@ -1,4 +1,6 @@
-package common
+package jiup
+
+import "regexp"
 
 // Rule contains a Versioner and a Downloader for a specific package. Note that
 // rules must support being called multiple times and possibly concurrently (i.e.
@@ -28,6 +30,10 @@ type Downloader interface {
 
 // LinkMap contains links for different architectures.
 type LinkMap map[Architecture]string
+
+// RegexpMap contains regular expressions for each Architecture and is intended
+// for use in sources.
+type RegexpMap map[Architecture]*regexp.Regexp
 
 // Architecture is an enum of the supported architectures and should be used in
 // all helpers wherever possible (rather than hardcoding arguments/return values

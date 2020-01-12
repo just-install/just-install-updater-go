@@ -1,6 +1,7 @@
-package common
+package jiup
 
 import (
+	"fmt"
 	"reflect"
 	"sync"
 )
@@ -19,6 +20,15 @@ import (
 type RuleData struct {
 	mu   sync.Mutex
 	data map[string]map[string]interface{}
+}
+
+// MustGet is like Get, but panics if the tag is not set.
+func (r *RuleData) MustGet(tag interface{}) interface{} {
+	v, ok := r.Get(tag)
+	if !ok {
+		panic(fmt.Sprintf("tag %#v not set", tag))
+	}
+	return v
 }
 
 // Get gets the data assigned to the specified tag.

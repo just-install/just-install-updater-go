@@ -1,4 +1,4 @@
-package common
+package jiup
 
 import (
 	"fmt"
@@ -25,9 +25,16 @@ func TestRuleData(t *testing.T) {
 			t.Errorf("should have returned (nil, false) for nonexistent value, got (%#v, %#v)", v, ok)
 		}
 
+		if doPanic(func() { data.MustGet(myTag("asd")) }) == nil {
+			t.Error("should have panicked for nonexistent value")
+		}
+
 		data.Set(myTag("asd"), "sdf")
 		if v, ok := data.Get(myTag("asd")); v.(string) != "sdf" || !ok {
 			t.Errorf("should have returned (\"sdf\", false) for first tag type, got (%#v, %#v)", v, ok)
+		}
+		if v := data.MustGet(myTag("asd")); v.(string) != "sdf" {
+			t.Errorf("should have returned \"sdf\" for first tag type, got %#v", v)
 		}
 
 		if v, ok := data.Get(myOtherTag("asd")); v != nil || ok {

@@ -1,6 +1,6 @@
 module github.com/just-install/just-install-updater-go
 
-go 1.12
+go 1.13
 
 require (
 	github.com/PuerkitoBio/goquery v0.0.0-20180324162212-ea1bc64a6308
