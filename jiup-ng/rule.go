@@ -10,10 +10,14 @@ type Rule interface {
 	Downloader
 }
 
-// RuleMix combines a separate Versioner and a Downloader into a Rule.
-type RuleMix struct {
-	Versioner
-	Downloader
+// RuleMix combines a separate Versioner and a Downloader into a Rule. It is
+// using a function instead of a composite struct to prevent warnings all over
+// the rules about "composite literal uses unkeyed fields".
+func RuleMix(v Versioner, d Downloader) Rule {
+	return struct {
+		Versioner
+		Downloader
+	}{v, d}
 }
 
 // Versioner gets the version info.
