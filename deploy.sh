@@ -17,12 +17,12 @@ echo '$ git config user.email "just-install-bot@outlook.com"'
 git config user.email "just-install-bot@outlook.com"
 echo
 
-echo '$ go run ../main.go -c message.txt just-install.json'
-go run ../main.go -c message.txt just-install.json || err "Could not update registry"
+echo '$ go run ../main.go -c message.txt just-install-v4.json'
+go run ../main.go -c message.txt just-install-v4.json || err "Could not update registry"
 echo
 
-echo '$ git add just-install.json'
-git add just-install.json
+echo '$ git add just-install-v4.json'
+git add just-install-v4.json
 echo
 
 echo '$ cat message.txt'
