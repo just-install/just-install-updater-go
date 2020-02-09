@@ -552,7 +552,7 @@ func init() {
 	Rule("freeplane",
 		v.Regexp(
 			"https://sourceforge.net/projects/freeplane/files/freeplane%20stable/",
-			h.Re("Freeplane-Setup-([0-9.]+).exe"),
+			h.Re("Freeplane-Setup-([0-9u.]+).exe"),
 		),
 		d.Template(
 			"https://sourceforge.net/projects/freeplane/files/freeplane%20stable/Freeplane-Setup-{{.Version}}.exe/download",
