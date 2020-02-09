@@ -22,7 +22,7 @@ go run ../main.go -c message.txt just-install-v4.json || err "Could not update r
 echo
 
 echo '$ git add just-install*.json'
-git add just-install*.json
+git add just-install-v4.json
 echo
 
 echo '$ cat message.txt'
