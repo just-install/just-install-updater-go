@@ -193,6 +193,22 @@ func init() {
 			"",
 		),
 	)
+	Rule("conan",
+		v.HTML(
+			"https://conan.io/downloads.html",
+			"div.col.text-center.pb-2.version",
+			"innerText",
+			h.Re("Conan ([0-9.]+)"),
+		),
+		func(version string) (*string, *string, error) {
+			vu := strings.Replace(version, ".", "_", -1)
+
+			x86 := h.StrPtr("https://dl.bintray.com/conan/installers/conan-win-32_" + vu + ".exe")
+			x64 := h.StrPtr("https://dl.bintray.com/conan/installers/conan-win-64_" + vu + ".exe")
+
+			return x86, x64, nil
+		},
+	)
 	Rule("conemu",
 		v.GitHubRelease(
 			"Maximus5/ConEmu",
