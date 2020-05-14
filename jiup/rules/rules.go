@@ -1187,6 +1187,18 @@ func init() {
 			"https://www.python.org/ftp/python/{{.Version}}/python-{{.Version}}-amd64.exe",
 		),
 	)
+	Rule("python3-minimal",
+		v.HTML(
+			"https://www.python.org/downloads/",
+			".download-for-current-os .download-os-windows a[href*='python-3']",
+			"innerText",
+			h.Re("Download Python ([0-9.]+)"),
+		),
+		d.Template(
+			"https://www.python.org/ftp/python/{{.Version}}/python-{{.Version}}.exe",
+			"https://www.python.org/ftp/python/{{.Version}}/python-{{.Version}}-amd64.exe",
+		),
+	)
 	Rule("qbittorrent",
 		v.Regexp(
 			"https://sourceforge.net/projects/qbittorrent/files/",
