@@ -237,10 +237,9 @@ func init() {
 			"content",
 			nil,
 		),
-		d.HTMLA(
-			"https://cryptomator.org/downloads",
+		d.Template(
 			"",
-			"[itemprop='operatingSystem'][content='Windows'] ~ div [itemprop='downloadUrl'][href*='x64'][href$='.exe']",
+			"https://dl.bintray.com/cryptomator/cryptomator/{{.Version}}/Cryptomator-{{.Version}}-x64.exe",
 		),
 	)
 	Rule("crystaldisk-info",
