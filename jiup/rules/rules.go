@@ -869,10 +869,9 @@ func init() {
 			"https://www.mercurial-scm.org/sources.js",
 			h.Re("windows/mercurial-([0-9.][^-]+[0-9])-"),
 		),
-		d.Regexp(
-			"https://www.mercurial-scm.org/sources.js",
-			h.Re("(https://www.mercurial-scm.org/release/windows/mercurial-[0-9.][^-]+[0-9]-x86.msi)"),
-			h.Re("(https://www.mercurial-scm.org/release/windows/mercurial-[0-9.][^-]+[0-9]-x64.msi)"),
+		d.Template(
+			"https://www.mercurial-scm.org/release/windows/mercurial-{{.Version}}-x86.msi",
+			"https://www.mercurial-scm.org/release/windows/mercurial-{{.Version}}-x64.msi",
 		),
 	)
 	Rule("mono",
