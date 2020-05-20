@@ -649,17 +649,6 @@ func init() {
 			"https://dl.google.com/go/go{{.Version}}.windows-amd64.msi",
 		),
 	)
-	Rule("gog-galaxy",
-		v.Regexp(
-			"https://www.gog.com/galaxy",
-			h.Re("setup_galaxy_([0-9.]+).exe"),
-		),
-		d.HTMLA(
-			"https://www.gog.com/galaxy",
-			"a[href*='setup'][href$='.exe']:contains('Windows')",
-			"",
-		),
-	)
 	Rule("gow",
 		v.GitHubRelease(
 			"bmatzelle/gow",
