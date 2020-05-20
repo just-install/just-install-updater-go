@@ -1247,6 +1247,16 @@ func init() {
 			h.Re("rubyinstaller-[0-9.]+-.+-x64.exe"),
 		),
 	)
+	Rule("rufus",
+		v.GitHubRelease(
+			"pbatard/rufus",
+			h.Re("v(.+)"),
+		),
+		d.Template(
+			"https://github.com/pbatard/rufus/releases/download/v{{.Version}}/rufus-{{.Version}}.exe",
+			"",
+		),
+	)
 	Rule("seafile-client",
 		w.NoHTTPSForVersionExtractor(v.HTML(
 			"https://www.seafile.com/en/download/",
