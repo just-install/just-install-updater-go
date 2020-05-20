@@ -858,10 +858,9 @@ func init() {
 			"marktext/marktext",
 			h.Re("v(.+)"),
 		),
-		d.GitHubRelease(
-			"marktext/marktext",
-			h.Re("marktext-setup-.+.exe"),
-			nil,
+		d.Template(
+			"https://github.com/marktext/marktext/releases/download/v{{.Version}}/marktext-setup.exe",
+			"",
 		),
 	)
 	Rule("mercurial",
