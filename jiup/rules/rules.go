@@ -1338,6 +1338,16 @@ func init() {
 			"",
 		),
 	)
+	Rule("sshfs-win",
+		v.GitHubRelease(
+			"billziss-gh/sshfs-win",
+			h.Re("v(.+)"),
+		),
+		d.Template(
+			"https://github.com/billziss-gh/sshfs-win/releases/download/v{{.Version}}/sshfs-win-{{.Version}}-x86.msi",
+			"https://github.com/billziss-gh/sshfs-win/releases/download/v{{.Version}}/sshfs-win-{{.Version}}-x64.msi",
+		),
+	)
 	Rule("sublime-text",
 		v.Regexp(
 			"https://www.sublimetext.com/2",
