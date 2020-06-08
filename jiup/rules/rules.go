@@ -893,17 +893,6 @@ func init() {
 			"",
 		),
 	)
-	Rule("mpc-hc",
-		v.Regexp(
-			"https://mpc-hc.org/downloads/",
-			h.Re("latest stable build is v([0-9.]+)"),
-		),
-		d.HTMLA(
-			"https://mpc-hc.org/downloads/",
-			"a[href$='.x86.exe']",
-			"a[href$='.x64.exe']",
-		),
-	)
 	Rule("mumble",
 		v.GitHubRelease(
 			"mumble-voip/mumble",
