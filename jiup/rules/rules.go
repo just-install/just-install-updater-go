@@ -193,12 +193,12 @@ func init() {
 		),
 	)
 	Rule("conan",
-		v.HTML(
+		w.UnderscoreToDot(v.HTML(
 			"https://conan.io/downloads.html",
-			"div.col.text-center.pb-2.version",
-			"innerText",
-			h.Re("Conan ([0-9.]+)"),
-		),
+			"a[data-href*='conan-win-32']",
+			"data-href",
+			h.Re("conan-win-32_([0-9_]+)"),
+		)),
 		func(version string) (*string, *string, error) {
 			vu := strings.Replace(version, ".", "_", -1)
 
@@ -337,17 +337,6 @@ func init() {
 		d.Template(
 			"http://www.dependencywalker.com/depends{{.VersionN}}_x86.zip",
 			"http://www.dependencywalker.com/depends{{.VersionN}}_x64.zip",
-		),
-	)
-	Rule("deskpins",
-		v.Regexp(
-			"https://efotinis.neocities.org/deskpins/",
-			h.Re("v([0-9.]+)"),
-		),
-		d.HTMLA(
-			"https://efotinis.neocities.org/deskpins/",
-			"a[href*='DeskPins-'][href$='-setup.exe']",
-			"",
 		),
 	)
 	Rule("ditto",
@@ -790,7 +779,7 @@ func init() {
 	Rule("kicad",
 		v.Regexp(
 			"http://kicad-pcb.org/download/windows/",
-			h.Re("Stable Release Current Version: ([0-9.]+)"),
+			h.Re("Current Version: <strong>([0-9.]+)</strong>"),
 		),
 		d.HTMLA(
 			"http://kicad-pcb.org/download/windows/",
@@ -1383,12 +1372,12 @@ func init() {
 	)
 	Rule("sumatrapdf",
 		v.Regexp(
-			"https://www.sumatrapdfreader.org/news.html",
-			h.Re(">([0-9.]+) \\(20"),
+			"https://www.sumatrapdfreader.org/download-free-pdf-viewer.html",
+			h.Re("SumatraPDF-([0-9.]+)-"),
 		),
 		d.Template(
-			"https://www.sumatrapdfreader.org/dl/SumatraPDF-{{.Version}}-install.exe",
-			"https://www.sumatrapdfreader.org/dl/SumatraPDF-{{.Version}}-64-install.exe",
+			"https://www.sumatrapdfreader.org/dl2/SumatraPDF-{{.Version}}-install.exe",
+			"https://www.sumatrapdfreader.org/dl2/SumatraPDF-{{.Version}}-64-install.exe",
 		),
 	)
 	Rule("syncthing",
@@ -1514,10 +1503,9 @@ func init() {
 			"https://www.vagrantup.com/downloads.html",
 			h.Re("vagrant_([0-9.]+)_"),
 		),
-		d.HTMLA(
-			"https://www.vagrantup.com/downloads.html",
-			"a[href*='vagrant_'][href$='_i686.msi']",
-			"a[href*='vagrant_'][href$='_x86_64.msi']",
+		d.Template(
+			"https://releases.hashicorp.com/vagrant/{{.Version}}/vagrant_{{.Version}}_i686.msi",
+			"https://releases.hashicorp.com/vagrant/{{.Version}}/vagrant_{{.Version}}_x86_64.msi",
 		),
 	)
 	Rule("veracrypt",
