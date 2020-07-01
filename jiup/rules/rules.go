@@ -746,6 +746,18 @@ func init() {
 			),
 		),
 	)
+	Rule("irfanview",
+		v.HTML(
+			"https://www.irfanview.com/",
+			"a.download-btn[href$='.exe']",
+			"href",
+			h.Re("iview([0-9]+)_setup"),
+		),
+		d.Template(
+			"http://download.betanews.com/download/967963863-1/iview{{.Version}}_setup.exe",
+			"http://download.betanews.com/download/967963863-1/iview{{.Version}}_x64_setup.exe",
+		),
+	)
 	Rule("keepass",
 		v.Regexp(
 			"https://sourceforge.net/projects/keepass/files/",
