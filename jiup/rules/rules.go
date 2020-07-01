@@ -563,13 +563,15 @@ func init() {
 		),
 	)
 	Rule("geforce-experience",
-		v.Regexp(
+		v.HTML(
 			"https://www.nvidia.com/en-us/geforce/geforce-experience/",
-			h.Re("https://us.download.nvidia.com/GFE/GFEClient/([0-9.]+)/GeForce_Experience"),
+			"a.btn-download-manual[href$='.exe']",
+			"href",
+			h.Re("([0-9.]+)/"),
 		),
 		d.HTMLA(
 			"https://www.nvidia.com/en-us/geforce/geforce-experience/",
-			"a[href^='https://us.download.nvidia.com/GFE/GFEClient/'][href$='.exe']",
+			"a.btn-download-manual[href$='.exe']",
 			"",
 		),
 	)
