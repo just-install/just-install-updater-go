@@ -336,6 +336,18 @@ func init() {
 			"http://www.dependencywalker.com/depends{{.VersionN}}_x64.zip",
 		),
 	)
+	Rule("displaycal",
+		v.HTML(
+			"https://displaycal.net/",
+			"#version",
+			"innerText",
+			h.Re("([0-9.]+)"),
+		),
+		d.Template(
+			"https://sourceforge.net/projects/dispcalgui/files/release/{{.Version}}/DisplayCAL-{{.Version}}-Setup.exe/download",
+			"",
+		),
+	)
 	Rule("ditto",
 		v.Regexp(
 			"http://ditto-cp.sourceforge.net/index.php",
