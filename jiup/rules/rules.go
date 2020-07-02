@@ -58,13 +58,10 @@ func init() {
 			"http://www.oldfoss.com/Audacity.html",
 			h.Re("audacity-win-([0-9.]+).exe"),
 		),
-		func(version string) (*string, *string, error) {
-			return d.Regexp(
-				"http://www.oldfoss.com/Audacity.html",
-				h.Re("\"(http.+audacity-win-"+version+".exe)\""),
-				nil,
-			)(version)
-		},
+		d.Template(
+			"https://fossies.org/windows/misc/audacity-win-{{.Version}}.exe",
+			"",
+		),
 	)
 	Rule("bleachbit",
 		v.Regexp(
