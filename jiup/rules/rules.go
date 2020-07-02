@@ -673,6 +673,16 @@ func init() {
 			"",
 		),
 	)
+	Rule("handbrake",
+		v.GitHubRelease(
+			"HandBrake/HandBrake",
+			h.Re("(.+)"),
+		),
+		d.Template(
+			"",
+			"https://github.com/HandBrake/HandBrake/releases/download/{{.Version}}/HandBrake-{{.Version}}-x86_64-Win_GUI.exe",
+		),
+	)
 	Rule("hashcheck",
 		v.GitHubRelease(
 			"gurnec/HashCheck",
