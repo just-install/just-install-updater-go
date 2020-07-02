@@ -16,7 +16,6 @@ import (
 // Errors during the check will not count as a failure.
 var KnownBroken = []string{
 	"audacity",         // https://github.com/just-install/just-install-updater-go/issues/17
-	"crystaldisk-info", // TODO: fixme
 }
 
 func main() {
