@@ -1587,6 +1587,17 @@ func init() {
 			nil,
 		),
 	)
+	Rule("winfsp",
+		v.GitHubRelease(
+			"billziss-gh/winfsp",
+			h.Re("v([0-9.]+)"),
+		),
+		d.GitHubRelease(
+			"billziss-gh/winfsp",
+			h.Re("winfsp-([0-9.]+).msi"),
+			nil,
+		),
+	)
 	Rule("winrar",
 		v.Regexp(
 			"https://www.win-rar.com/download.html",
