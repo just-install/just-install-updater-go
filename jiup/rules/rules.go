@@ -904,6 +904,18 @@ func init() {
 			nil,
 		),
 	)
+	Rule("mysql-workbench",
+		v.HTML(
+			"https://dev.mysql.com/downloads/workbench/",
+			"#ga h1",
+			"innerText",
+			h.Re("MySQL Workbench ([0-9.]+)"),
+		),
+		d.Template(
+			"",
+			"https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community-{{.Version}}-winx64.msi",
+		),
+	)
 	Rule("naps2",
 		v.GitHubRelease(
 			"cyanfish/naps2",
