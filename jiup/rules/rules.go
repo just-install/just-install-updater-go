@@ -549,6 +549,17 @@ func init() {
 			"",
 		),
 	)
+	Rule("freecad",
+		v.GitHubRelease(
+			"FreeCAD/FreeCAD",
+			h.Re("([0-9].+)"),
+		),
+		d.GitHubRelease(
+			"FreeCAD/FreeCAD",
+			h.Re("FreeCAD-.*-WIN-x32-installer.exe"),
+			h.Re("FreeCAD-.*-WIN-x64-installer.exe"),
+		),
+	)
 	Rule("freeplane",
 		v.Regexp(
 			"https://sourceforge.net/projects/freeplane/files/freeplane%20stable/",
