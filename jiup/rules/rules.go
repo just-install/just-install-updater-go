@@ -53,16 +53,6 @@ func init() {
 			"",
 		),
 	)
-	Rule("audacity",
-		v.Regexp(
-			"http://www.oldfoss.com/Audacity.html",
-			h.Re("audacity-win-([0-9.]+).exe"),
-		),
-		d.Template(
-			"https://fossies.org/windows/misc/audacity-win-{{.Version}}.exe",
-			"",
-		),
-	)
 	Rule("bleachbit",
 		v.Regexp(
 			"https://www.bleachbit.org/download/windows",
