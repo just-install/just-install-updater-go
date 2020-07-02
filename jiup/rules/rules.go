@@ -746,13 +746,13 @@ func init() {
 	Rule("irfanview",
 		v.HTML(
 			"https://www.irfanview.com/",
-			"a.download-btn[href$='.exe']",
-			"href",
-			h.Re("iview([0-9]+)_setup"),
+			".download-option",
+			"innerText",
+			h.Re("Current version ([0-9.]+)"),
 		),
 		d.Template(
-			"http://download.betanews.com/download/967963863-1/iview{{.Version}}_setup.exe",
-			"http://download.betanews.com/download/967963863-1/iview{{.Version}}_x64_setup.exe",
+			"http://download.betanews.com/download/967963863-1/iview{{.VersionN}}_setup.exe",
+			"http://download.betanews.com/download/967963863-1/iview{{.VersionN}}_x64_setup.exe",
 		),
 	)
 	Rule("keepass",
