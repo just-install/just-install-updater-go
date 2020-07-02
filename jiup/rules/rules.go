@@ -513,6 +513,16 @@ func init() {
 			"a[href$='x64-Setup.exe']:contains('Download Installer 64-bit')",
 		),
 	)
+	Rule("exeproxy",
+		v.GitHubRelease(
+			"tim-lebedkov/exe-proxy",
+			h.Re("version_([0-9].+)"),
+		),
+		d.Template(
+			"https://github.com/tim-lebedkov/exe-proxy/releases/download/version_{{.Version}}/exeproxy-{{.Version}}.zip",
+			"",
+		),
+	)
 	Rule("filezilla-server",
 		w.UnderscoreToDot(v.HTML(
 			"https://download.filezilla-project.org/server/?C=M;O=D",
