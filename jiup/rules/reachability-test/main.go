@@ -14,8 +14,7 @@ import (
 
 // KnownBroken contains packages known to be broken.
 // Errors during the check will not count as a failure.
-var KnownBroken = []string{
-}
+var KnownBroken = []string{}
 
 func main() {
 	//verbose := pflag.BoolP("verbose", "v", false, "Show more output")
@@ -148,7 +147,7 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 			if !strings.HasPrefix(*l.link, "http") {
 				broken[p] = fmt.Errorf("%s link (%s) does not start with http", l.arch, *l.link)
 				fmt.Printf("\r ✗  %s: %v", p, broken[p])
-				continue
+				break
 			}
 			if !nodownload {
 				code, mime, err := testDL(*l.link)
@@ -159,17 +158,17 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 					} else {
 						broken[p] = err
 					}
-					continue
+					break
 				}
 				if code != 200 {
-					broken[p] = fmt.Errorf("%s download status code %d", l.arch, code)
+					broken[p] = fmt.Errorf("%s download status code %d (%s)", l.arch, code, *l.link)
 					fmt.Printf("\r ✗  %s: %v", p, broken[p])
-					continue
+					break
 				}
 				if strings.HasPrefix(mime, "text/html") && !strings.Contains(*l.link, "sourceforge") && !strings.Contains(*l.link, "freefilesync") {
 					broken[p] = fmt.Errorf("%s download mime text/html", l.arch)
-					fmt.Printf("\r ✗  %s: %v", p, broken[p])
-					continue
+					fmt.Printf("\r ✗  %s: %v (%s)", p, broken[p], *l.link)
+					break
 				}
 			}
 			if downloadLinks {
@@ -180,8 +179,8 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 		}
 		if broken[p] == nil {
 			working = append(working, p)
+			fmt.Print(res)
 		}
-		fmt.Print(res)
 	}
 	fmt.Printf("\n")
 
