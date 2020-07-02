@@ -426,7 +426,7 @@ func init() {
 	Rule("emacs",
 		func() (string, error) {
 			majorVersion, err := v.HTML(
-				"https://ftp.gnu.org/gnu/emacs/windows/?C=M;O=A",
+				"https://ftp.gnu.org/gnu/emacs/windows/?C=N;O=D",
 				"a[href*='emacs-']",
 				"href",
 				h.Re("emacs-([0-9]+)"),
