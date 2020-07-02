@@ -1317,6 +1317,17 @@ func init() {
 			nil,
 		),
 	)
+	Rule("shotcut",
+		v.GitHubRelease(
+			"mltframework/shotcut",
+			h.Re("v([0-9.]+)"),
+		),
+		d.GitHubRelease(
+			"mltframework/shotcut",
+			h.Re("shotcut-win32-[0-9]+.exe"),
+			h.Re("shotcut-win64-[0-9]+.exe"),
+		),
+	)
 	Rule("signal",
 		v.Regexp(
 			"https://updates.signal.org/desktop/latest.yml",
