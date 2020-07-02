@@ -1069,6 +1069,18 @@ func init() {
 			"",
 		),
 	)
+	Rule("paint.net",
+		v.HTML(
+			"https://www.getpaint.net/download.html",
+			"#table8",
+			"innerText",
+			h.Re("([0-9.]+)"),
+		),
+		d.Template(
+			"https://www.dotpdn.com/files/paint.net.{{.Version}}.install.zip",
+			"",
+		),
+	)
 	Rule("perl",
 		v.HTML(
 			"http://strawberryperl.com/releases.html",
