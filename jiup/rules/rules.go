@@ -168,6 +168,26 @@ func init() {
 			"a[href$='-win64-x64.msi']",
 		),
 	)
+	Rule("codeblocks",
+		v.Regexp(
+			"https://codeblocks.org/downloads/26",
+			h.Re("codeblocks-([0-9.]+)-setup.exe"),
+		),
+		d.Template(
+			"https://sourceforge.net/projects/codeblocks/files/Binaries/{{.Version}}/Windows/32bit/codeblocks-{{.Version}}-32bit-setup.exe/download",
+			"https://sourceforge.net/projects/codeblocks/files/Binaries/{{.Version}}/Windows/codeblocks-{{.Version}}-setup.exe/download",
+		),
+	)
+	Rule("codeblocks-mingw",
+		v.Regexp(
+			"https://codeblocks.org/downloads/26",
+			h.Re("codeblocks-([0-9.]+)mingw-setup.exe"),
+		),
+		d.Template(
+			"https://sourceforge.net/projects/codeblocks/files/Binaries/{{.Version}}/Windows/32bit/codeblocks-{{.Version}}mingw-32bit-setup.exe/download",
+			"https://sourceforge.net/projects/codeblocks/files/Binaries/{{.Version}}/Windows/codeblocks-{{.Version}}mingw-setup.exe/download",
+		),
+	)
 	Rule("colemak",
 		v.Regexp(
 			"https://colemak.com/Windows",
