@@ -1586,6 +1586,16 @@ func init() {
 			"https://releases.hashicorp.com/vagrant/{{.Version}}/vagrant_{{.Version}}_x86_64.msi",
 		),
 	)
+	Rule("vcvrack",
+		v.GitHubTag(
+			"VCVRack/Rack",
+			h.Re("v([0-9.]+)"),
+		),
+		d.Template(
+			"https://vcvrack.com/downloads/Rack-{{.Version}}-win.exe",
+			"",
+		),
+	)
 	Rule("veracrypt",
 		v.Regexp(
 			"https://www.veracrypt.fr/en/Downloads.html",
