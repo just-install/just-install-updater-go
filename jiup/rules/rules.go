@@ -212,7 +212,7 @@ func init() {
 			h.Re("Version ([0-9.]+) for [Ww]indows"),
 		),
 		d.Template(
-			"http://download.cpuid.com/cpu-z/cpu-z_{{.Version}}-en.exe",
+			"https://download.cpuid.com/cpu-z/cpu-z_{{.Version}}-en.exe",
 			"",
 		),
 	)
