@@ -318,12 +318,12 @@ func init() {
 	)
 	Rule("dependency-walker",
 		v.Regexp(
-			"http://www.dependencywalker.com",
+			"https://www.dependencywalker.com",
 			h.Re("Dependency Walker ([0-9.]+)"),
 		),
 		d.Template(
-			"http://www.dependencywalker.com/depends{{.VersionN}}_x86.zip",
-			"http://www.dependencywalker.com/depends{{.VersionN}}_x64.zip",
+			"https://www.dependencywalker.com/depends{{.VersionN}}_x86.zip",
+			"https://www.dependencywalker.com/depends{{.VersionN}}_x64.zip",
 		),
 	)
 	Rule("displaycal",
