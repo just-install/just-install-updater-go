@@ -823,11 +823,11 @@ func init() {
 	)
 	Rule("kodi",
 		v.Regexp(
-			"http://mirrors.kodi.tv/releases/windows/win32/?C=M&O=D",
+			"https://mirrors.kodi.tv/releases/windows/win32/?C=M&O=D",
 			h.Re("kodi-([0-9.]+)-"),
 		),
 		d.HTMLA(
-			"http://mirrors.kodi.tv/releases/windows/win32/?C=M&O=D",
+			"https://mirrors.kodi.tv/releases/windows/win32/?C=M&O=D",
 			"a[href*='kodi'][href$='-x86.exe']",
 			"",
 		),
