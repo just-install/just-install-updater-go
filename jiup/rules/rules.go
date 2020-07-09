@@ -87,11 +87,11 @@ func init() {
 	)
 	Rule("bootnext",
 		v.AppVeyorBranch(
-			"geek1011/bootnext",
+			"pgaskin/bootnext",
 			"master",
 		),
 		d.AppVeyorArtifacts(
-			"geek1011/bootnext",
+			"pgaskin/bootnext",
 			nil,
 			h.Re("bootnext[.]msi"),
 		),
