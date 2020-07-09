@@ -1037,6 +1037,16 @@ func init() {
 			h.Re("NpackdCL64-.+.msi"),
 		),
 	)
+	Rule("nsis",
+		v.Regexp(
+			"https://nsis.sourceforge.io/Download",
+			h.Re("NSIS ([0-9.]+)"),
+		),
+		d.Template(
+			"https://sourceforge.net/projects/nsis/files/NSIS%203/{{.Version}}/nsis-{{.Version}}-setup.exe/download",
+			"",
+		),
+	)
 	Rule("nxlog",
 		v.Regexp(
 			"https://nxlog.co/products/nxlog-community-edition/download",
