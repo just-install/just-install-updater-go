@@ -13,8 +13,8 @@ echo '$ git config user.name "just-install-bot"'
 git config user.name "just-install-bot"
 echo
 
-echo '$ git config user.email "just-install-bot@outlook.com"'
-git config user.email "just-install-bot@outlook.com"
+echo '$ git config user.email "just-install-bot@geek1011.net"'
+git config user.email "just-install-bot@geek1011.net"
 echo
 
 echo '$ go run ../main.go -c message.txt just-install-v4.json'
