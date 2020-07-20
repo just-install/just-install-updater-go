@@ -766,6 +766,17 @@ func init() {
 			),
 		),
 	)
+	Rule("intellij-idea-community",
+		v.Regexp(
+			"https://data.services.jetbrains.com/products/releases?code=IIC&latest=true",
+			h.Re("version\":\"([0-9.]+)"),
+		),
+		d.Regexp(
+			"https://data.services.jetbrains.com/products/releases?code=IIC&latest=true",
+			h.Re("\"(https://download.jetbrains.com/idea/ideaIC-[0-9.]+.exe)\""),
+			nil,
+		),
+	)
 	Rule("irfanview",
 		v.HTML(
 			"https://www.irfanview.com/",
