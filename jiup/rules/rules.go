@@ -1672,6 +1672,17 @@ func init() {
 			nil,
 		),
 	)
+	Rule("windows-terminal",
+		v.GitHubRelease(
+			"microsoft/terminal",
+			h.Re("v(.+)"),
+		),
+		d.GitHubRelease(
+			"microsoft/terminal",
+			h.Re("Microsoft.WindowsTerminal_[0-9.]+.0_8wekyb3d8bbwe.msixbundle"),
+			nil,
+		),
+	)
 	Rule("winfsp",
 		v.GitHubRelease(
 			"billziss-gh/winfsp",
