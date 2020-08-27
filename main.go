@@ -45,7 +45,7 @@ func main() {
 		}
 	}
 
-	updated, unchanged, norule, skipped, errored := u.Update(!*quiet, *verbose, *force)
+	updated, unchanged, norule, rolling, skipped, errored := u.Update(!*quiet, *verbose, *force)
 
 	if commitMessageFile != nil && *commitMessageFile != "" {
 		pkgs := []string{}
@@ -60,7 +60,7 @@ func main() {
 			cMessage = cMessage + ": updated " + listify(pkgs)
 		}
 
-		cMessage = cMessage + fmt.Sprintf("\n\n%d updated, %d unchanged, %d norule (%.0f%%), %d skipped, %d errored\n", len(updated), len(unchanged), len(norule), float32(len(norule))/float32(len(u.Registry.Packages))*100.0, len(skipped), len(errored))
+		cMessage = cMessage + fmt.Sprintf("\n\n%d updated, %d unchanged, %d norule (%.0f%%), %d rolling, %d skipped, %d errored\n", len(updated), len(unchanged), len(norule), float32(len(norule))/float32(len(u.Registry.Packages))*100.0, len(rolling), len(skipped), len(errored))
 
 		if len(updated) > 0 {
 			cMessage = cMessage + "\nUpdated:\n" + strings.Join(pkgvs, "\n") + "\n"
@@ -102,6 +102,13 @@ func main() {
 		}
 		fmt.Printf("\n")
 	}
+	if len(rolling) > 0 {
+		fmt.Printf("Rolling:\n")
+		for _, pkgName := range rolling {
+			fmt.Printf("  %s\n", pkgName)
+		}
+		fmt.Printf("\n")
+	}
 	if len(unchanged) > 0 {
 		fmt.Printf("Unchanged:\n")
 		for _, pkgName := range unchanged {
@@ -123,7 +130,7 @@ func main() {
 		}
 		fmt.Printf("\n")
 	}
-	fmt.Printf("Summary: %d updated, %d unchanged, %d norule (%.0f%%), %d skipped, %d errored\n", len(updated), len(unchanged), len(norule), float32(len(norule))/float32(len(u.Registry.Packages))*100.0, len(skipped), len(errored))
+	fmt.Printf("Summary: %d updated, %d unchanged, %d norule (%.0f%%), %d rolling, %d skipped, %d errored\n", len(updated), len(unchanged), len(norule), float32(len(norule))/float32(len(u.Registry.Packages))*100.0, len(rolling), len(skipped), len(errored))
 
 	if *dryRun {
 		fmt.Printf("\nDRY RUN. NO CHANGES WERE MADE.\n")

@@ -41,10 +41,11 @@ func NewForPackages(registry *registry.Registry, packages []string) (*Updater, e
 }
 
 // Update updates the registry.
-func (u *Updater) Update(progress, verbose, force bool) (updated map[string]string, unchanged []string, norule []string, skipped []string, errored map[string]error) {
+func (u *Updater) Update(progress, verbose, force bool) (updated map[string]string, unchanged []string, norule []string, rolling []string, skipped []string, errored map[string]error) {
 	updated = map[string]string{}
 	unchanged = []string{}
 	norule = []string{}
+	rolling = []string{}
 	skipped = []string{}
 	errored = map[string]error{}
 	// TODO: multithreaded for loop.
@@ -73,7 +74,11 @@ func (u *Updater) Update(progress, verbose, force bool) (updated map[string]stri
 
 		v, d, ok := rules.GetRule(pkgName)
 		if !ok {
-			norule = append(norule, pkgName)
+			if u.Registry.Packages[pkgName].Version == "latest" {
+				rolling = append(rolling, pkgName)
+			} else {
+				norule = append(norule, pkgName)
+			}
 			if verbose {
 				fmt.Printf("  No rule for %s\n", pkgName)
 			}
@@ -135,6 +140,7 @@ func (u *Updater) Update(progress, verbose, force bool) (updated map[string]stri
 
 		tmp := u.Registry.Packages[pkgName]
 		if tmp.Version == "latest" {
+			rolling = append(rolling, pkgName)
 			if !((x86dl != nil && tmp.Installer.X86 != nil && *tmp.Installer.X86 != *x86dl) || x86_64dl != nil && tmp.Installer.X86_64 != nil && *tmp.Installer.X86_64 != *x86_64dl) {
 				// Not updated a package with no version
 				if verbose {
@@ -154,5 +160,5 @@ func (u *Updater) Update(progress, verbose, force bool) (updated map[string]stri
 		}
 		updated[pkgName] = version
 	}
-	return updated, unchanged, norule, skipped, errored
+	return updated, unchanged, norule, rolling, skipped, errored
 }
