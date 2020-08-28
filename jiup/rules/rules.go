@@ -460,6 +460,19 @@ func init() {
 			return &x86, &x64, nil
 		},
 	)
+	Rule("empoche",
+		v.HTML(
+			"https://empoche.com/download",
+			"#tab-windows",
+			"innerText",
+			h.Re("Empoche\\+Setup\\+([0-9.]+).exe"),
+		),
+		d.HTMLA(
+			"https://empoche.com/download",
+			"#tab-windows a[href$='.exe']",
+			"",
+		),
+	)
 	Rule("enpass",
 		v.HTML(
 			"https://www.enpass.io/downloads/",
