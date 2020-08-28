@@ -1285,6 +1285,17 @@ func init() {
 			h.Re("setup-qtox-x86_64-release.exe"),
 		),
 	)
+	Rule("rambox-community",
+		v.GitHubRelease(
+			"ramboxapp/community-edition",
+			h.Re("(.+)"),
+		),
+		d.GitHubRelease(
+			"ramboxapp/community-edition",
+			h.Re("Rambox-(.+)-win.exe"),
+			nil,
+		),
+	)
 	Rule("retroarch",
 		v.Regexp(
 			"https://www.retroarch.com/?page=platforms",
