@@ -63,6 +63,19 @@ func init() {
 			"",
 		),
 	)
+	Rule("blender",
+		v.HTML(
+			"https://www.blender.org/download",
+			".dl-os-windows a",
+			"innerText",
+			h.Re("Download Blender ([0-9.]+)"),
+		),
+		func(version string) (*string, *string, error) {
+			versionSplit := strings.Split(version, ".")
+			x64 := fmt.Sprintf("https://download.blender.org/release/Blender%s.%s/blender-%s-windows64.msi", versionSplit[0], versionSplit[1], version)
+			return nil, &x64, nil
+		},
+	)
 	Rule("bcc",
 		v.GitHubRelease(
 			"wormt/bcc",
