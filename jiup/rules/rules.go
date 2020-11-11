@@ -1801,15 +1801,4 @@ func init() {
 			nil,
 		),
 	)
-	Rule("youtube-dl",
-		v.GitHubRelease(
-			"rg3/youtube-dl",
-			h.Re("([0-9.]+)"),
-		),
-		d.GitHubRelease(
-			"rg3/youtube-dl",
-			h.Re("youtube-dl.exe"),
-			nil,
-		),
-	)
 }
