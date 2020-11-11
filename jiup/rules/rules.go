@@ -1389,7 +1389,7 @@ func init() {
 		),
 		d.GitHubRelease(
 			"mltframework/shotcut",
-			h.Re("shotcut-win32-[0-9]+.exe"),
+			nil,
 			h.Re("shotcut-win64-[0-9]+.exe"),
 		),
 	)
