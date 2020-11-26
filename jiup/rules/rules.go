@@ -1255,17 +1255,6 @@ func init() {
 			"https://www.python.org/ftp/python/{{.Version}}/python-{{.Version}}.amd64.msi",
 		),
 	)
-	Rule("python2-win32",
-		v.GitHubRelease(
-			"mhammond/pywin32",
-			h.Re("b(.+)"),
-		),
-		d.GitHubRelease(
-			"mhammond/pywin32",
-			h.Re("pywin32-.+.win32-py2.7.exe"),
-			h.Re("pywin32-.+.win-amd64-py2.7.exe"),
-		),
-	)
 	Rule("python3",
 		v.HTML(
 			"https://www.python.org/downloads/",
