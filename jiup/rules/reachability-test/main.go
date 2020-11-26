@@ -17,6 +17,8 @@ import (
 // Errors during the check will not count as a failure.
 var KnownBroken = []string{}
 
+const overwrite = "\x1b[1A\x1b[K\r      \r" // up 1, clear line, carriage return (fallback for when the escapes aren't supported)
+
 func main() {
 	//verbose := pflag.BoolP("verbose", "v", false, "Show more output")
 	nodownload := pflag.BoolP("no-download", "d", false, "Do not test downloadability")
@@ -92,13 +94,13 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 			}
 		}
 
-		fmt.Printf("\n    %s: testing", p)
+		fmt.Printf("    %s: testing\n", p)
 
 		c := false
 		for _, kb := range KnownBroken {
 			if p == kb {
 				knownBroken = append(knownBroken, p)
-				fmt.Printf("\r -  %s: manually marked as broken", p)
+				fmt.Printf("%s -  %s: manually marked as broken\n", overwrite, p)
 				c = true
 				break
 			}
@@ -109,7 +111,7 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 
 		version, err := vfn()
 		if err != nil {
-			fmt.Printf("\r ✗  %s: %v", p, err)
+			fmt.Printf("%s ✗  %s: %v\n", overwrite, p, err)
 			if strings.Contains(err.Error(), "Client.Timeout") {
 				fmt.Printf(" [IGNORING TIMEOUT]")
 			} else {
@@ -119,23 +121,23 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 		}
 		if strings.TrimSpace(version) == "" {
 			broken[p] = errors.New("empty version")
-			fmt.Printf("\r ✗  %s: %v", p, broken[p])
+			fmt.Printf("%s ✗  %s: %v\n", overwrite, p, broken[p])
 			continue
 		}
 		if strings.TrimSpace(version) != version {
 			broken[p] = errors.New("version has whitespace (probably a bad regexp)")
-			fmt.Printf("\r ✗  %s: %v", p, broken[p])
+			fmt.Printf("%s ✗  %s: %v\n", overwrite, p, broken[p])
 			continue
 		}
 		if strings.HasSuffix(version, ".") {
 			broken[p] = errors.New("version ends with a dot (probably a bad regexp)")
-			fmt.Printf("\r ✗  %s: %v", p, broken[p])
+			fmt.Printf("%s ✗  %s: %v\n", overwrite, p, broken[p])
 			continue
 		}
 
 		x86dl, x64dl, err := dfn(version)
 		if err != nil {
-			fmt.Printf("\r ✗  %s: %v", p, err)
+			fmt.Printf("%s ✗  %s: %v\n", overwrite, p, err)
 			if strings.Contains(err.Error(), "Client.Timeout") {
 				fmt.Print(" [IGNORING TIMEOUT]")
 			} else {
@@ -145,16 +147,16 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 		}
 		if x86dl == nil && x64dl == nil {
 			broken[p] = errors.New("one or both of x86 and x64 must be defined")
-			fmt.Printf("\r ✗  %s: %v", p, broken[p])
+			fmt.Printf("%s ✗  %s: %v\n", overwrite, p, broken[p])
 			continue
 		}
 		if (x86dl != nil && strings.TrimSpace(*x86dl) == "") || (x64dl != nil && strings.TrimSpace(*x64dl) == "") {
 			broken[p] = errors.New("use nil if no link, not a blank string")
-			fmt.Printf("\r ✗  %s: %v", p, broken[p])
+			fmt.Printf("%s ✗  %s: %v\n", overwrite, p, broken[p])
 			continue
 		}
 
-		res := fmt.Sprintf("\r ✓  %s: %s", p, version)
+		res := fmt.Sprintf(" ✓  %s: %s", p, version)
 		for _, l := range []struct {
 			arch string
 			link *string
@@ -164,13 +166,13 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 			}
 			if !strings.HasPrefix(*l.link, "http") {
 				broken[p] = fmt.Errorf("%s link (%s) does not start with http", l.arch, *l.link)
-				fmt.Printf("\r ✗  %s: %v", p, broken[p])
+				fmt.Printf("%s ✗  %s: %v\n", overwrite, p, broken[p])
 				break
 			}
 			if !nodownload {
 				code, mime, err := testDL(*l.link)
 				if err != nil && !(p == "tightvnc" && strings.Contains(err.Error(), "connection reset")) {
-					fmt.Printf("\r ✗  %s: %v", p, err)
+					fmt.Printf("%s ✗  %s: %v\n", overwrite, p, err)
 					if strings.Contains(err.Error(), "Client.Timeout") {
 						fmt.Print(" [IGNORING TIMEOUT]")
 					} else {
@@ -180,27 +182,26 @@ func testAll(nodownload, downloadLinks bool, packages []string) ([]string, map[s
 				}
 				if code != 200 {
 					broken[p] = fmt.Errorf("%s download status code %d (%s)", l.arch, code, *l.link)
-					fmt.Printf("\r ✗  %s: %v", p, broken[p])
+					fmt.Printf("%s ✗  %s: %v\n", overwrite, p, broken[p])
 					break
 				}
 				if strings.HasPrefix(mime, "text/html") && !strings.Contains(*l.link, "sourceforge") && !strings.Contains(*l.link, "freefilesync") {
 					broken[p] = fmt.Errorf("%s download mime text/html", l.arch)
-					fmt.Printf("\r ✗  %s: %v (%s)", p, broken[p], *l.link)
+					fmt.Printf("%s ✗  %s: %v (%s)\n", overwrite, p, broken[p], *l.link)
 					break
 				}
 			}
 			if downloadLinks {
 				res = fmt.Sprintf("%s %s(%s)", res, l.arch, *l.link)
 			} else {
-				res += "                " // workaround for carriage returns
+				res += "                        " // workaround for carriage returns
 			}
 		}
 		if broken[p] == nil {
 			working = append(working, p)
-			fmt.Print(res)
+			fmt.Printf("%s%s\n", overwrite, res)
 		}
 	}
-	fmt.Printf("\n")
 
 	return working, broken, knownBroken
 }
