@@ -41,7 +41,7 @@ func NewForPackages(registry *registry.Registry, packages []string) (*Updater, e
 }
 
 // Update updates the registry.
-func (u *Updater) Update(progress, verbose, force bool) (updated map[string]string, unchanged []string, norule []string, rolling []string, skipped []string, errored map[string]error) {
+func (u *Updater) Update(progress, verbose, force bool, broken map[string]error) (updated map[string]string, unchanged []string, norule []string, rolling []string, skipped []string, errored map[string]error) {
 	updated = map[string]string{}
 	unchanged = []string{}
 	norule = []string{}
@@ -70,6 +70,16 @@ func (u *Updater) Update(progress, verbose, force bool) (updated map[string]stri
 				fmt.Printf("  Skipped %s because not on list of packages to update\n", pkgName)
 			}
 			continue
+		}
+
+		if broken != nil {
+			if err, ok := broken[pkgName]; ok {
+				errored[pkgName] = fmt.Errorf("broken: %v", err)
+				if verbose {
+					fmt.Printf("  Found saved error for %s: %v\n", pkgName, err)
+				}
+				continue
+			}
 		}
 
 		v, d, ok := rules.GetRule(pkgName)

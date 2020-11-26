@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"sort"
@@ -20,6 +21,7 @@ func main() {
 	//verbose := pflag.BoolP("verbose", "v", false, "Show more output")
 	nodownload := pflag.BoolP("no-download", "d", false, "Do not test downloadability")
 	downloadLinks := pflag.BoolP("download-links", "l", false, "Show download links")
+	writeBroken := pflag.StringP("write-broken", "b", "", "If set, broken rules will be written into the specified file")
 	help := pflag.Bool("help", false, "Show this help text")
 	pflag.Parse()
 
@@ -30,6 +32,22 @@ func main() {
 	working, broken, knownBroken := testAll(*nodownload, *downloadLinks, pflag.Args())
 
 	fmt.Printf("\nSummary: %d working, %d broken, %d known broken\n", len(working), len(broken), len(knownBroken))
+
+	if *writeBroken != "" {
+		arr := []string{}
+		for _, x := range knownBroken {
+			arr = append(arr, x+":"+"manually marked as broken")
+		}
+		for x, err := range broken {
+			arr = append(arr, x+":"+strings.ReplaceAll(err.Error(), "\n", " "))
+		}
+		sort.Strings(arr)
+
+		if err := ioutil.WriteFile(*writeBroken, []byte(strings.Join(arr, "\n")+"\n"), 0644); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: failed to write broken rules to %q: %v\n", *writeBroken, err)
+			os.Exit(1)
+		}
+	}
 
 	if len(broken) > 0 {
 		os.Exit(1)

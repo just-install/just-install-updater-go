@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bufio"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -16,6 +18,7 @@ func main() {
 	dryRun := pflag.BoolP("dry-run", "d", false, "Do not actually write the changes")
 	force := pflag.BoolP("force", "f", false, "Update all entries including ones with a matching version")
 	commitMessageFile := pflag.StringP("commit-message-file", "c", "", "If set, jiup-go will save a commit message describing the changes to a file.")
+	readBroken := pflag.StringP("read-broken", "b", "", "If set, jiup-go will ignore rules listed in the specified file")
 	quiet := pflag.BoolP("quiet", "q", false, "Do not output progress info")
 	help := pflag.Bool("help", false, "Show this help text")
 	pflag.Parse()
@@ -45,7 +48,42 @@ func main() {
 		}
 	}
 
-	updated, unchanged, norule, rolling, skipped, errored := u.Update(!*quiet, *verbose, *force)
+	var broken map[string]error
+	if *readBroken != "" {
+		broken = map[string]error{}
+
+		f, err := os.Open(*readBroken)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error: failed to open %q: %v\n", *readBroken, err)
+			os.Exit(1)
+		}
+
+		sc := bufio.NewScanner(f)
+		for sc.Scan() {
+			spl := strings.SplitN(sc.Text(), ":", 2)
+			if len(spl) != 2 || spl[0] == "" {
+				continue
+			}
+
+			var err error
+			if spl[1] != "" {
+				err = errors.New(spl[1])
+			} else {
+				err = errors.New("error")
+			}
+
+			broken[spl[0]] = err
+		}
+
+		f.Close()
+
+		if sc.Err() != nil {
+			fmt.Fprintf(os.Stderr, "Error: failed to read %q: %v\n", *readBroken, err)
+			os.Exit(1)
+		}
+	}
+
+	updated, unchanged, norule, rolling, skipped, errored := u.Update(!*quiet, *verbose, *force, broken)
 
 	if commitMessageFile != nil && *commitMessageFile != "" {
 		pkgs := []string{}
