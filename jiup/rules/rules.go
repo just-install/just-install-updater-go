@@ -371,8 +371,8 @@ func init() {
 		),
 		d.HTMLA(
 			"https://sourceforge.net/p/doublecmd/wiki/Download/",
-			"a[href$='i386-win32.msi/download']",
-			"a[href$='x86_64-win64.msi/download']",
+			"a[href$='i386-win32.exe/download']",
+			"a[href$='x86_64-win64.exe/download']",
 		),
 	)
 	Rule("duck",
