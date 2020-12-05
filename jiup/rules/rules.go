@@ -183,7 +183,7 @@ func init() {
 	)
 	Rule("codeblocks",
 		v.Regexp(
-			"https://codeblocks.org/downloads/26",
+			"http://codeblocks.org/downloads/26",
 			h.Re("codeblocks-([0-9.]+)-setup.exe"),
 		),
 		d.Template(
