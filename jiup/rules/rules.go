@@ -597,8 +597,8 @@ func init() {
 		),
 		d.GitHubRelease(
 			"FreeCAD/FreeCAD",
-			h.Re("FreeCAD-.*-WIN-x32-installer.exe"),
-			h.Re("FreeCAD-.*-WIN-x64-installer.exe"),
+			nil,
+			h.Re("FreeCAD-.*-WIN-x64-installer.*.exe"),
 		),
 	)
 	Rule("freeplane",
