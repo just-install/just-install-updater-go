@@ -555,30 +555,6 @@ func init() {
 			"",
 		),
 	)
-	Rule("flash-player",
-		v.HTML(
-			"http://get.adobe.com/flashplayer/about/",
-			"td:contains('Opera, Chromium-based browsers - PPAPI')+td",
-			"innerText",
-			h.Re("([0-9.]+)"),
-		),
-		d.Template(
-			"https://fpdownload.macromedia.com/get/flashplayer/pdc/{{.Version}}/install_flash_player_{{.Version0}}_plugin.msi",
-			"",
-		),
-	)
-	Rule("flash-player-ie",
-		v.HTML(
-			"http://get.adobe.com/flashplayer/about/",
-			"td:contains('Internet Explorer - ActiveX')+td",
-			"innerText",
-			h.Re("([0-9.]+)"),
-		),
-		d.Template(
-			"https://fpdownload.macromedia.com/get/flashplayer/pdc/{{.Version}}/install_flash_player_{{.Version0}}_active_x.msi",
-			"",
-		),
-	)
 	Rule("freefilesync",
 		v.Regexp(
 			"https://www.freefilesync.org/download.php",
