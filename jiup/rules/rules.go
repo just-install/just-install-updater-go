@@ -1642,7 +1642,7 @@ func init() {
 	Rule("veracrypt",
 		v.Regexp(
 			"https://www.veracrypt.fr/en/Downloads.html",
-			h.Re("Latest Stable Release: *([0-9.]+(?:-Update[0-9]+)?)"),
+			h.Re("VeraCrypt Setup *([0-9.]+(?:-Update[0-9]+)?)"),
 		),
 		d.HTMLA(
 			"https://www.veracrypt.fr/en/Downloads.html",
