@@ -197,7 +197,7 @@ func init() {
 			h.Re("codeblocks-([0-9.]+)mingw-setup.exe"),
 		),
 		d.Template(
-			"https://sourceforge.net/projects/codeblocks/files/Binaries/{{.Version}}/Windows/32bit/codeblocks-{{.Version}}mingw-32bit-setup.exe/download",
+			"https://sourceforge.net/projects/codeblocks/files/Binaries/{{.Version}}/Windows/32bit/codeblocks-{{.Version}}-32bit-mingw-32bit-setup.exe/download",
 			"https://sourceforge.net/projects/codeblocks/files/Binaries/{{.Version}}/Windows/codeblocks-{{.Version}}mingw-setup.exe/download",
 		),
 	)
