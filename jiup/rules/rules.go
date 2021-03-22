@@ -183,7 +183,7 @@ func init() {
 	)
 	Rule("codeblocks",
 		v.Regexp(
-			"http://codeblocks.org/downloads/26",
+			"https://www.codeblocks.org/downloads/binaries",
 			h.Re("codeblocks-([0-9.]+)-setup.exe"),
 		),
 		d.Template(
@@ -193,7 +193,7 @@ func init() {
 	)
 	Rule("codeblocks-mingw",
 		v.Regexp(
-			"https://codeblocks.org/downloads/26",
+			"https://www.codeblocks.org/downloads/binaries",
 			h.Re("codeblocks-([0-9.]+)mingw-setup.exe"),
 		),
 		d.Template(
