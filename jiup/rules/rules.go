@@ -950,8 +950,8 @@ func init() {
 			h.Re("v(.+)"),
 		),
 		d.Template(
-			"https://github.com/moonlight-stream/moonlight-qt/releases/download/v{{.Version}}/MoonlightSetup-x86-{{.Version}}.exe",
-			"https://github.com/moonlight-stream/moonlight-qt/releases/download/v{{.Version}}/MoonlightSetup-x64-{{.Version}}.exe",
+			"https://github.com/moonlight-stream/moonlight-qt/releases/download/v{{.Version}}/MoonlightSetup-{{.Version}}.exe",
+			"https://github.com/moonlight-stream/moonlight-qt/releases/download/v{{.Version}}/MoonlightSetup-{{.Version}}.exe",
 		),
 	)
 	Rule("mountainduck",
