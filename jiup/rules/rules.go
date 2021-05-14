@@ -1705,7 +1705,7 @@ func init() {
 	Rule("winrar",
 		v.Regexp(
 			"https://www.win-rar.com/download.html",
-			h.Re("WinRAR ([0-9.]+) "),
+			h.Re("WinRAR ([0-9.]+) English"),
 		),
 		d.Template(
 			"https://rarlab.com/rar/wrar{{.VersionN}}.exe",
