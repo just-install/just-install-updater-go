@@ -213,20 +213,15 @@ func init() {
 		),
 	)
 	Rule("conan",
-		w.UnderscoreToDot(v.HTML(
-			"https://conan.io/downloads.html",
-			"a[data-href*='conan-win-32']",
-			"data-href",
-			h.Re("conan-win-32_([0-9_]+)"),
-		)),
-		func(version string) (*string, *string, error) {
-			vu := strings.Replace(version, ".", "_", -1)
-
-			x86 := h.StrPtr("https://dl.bintray.com/conan/installers/conan-win-32_" + vu + ".exe")
-			x64 := h.StrPtr("https://dl.bintray.com/conan/installers/conan-win-64_" + vu + ".exe")
-
-			return x86, x64, nil
-		},
+		v.GitHubRelease(
+			"conan-io/conan",
+			h.Re("([0-9.]+)"),
+		),
+		d.GitHubRelease(
+			"conan-io/conan",
+			h.Re("conan-win-32.exe"),
+			h.Re("conan-win-64.exe"),
+		),
 	)
 	Rule("conemu",
 		v.GitHubRelease(
@@ -250,15 +245,14 @@ func init() {
 		),
 	)
 	Rule("cryptomator",
-		v.HTML(
-			"https://cryptomator.org/downloads",
-			"[itemprop='softwareVersion']",
-			"content",
-			nil,
+		v.GitHubRelease(
+			"cryptomator/cryptomator",
+			h.Re("([0-9.]+)"),
 		),
-		d.Template(
-			"",
-			"https://dl.bintray.com/cryptomator/cryptomator/{{.Version}}/Cryptomator-{{.Version}}-x64.exe",
+		d.GitHubRelease(
+			"cryptomator/cryptomator",
+			nil,
+			h.Re("Cryptomator-.+-x64.exe"),
 		),
 	)
 	Rule("crystaldisk-info",
