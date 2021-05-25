@@ -1117,6 +1117,17 @@ func init() {
 			"",
 		),
 	)
+	Rule("open-shell-menu",
+		v.GitHubRelease(
+			"Open-Shell/Open-Shell-Menu",
+			h.Re("([0-9.]+)"),
+		),
+		d.GitHubRelease(
+			"Open-Shell/Open-Shell-Menu",
+			h.Re("OpenShellSetup_.+.exe"),
+			nil,
+		),
+	)
 	Rule("openssh",
 		v.Regexp(
 			"https://www.mls-software.com/opensshd.html",
