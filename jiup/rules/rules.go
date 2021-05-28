@@ -832,13 +832,13 @@ func init() {
 	)
 	Rule("kicad",
 		v.Regexp(
-			"http://kicad-pcb.org/download/windows/",
+			"http://kicad.org/download/windows/",
 			h.Re("Current Version: <strong>([0-9.]+)</strong>"),
 		),
 		d.HTMLA(
-			"http://kicad-pcb.org/download/windows/",
-			"a[href$='-i686.exe']",
-			"a[href$='-x86_64.exe']",
+			"http://kicad.org/download/windows/",
+			"a[href$='-i686.exe']:contains('CERN')",
+			"a[href$='-x86_64.exe']:contains('CERN')",
 		),
 	)
 	Rule("kodi",
