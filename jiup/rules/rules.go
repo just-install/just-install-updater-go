@@ -832,13 +832,12 @@ func init() {
 	)
 	Rule("kicad",
 		v.Regexp(
-			"http://kicad-pcb.org/download/windows/",
-			h.Re("Current Version: <strong>([0-9.]+)</strong>"),
+			"http://kicad.org/download/windows/",
+			h.Re("kicad-([0-9.]+_[0-9])-"),
 		),
-		d.HTMLA(
-			"http://kicad-pcb.org/download/windows/",
-			"a[href$='-i686.exe']",
-			"a[href$='-x86_64.exe']",
+		d.Template(
+			"https://osdn.net/frs/redir.php?m=dotsrc&f=/storage/g/k/ki/kicad/kicad-{{.Version}}-i686.exe",
+			"https://osdn.net/frs/redir.php?m=dotsrc&f=/storage/g/k/ki/kicad/kicad-{{.Version}}-x86_64.exe",
 		),
 	)
 	Rule("kodi",
@@ -1478,8 +1477,8 @@ func init() {
 			h.Re("SumatraPDF-([0-9.]+)-"),
 		),
 		d.Template(
-			"https://www.sumatrapdfreader.org/dl2/SumatraPDF-{{.Version}}-install.exe",
-			"https://www.sumatrapdfreader.org/dl2/SumatraPDF-{{.Version}}-64-install.exe",
+			"https://kjkpubsf.sfo2.digitaloceanspaces.com/software/sumatrapdf/rel/SumatraPDF-{{.Version}}-install.exe",
+			"https://kjkpubsf.sfo2.digitaloceanspaces.com/software/sumatrapdf/rel/SumatraPDF-{{.Version}}-64-install.exe",
 		),
 	)
 	Rule("syncthing",
