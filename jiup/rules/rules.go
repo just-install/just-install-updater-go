@@ -53,6 +53,17 @@ func init() {
 			"",
 		),
 	)
+	Rule("audacity",
+		v.GitHubRelease(
+			"audacity/audacity",
+			h.Re("Audacity-([0-9.]+)"),
+		),
+		d.GitHubRelease(
+			"audacity/audacity",
+			h.Re("audacity-win-([0-9.]+).exe"),
+			nil,
+		),
+	)
 	Rule("bleachbit",
 		v.Regexp(
 			"https://www.bleachbit.org/download/windows",
