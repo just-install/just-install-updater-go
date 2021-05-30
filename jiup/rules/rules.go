@@ -258,21 +258,22 @@ func init() {
 	Rule("crystaldisk-info",
 		w.UnderscoreToDot(v.HTML(
 			"https://osdn.net/projects/crystaldiskinfo/releases/",
-			"a.pref-download-btn.pref-download-btn-win32[href]",
+			"a.pref-download-btn.pref-download-btn[href]",
 			"href",
-			h.Re("CrystalDiskInfo([0-9_]+).zip"),
+			h.Re("CrystalDiskInfo([0-9_]+)(?:Src)?.zip"),
 		)),
 		func(version string) (*string, *string, error) {
 			vu := strings.Replace(version, ".", "_", -1)
-			dlp, err := v.HTML(
+			dls, err := v.HTML(
 				"https://osdn.net/projects/crystaldiskinfo/releases/",
-				"a.pref-download-btn.pref-download-btn-win32[href]",
+				"a.pref-download-btn.pref-download-btn[href]",
 				"href",
-				h.Re("downloads/([0-9]+/CrystalDiskInfo"+vu+").zip"),
+				h.Re("downloads/([0-9]+/CrystalDiskInfo"+vu+"(?:Src)?).zip"),
 			)()
 			if err != nil {
 				return nil, nil, err
 			}
+			dlp := strings.Replace(dls, "Src", "", -1)
 			return h.StrPtr("http://osdn.dl.osdn.jp/crystaldiskinfo/" + dlp + ".exe"), nil, nil
 		},
 	)
