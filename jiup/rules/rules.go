@@ -537,19 +537,6 @@ func init() {
 			"",
 		),
 	)
-	Rule("filezilla-server",
-		w.UnderscoreToDot(v.HTML(
-			"https://download.filezilla-project.org/server/?C=M;O=D",
-			"a[href*='FileZilla_Server-'][href$='.exe']",
-			"href",
-			h.Re("FileZilla_Server-([0-9_]+)"),
-		)),
-		d.HTMLA(
-			"https://download.filezilla-project.org/server/?C=M;O=D",
-			"a[href*='FileZilla_Server-'][href$='.exe']",
-			"",
-		),
-	)
 	Rule("freefilesync",
 		v.Regexp(
 			"https://www.freefilesync.org/download.php",
