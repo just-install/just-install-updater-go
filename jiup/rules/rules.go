@@ -22,6 +22,72 @@ func init() {
 			"https://www.7-zip.org/a/7z{{.VersionN}}-x64.msi",
 		),
 	)
+	Rule("adoptopenjdk-8-jdk",
+		v.Regexp(
+			"https://api.adoptopenjdk.net/v3/assets/feature_releases/8/ga?heap_size=normal&image_type=jdk&jvm_impl=hotspot&os=windows&page=0&page_size=1&project=jdk&sort_method=DATE&sort_order=DESC&vendor=adoptopenjdk",
+			h.Re("semver\": \"([0-9.+]+)"),
+		),
+		d.Regexp(
+			"https://api.adoptopenjdk.net/v3/assets/feature_releases/8/ga?heap_size=normal&image_type=jdk&jvm_impl=hotspot&os=windows&page=0&page_size=1&project=jdk&sort_method=DATE&sort_order=DESC&vendor=adoptopenjdk",
+			h.Re("link\": \"(.*x86-32.*\\.msi)\""),
+			h.Re("link\": \"(.*x64.*\\.msi)\""),
+		),
+	)
+	Rule("adoptopenjdk-8-jre",
+		v.Regexp(
+			"https://api.adoptopenjdk.net/v3/assets/feature_releases/8/ga?heap_size=normal&image_type=jre&jvm_impl=hotspot&os=windows&page=0&page_size=1&project=jdk&sort_method=DATE&sort_order=DESC&vendor=adoptopenjdk",
+			h.Re("semver\": \"([0-9.+]+)"),
+		),
+		d.Regexp(
+			"https://api.adoptopenjdk.net/v3/assets/feature_releases/8/ga?heap_size=normal&image_type=jre&jvm_impl=hotspot&os=windows&page=0&page_size=1&project=jdk&sort_method=DATE&sort_order=DESC&vendor=adoptopenjdk",
+			h.Re("link\": \"(.*x86-32.*\\.msi)\""),
+			h.Re("link\": \"(.*x64.*\\.msi)\""),
+		),
+	)
+	Rule("adoptopenjdk-11-jdk",
+		v.Regexp(
+			"https://api.adoptopenjdk.net/v3/assets/feature_releases/11/ga?heap_size=normal&image_type=jdk&jvm_impl=hotspot&os=windows&page=0&page_size=1&project=jdk&sort_method=DATE&sort_order=DESC&vendor=adoptopenjdk",
+			h.Re("semver\": \"([0-9.+]+)"),
+		),
+		d.Regexp(
+			"https://api.adoptopenjdk.net/v3/assets/feature_releases/11/ga?heap_size=normal&image_type=jdk&jvm_impl=hotspot&os=windows&page=0&page_size=1&project=jdk&sort_method=DATE&sort_order=DESC&vendor=adoptopenjdk",
+			h.Re("link\": \"(.*x86-32.*\\.msi)\""),
+			h.Re("link\": \"(.*x64.*\\.msi)\""),
+		),
+	)
+	Rule("adoptopenjdk-11-jre",
+		v.Regexp(
+			"https://api.adoptopenjdk.net/v3/assets/feature_releases/11/ga?heap_size=normal&image_type=jre&jvm_impl=hotspot&os=windows&page=0&page_size=1&project=jdk&sort_method=DATE&sort_order=DESC&vendor=adoptopenjdk",
+			h.Re("semver\": \"([0-9.+]+)"),
+		),
+		d.Regexp(
+			"https://api.adoptopenjdk.net/v3/assets/feature_releases/11/ga?heap_size=normal&image_type=jre&jvm_impl=hotspot&os=windows&page=0&page_size=1&project=jdk&sort_method=DATE&sort_order=DESC&vendor=adoptopenjdk",
+			h.Re("link\": \"(.*x86-32.*\\.msi)\""),
+			h.Re("link\": \"(.*x64.*\\.msi)\""),
+		),
+	)
+	Rule("adoptopenjdk-16-jdk",
+		v.Regexp(
+			"https://api.adoptopenjdk.net/v3/assets/feature_releases/16/ga?heap_size=normal&image_type=jdk&jvm_impl=hotspot&os=windows&page=0&page_size=1&project=jdk&sort_method=DATE&sort_order=DESC&vendor=adoptopenjdk",
+			h.Re("semver\": \"([0-9.+]+)"),
+		),
+		d.Regexp(
+			"https://api.adoptopenjdk.net/v3/assets/feature_releases/16/ga?heap_size=normal&image_type=jdk&jvm_impl=hotspot&os=windows&page=0&page_size=1&project=jdk&sort_method=DATE&sort_order=DESC&vendor=adoptopenjdk",
+			h.Re("link\": \"(.*x86-32.*\\.msi)\""),
+			h.Re("link\": \"(.*x64.*\\.msi)\""),
+		),
+	)
+	Rule("adoptopenjdk-16-jre",
+		v.Regexp(
+			"https://api.adoptopenjdk.net/v3/assets/feature_releases/16/ga?heap_size=normal&image_type=jre&jvm_impl=hotspot&os=windows&page=0&page_size=1&project=jdk&sort_method=DATE&sort_order=DESC&vendor=adoptopenjdk",
+			h.Re("semver\": \"([0-9.+]+)"),
+		),
+		d.Regexp(
+			"https://api.adoptopenjdk.net/v3/assets/feature_releases/16/ga?heap_size=normal&image_type=jre&jvm_impl=hotspot&os=windows&page=0&page_size=1&project=jdk&sort_method=DATE&sort_order=DESC&vendor=adoptopenjdk",
+			h.Re("link\": \"(.*x86-32.*\\.msi)\""),
+			h.Re("link\": \"(.*x64.*\\.msi)\""),
+		),
+	)
 	Rule("anaconda",
 		v.Regexp(
 			"https://www.anaconda.com/products/individual",
