@@ -1462,13 +1462,16 @@ func init() {
 	)
 	Rule("sumatrapdf",
 		v.Regexp(
-			"https://www.sumatrapdfreader.org/download-free-pdf-viewer.html",
+			"https://www.sumatrapdfreader.org/download-free-pdf-viewer",
 			h.Re("SumatraPDF-([0-9.]+)-"),
 		),
-		d.Template(
-			"https://www.sumatrapdfreader.org/dl2/SumatraPDF-{{.Version}}-install.exe",
-			"https://www.sumatrapdfreader.org/dl2/SumatraPDF-{{.Version}}-64-install.exe",
-		),
+		func(version string) (*string, *string, error) {
+			return d.HTMLA(
+				"https://www.sumatrapdfreader.org/download-free-pdf-viewer",
+				"a[href$='SumatraPDF-"+version+"-install.exe']",
+				"a[href$='SumatraPDF-"+version+"-64-install.exe']",
+			)(version)
+		},
 	)
 	Rule("syncthing",
 		v.GitHubRelease(
