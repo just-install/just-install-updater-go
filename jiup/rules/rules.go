@@ -149,7 +149,7 @@ func init() {
 		),
 		func(version string) (*string, *string, error) {
 			versionSplit := strings.Split(version, ".")
-			x64 := fmt.Sprintf("https://download.blender.org/release/Blender%s.%s/blender-%s-windows64.msi", versionSplit[0], versionSplit[1], version)
+			x64 := fmt.Sprintf("https://download.blender.org/release/Blender%s.%s/blender-%s-windows-x64.msi", versionSplit[0], versionSplit[1], version)
 			return nil, &x64, nil
 		},
 	)
