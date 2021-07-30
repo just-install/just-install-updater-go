@@ -254,8 +254,8 @@ func init() {
 		),
 		d.HTMLA(
 			"https://cmake.org/download/",
-			"a[href$='-win32-x86.msi']",
-			"a[href$='-win64-x64.msi']",
+			"a[href$='-windows-i386.msi']",
+			"a[href$='-windows-x86_64.msi']",
 		),
 	)
 	Rule("codeblocks",
