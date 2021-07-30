@@ -101,12 +101,12 @@ func init() {
 	Rule("android-studio-ide",
 		v.Regexp(
 			"https://developer.android.com/studio/",
-			h.Re("install/([0-9.]+)/android-studio-ide-"),
+			h.Re("install/([0-9.]+)/android-studio-"),
 		),
 		d.HTMLA(
 			"https://developer.android.com/studio/",
 			"",
-			"a[href*='android-studio-ide'][href$='-windows.exe'].button.devsite-dialog-close",
+			"a[href*='android-studio-'][href$='-windows.exe'].button.devsite-dialog-close",
 		),
 	)
 	Rule("arduino",
