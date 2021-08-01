@@ -1230,8 +1230,8 @@ func init() {
 		),
 		d.HTMLA(
 			"https://windows.php.net/download",
-			"a[href*='/downloads/releases/'][href$='VC15-x86.zip']",
-			"a[href*='/downloads/releases/'][href$='VC15-x64.zip']",
+			"a[href*='/downloads/releases/'][href$='vs16-x86.zip']",
+			"a[href*='/downloads/releases/'][href$='vs16-x64.zip']",
 		),
 	)
 	Rule("plex-media-server",
