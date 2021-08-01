@@ -1046,14 +1046,14 @@ func init() {
 		),
 	)
 	Rule("nextcloud",
-		v.Regexp(
-			"https://download.nextcloud.com/desktop/releases/Windows/?C=M;O=D",
-			h.Re("Nextcloud-([0-9.]+)-"),
+		v.GitHubRelease(
+			"nextcloud/desktop",
+			h.Re("v([0-9.]+)"),
 		),
-		d.HTMLA(
-			"https://download.nextcloud.com/desktop/releases/Windows/?C=M;O=D",
-			"a[href$='setup.exe']",
-			"",
+		d.GitHubRelease(
+			"nextcloud/desktop",
+			h.Re("Nextcloud-([0-9.]+)-x86.msi"),
+			h.Re("Nextcloud-([0-9.]+)-x64.msi"),
 		),
 	)
 	Rule("node",
