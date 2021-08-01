@@ -126,8 +126,8 @@ func init() {
 		),
 		d.GitHubRelease(
 			"audacity/audacity",
-			h.Re("audacity-win-([0-9.]+).exe"),
-			nil,
+			h.Re("audacity-win-([0-9.]+)-32bit.exe"),
+			h.Re("audacity-win-([0-9.]+)-64bit.exe"),
 		),
 	)
 	Rule("bleachbit",
