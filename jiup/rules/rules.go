@@ -1199,15 +1199,14 @@ func init() {
 		),
 	)
 	Rule("paint.net",
-		v.HTML(
-			"https://www.getpaint.net/download.html",
-			"#table8",
-			"innerText",
+		v.GitHubRelease(
+			"paintdotnet/release",
 			h.Re("([0-9.]+)"),
 		),
-		d.Template(
-			"https://www.dotpdn.com/files/paint.net.{{.Version}}.install.zip",
-			"",
+		d.GitHubRelease(
+			"paintdotnet/release",
+			h.Re("paint.net.([0-9.]+).install.x86.zip"),
+			h.Re("paint.net.([0-9.]+).install.x64.zip"),
 		),
 	)
 	Rule("perl",
